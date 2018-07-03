@@ -14,7 +14,7 @@ with codecs_open('README.rst', encoding='utf-8') as f:
 
 setup(name='termiteOS',
       version='0.0.1',
-      description=u"Ligthweigth Robot Operating System",
+      description=u"Ligthweigth Telescope Operating System",
       long_description=long_description,
       classifiers=[],
       keywords='',
@@ -33,6 +33,8 @@ setup(name='termiteOS',
       },
       entry_points="""
       [console_scripts]
-      termiteCLI=termiteOS.scripts.cli:cli
+      miteCLI=termiteOS.scripts.cli:cli
+      miteJoy=termiteOS.scripts.cli:joystick
+      miteLX200=termiteOS.scripts.cli:lx200
       """
       )

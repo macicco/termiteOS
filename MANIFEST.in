@@ -1,2 +1,5 @@
 include README.rst
 include LICENSE
+include termiteOS/config.py
+include termiteOS/config.ini.spec
+include termiteOS/config.ini

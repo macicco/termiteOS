@@ -11,8 +11,6 @@ from config import *
 
 import signal
 
-
-
 class module(object):
 	def __init__(self,name,port,hubport=False):
 		print "Creating module ",name
@@ -55,19 +53,16 @@ class module(object):
 
 
 
-	#this thread do all the 
-	#CMD from other modules
+	#this thread listen all the CMD from other modules
 	@threaded
 	def zmqQueue(self):
 	    while self.RUN:
 		try:
-	    		#message = self.mySocketCmd.recv()
 			address, empty, message = self.mySocketCmd.recv_multipart()
 		except:
 			print "Clossing mySocketCmd ZMQ socket."
 			self.mySocketCmd.close()
 			break
-		#print("Received request: %s" % message)
 
 		#  Do some 'work'
 		reply=self.cmd(message)
@@ -78,17 +73,17 @@ class module(object):
 					        b'',
 					        str(reply),
 						])
-    		#self.mySocketCmd.send(str(reply))
+
 	    print "CMD LOOP END."
 	    return
 
-	#engine heartbeat part
+	#Parent heartbeat part
 	def heartbeat(self,arg):
 		module=arg.strip()
-		print "HeartBeat from engine. Module:",module
+		print "Recivedc a heartBeat from a child class. Module:",module
 		return True
 
-	#module heartbeat part
+	#Child heartbeat part
 	@threaded
 	def moduleheartbeat(self):
 	    time.sleep(1)
@@ -103,6 +98,7 @@ class module(object):
 			else:
 				print module,"is death"		
 
+	#Registrar parent
 	def registrar(self,arg):
 		r=json.loads(arg)
 		module=r['module']
@@ -112,7 +108,6 @@ class module(object):
 		socketCmd.connect ("tcp://localhost:%s" % r['port'])
 		self.modules[module]['CMDsocket']=socketCmd
 		self.modules[module]['CMDs']=r['CMDs']
-		#print self.modules[module]
 		print module," sucesfully registed"
 		return json.dumps({'OK':True})
 
@@ -160,19 +155,15 @@ class module(object):
 		print "DEREGISTRING: "+module
 		return "DEREGISTRING: "+module
 	
-		
 	def cmd(self,cmd):
                 for c in self.CMDs.keys():
 			l=len(c)
 			if (cmd[:l]==c):
 				arg=cmd[l:].strip()
-				#print "K",c,"KK",cmd,"KKK",arg
 				return self.CMDs[c](arg)
 				break
 
 		return self.cmd_dummy(cmd)
-
-
 
 	def cmd_dummy(self,arg):
 		print "DUMMY CMD:",arg
@@ -184,6 +175,7 @@ class module(object):
 			string = string + cmd +"\n"
 		return string
 
+	#Normaly overloaded by a child class
 	def run(self):
 	  	while self.RUN:
 			time.sleep(1)
@@ -228,30 +220,15 @@ class module(object):
 		exit()
 
 
-
-
-
-
-class engine(module):
+#Child class for testing
+class test_class(module):
 	pass
-
-class trackermodule(module):
-	def cmd_info(self,arg):
-		return "INFO"
-
-	def __init__(self,name,port,hubport):
-		super(trackermodule,self).__init__(name,port,hubport)
-		CMDs={ 
-		":info": self.cmd_info \
-		}
-		self.addCMDs(CMDs)
-		self.register()
 
 
 if __name__ == '__main__':
 	port=7770
 
-  	e=engine('engine',port)
+  	e=test_class('test',port)
 	e.run()
 	exit()
 
