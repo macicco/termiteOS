@@ -1,3 +1,8 @@
+#!/usr/bin/python
+# -*- coding: iso-8859-15 -*-
+#
+# termiteOS
+# Copyright (c) July 2018 Nacho Mas
 from codecs import open as codecs_open
 from setuptools import setup, find_packages
 

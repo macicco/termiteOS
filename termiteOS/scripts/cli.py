@@ -2,10 +2,10 @@
 
 import click
 
-import pyskel
+import termiteOS
 
 
-@click.command('pyskel')
+@click.command('termiteOS')
 @click.argument('count', type=int, metavar='N')
 def cli(count):
     """Echo a value `N` number of times"""

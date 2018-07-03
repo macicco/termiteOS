@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-15 -*-
-
+#
+# termiteOS
+# Copyright (c) July 2018 Nacho Mas
 '''
 Stepper classes. It use the 'wave' funtionality include in 
 pigpio library to send pulses to a drv8825 driver. Tested with

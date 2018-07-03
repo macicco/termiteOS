@@ -1,0 +1,56 @@
+syntax = "proto2";
+
+package aliceos;
+
+//COORDS
+message RADEC {
+  required double  unixtime = 1;
+  required double   RA = 2;
+  required double   DEC = 3;
+  optional string flag = 4;
+}
+
+message ALTAZ {
+  required double  unixtime = 1;
+  required double   alt = 2;
+  required double   az = 3;
+  optional string flag = 4;
+}
+
+message ECEF {
+  required double  unixtime = 1;
+  required double   x = 2;
+  required double   y = 3;
+  required double   z = 4;
+  optional string flag = 5;
+}
+
+
+//MOTORS
+message steps {
+	required int64 	commanded	= 1;
+	required int64 	actual 		= 2;
+	optional int64 	feedback 	= 3;
+}
+
+message speed {
+	required int32 	commanded	= 1;
+	required int32 	actual 		= 2;
+}
+
+
+message MOTOR_STATUS {
+	required string name  		= 1; 
+	required double unixtime	= 2;
+        required int32  dir   		= 3;
+	required steps 	steps		= 4;
+	required speed 	speed 		= 5;
+	optional bool   fault		= 6;
+	optional bool   sync		= 7;
+}
+
+//RPI MOTORS
+message MOTORS_STATUS {
+	repeated MOTOR_STATUS MOTORS =1;
+}
+
