@@ -20,9 +20,8 @@ def cli(count):
 @click.option('--parent_port', type=int,help='Parent port',default=7778)
 def lx200(host,port,parent_host,parent_port):
 	import termiteOS.nodes.LX200 as LX200
-	click.echo("%s %u %s %u" % (host,port,parent_host,parent_port))
-	LX200.LX200()
-	pass
+	LX200.LX200(host,port)
+
 
 @click.command()
 @click.option('--host', default='localhost',help='Interface to listen')
@@ -31,6 +30,6 @@ def lx200(host,port,parent_host,parent_port):
 @click.option('--parent_port', type=int,help='Parent port',default=7778)
 def joystick(host,port,parent_host,parent_port):
 	import termiteOS.nodes.joystick as joystick
-	click.echo("%s %u %s %u" % (host,port,parent_host,parent_port))
+	#click.echo("%s %u %s %u" % (host,port,parent_host,parent_port))
 	joystick.joystick()
-	pass
+

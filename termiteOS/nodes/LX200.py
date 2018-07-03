@@ -18,27 +18,24 @@ from termiteOS.config import *
 
 
 context = zmq.Context()
-
- 
-HOST = ''   # Symbolic name meaning all available interfaces
- # Arbitrary non-privileged port
- 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-print 'Starting LX200 mount controler.'
-print 'Socket created',HOST+":",str(servers['socketPort'])
 
-#Bind socket to local host and port
-try:
-    s.bind((HOST, servers['socketPort']))
-except socket.error as msg:
-    print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
-    sys.exit()
+def startserver(host,port):
+	print 'Starting LX200 mount controler.'
+	print 'Socket created',host+":",str(port)
+
+	#Bind socket to local host and port
+	try:
+	    s.bind((host, port))
+	except socket.error as msg:
+	    print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
+	    sys.exit()
      
-print 'Socket bind complete'
+	print 'Socket bind complete'
  
-#Start listening on socket
-s.listen(1)
-print 'Socket now listening'
+	#Start listening on socket
+	s.listen(1)
+	print 'Socket now listening'
  
 
 
@@ -99,7 +96,8 @@ def clientthread(conn):
     conn.close()
     print "Disconnecting.."
  
-def LX200():
+def LX200(host,port):
+	startserver(host,port)
 	#now keep talking with the client
 	RUN=True
 	while RUN:

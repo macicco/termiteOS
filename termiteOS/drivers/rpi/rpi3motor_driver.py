@@ -33,7 +33,7 @@ how many steppers are in the engine at programing time.
 import math
 import time,datetime
 import pigpio
-import moduleSkull
+import termiteOS.moduleSkull as moduleSkull
 import messages_pb2 as msg
 from config import *
 
