@@ -32,7 +32,7 @@ setup(name='termiteOS',
           'test': ['pytest'],
       },
       package_data={
-        'config': ['config.ini','config.ini.spec'],
+        '': ['config.ini.spec','config.ini.spec'],
       },
       entry_points="""
       [console_scripts]
