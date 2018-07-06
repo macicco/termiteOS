@@ -1,12 +1,13 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
+#
+# termiteOS
+# Copyright (c) July 2018 Nacho Mas
 
 import math
 import time,datetime
-from config import *
 import ephem
-
-
-
+from termiteOS.config import *
 
 
 #virtual class. It must be used to derive the actual driver class

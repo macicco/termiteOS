@@ -26,7 +26,7 @@ setup(name='termiteOS',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'click'
+          'click','ephem','pigpio'
       ],
       extras_require={
           'test': ['pytest'],
@@ -36,5 +36,6 @@ setup(name='termiteOS',
       miteCLI=termiteOS.scripts.cli:cli
       miteJoy=termiteOS.scripts.cli:joystick
       miteLX200=termiteOS.scripts.cli:lx200
+      miteEngine=termiteOS.scripts.cli:hub
       """
       )

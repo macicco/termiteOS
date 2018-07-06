@@ -33,3 +33,12 @@ def joystick(host,port,parent_host,parent_port):
 	#click.echo("%s %u %s %u" % (host,port,parent_host,parent_port))
 	joystick.joystick()
 
+@click.command()
+@click.option('--host', default='localhost',help='Interface to listen')
+@click.option('--port', type=int,help='Port listen',default=7777)
+@click.option('--parent_host', default='localhost',help='Parent host')
+@click.option('--parent_port', type=int,help='Parent port',default=7778)
+def hub(host,port,parent_host,parent_port):
+	import termiteOS.nodes.engine as engine
+	#click.echo("%s %u %s %u" % (host,port,parent_host,parent_port))
+	engine.hub(host,port)

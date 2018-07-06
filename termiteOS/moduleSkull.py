@@ -1,5 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: iso-8859-15 -*-
+#
+# termiteOS
+# Copyright (c) July 2018 Nacho Mas
 '''
 Module Skeleton virtual class
 '''
@@ -22,6 +25,7 @@ class module(object):
   		":register": self.register, \
   		":deregister": self.deregister, \
   		":registrar": self.registrar, \
+  		":dot": self.dot, \
   		":end": self.end, \
   		":heartbeat": self.heartbeat, \
   		":help": self.help, \
@@ -212,6 +216,22 @@ class module(object):
 		print "CMDthread ended"
 
 		return self.modulename+" ***·E·N·D·E·D·***!"
+
+	def dot(self,arg=''):
+		print self.modulename
+		for module in self.modules.keys():
+			print "ASK TO END:",module
+			cmd=str(':dot')
+			try:
+				self.modules[module]['CMDsocket'].send(cmd)
+				reply=self.modules[module]['CMDsocket'].recv()
+				print reply
+			except:
+				print "ERROR dot module:",module
+
+		if self.hasParent:
+			pass
+
 
 
 	def signal_handler(self,signal, frame):

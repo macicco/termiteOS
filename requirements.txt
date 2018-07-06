@@ -1,0 +1,9 @@
+click
+pyzmq
+pyephem
+numpy
+pyfits
+flask
+pygame
+configobj
+
