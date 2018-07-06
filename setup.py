@@ -31,6 +31,9 @@ setup(name='termiteOS',
       extras_require={
           'test': ['pytest'],
       },
+      package_data={
+        'config': ['config.ini','config.ini.spec'],
+      },
       entry_points="""
       [console_scripts]
       miteCLI=termiteOS.scripts.cli:cli
