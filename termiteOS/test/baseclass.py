@@ -4,9 +4,11 @@
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
 
-def inc(x):
-    return x + 1
+import termiteOS.moduleSkull as moduleSkull
+import time
+
+def test_one():
+	e=moduleSkull.test_class('test',7777)
+	e.end()
 
 
-def test_answer():
-    assert inc(3) == 5
