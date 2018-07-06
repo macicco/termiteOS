@@ -10,7 +10,7 @@ Module Skeleton virtual class
 import time,datetime
 import zmq
 import json
-from config import *
+from termiteOS.config import *
 
 import signal
 

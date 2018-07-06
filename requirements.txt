@@ -6,4 +6,4 @@ pyfits
 flask
 pygame
 configobj
-
+pytest
