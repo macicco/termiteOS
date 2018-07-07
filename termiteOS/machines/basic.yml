@@ -1,11 +1,32 @@
-hub:
+roothub:
+    type: hub
     host: localhost
     port: 5000
     nodes:
-       - LX200:
+       - hub0:
+            type: hub
             host: localhost
             port: 5001
-       - Joy:
+       - hub1:
+            type: hub
             host: localhost
             port: 5002
+       - hub2:
+            type: hub
+            host: localhost
+            port: 5003
+            nodes:
+              - hub21:
+                  type: hub
+                  host: localhost
+                  port: 5021
+              - hub22:
+                  type: hub
+                  host: localhost
+                  port: 5022
+              - hub23:
+                  type: hub
+                  host: localhost
+                  port: 5023
+
 

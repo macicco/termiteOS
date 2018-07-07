@@ -3,10 +3,10 @@
 #
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
+from __future__ import print_function
 import pygame
 import sys,os
 import time
-from termiteOS.config import *
 import termiteOS.moduleSkull as moduleSkull
 
 
@@ -16,10 +16,8 @@ pygame.joystick.init()
 
 
 class stick(moduleSkull.module):
-   def __init__(self):
-		port=servers['zmqJoystickCmdPort']
-		hubport=servers['zmqEngineCmdPort']
-		super(stick,self).__init__('joystick',port,hubport)
+   def __init__(self,name,port,parent_host,parent_port):
+		super(stick,self).__init__(name,'joystick',port,parent_host,parent_port)
 		CMDs={ 
 		}
 		self.register()
@@ -32,36 +30,36 @@ class stick(moduleSkull.module):
 	try:
 		j = pygame.joystick.Joystick(0) # create a joystick instance
 		j.init() # init instance
-		print 'Enabled joystick: ' + j.get_name()
+		print('Enabled joystick: ' , j.get_name())
 	except pygame.error:
-		print 'no joystick found.'
+		print ('no joystick found.')
 
 	while self.RUN:
 	   for e in pygame.event.get(): # iterate over event stack
 	      if e.type == pygame.JOYAXISMOTION: # Read Analog Joystick Axis
         	 x1 , y1 = j.get_axis(0), j.get_axis(1) 
 
-	         print x1
-	         print y1
+	         print (x1)
+	         print (y1)
 
 	         if x1 < -1 * deadZone:
-	             print 'Left Joystick 1'
+	             print('Left Joystick 1')
 
 	         if x1 > deadZone:
-	             print 'Right Joystick 1'
+	             print ('Right Joystick 1')
 
 	         if y1 <= deadZone and y1 >= -1 * deadZone:
 	             m1 = 0 # Dont go forward or backwards
 
 	         if y1 < -1 * deadZone:
-	             print 'Up Joystick 1'
+	             print ('Up Joystick 1')
 	             m1 = 1 # go forward
 	             print m1
              
 	         if y1 > deadZone:
-	             print 'Down Joystick 1'
+	             print ('Down Joystick 1')
 	             m1 = 2 # go forward
-	             print m1
+	             print (m1)
 
  
 	      if e.type == pygame.JOYBUTTONDOWN:
@@ -76,8 +74,8 @@ class stick(moduleSkull.module):
 	self.socketHUBCmd.send('@setTrackSpeed '+str(vRA)+' '+str(vDEC))
 	reply=self.socketHUBCmd.recv()
 
-def joystick():
-	s=stick()
+def runjoystick(name,port,parent_host,parent_port):
+	s=stick(name,port,parent_host,parent_port)
 	try:
 		s.run()
 	except:
@@ -85,4 +83,4 @@ def joystick():
 	
 
 if __name__ == '__main__':
-	joystick()
+	runjoystick('JOY0',5002,'localhost',5000)

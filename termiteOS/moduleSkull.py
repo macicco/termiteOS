@@ -7,18 +7,19 @@
 Module Skeleton virtual class
 '''
 
+from __future__ import print_function
 import time,datetime
 import zmq
 import json
+import signal
 from termiteOS.config import *
 
-import signal
-
 class module(object):
-	def __init__(self,name,port,hubport=False):
-		print "Creating module ",name
+	def __init__(self,name,moduletype,port,parent_host,parent_port):
+		print("Creating module ",name, ". Module type:",moduletype)
 		self.modulename=name
-		print name," listen CMDs on:",port
+		self.moduletype=moduletype
+		print(name," listen CMDs on:",port)
 		self.zmqcontext = zmq.Context()
 		self.CMDs={ 
   		":introspect": self.introspect, \
@@ -38,15 +39,17 @@ class module(object):
 		#self.socketStream.bind("tcp://*:%s" % servers['zmqStreamPort'])
 	    	self.mySocketCmd = self.zmqcontext.socket(zmq.ROUTER)
 	    	self.mySocketCmd.bind("tcp://*:%s" % self.myCmdPort)
-		if hubport:	
+		if parent_port:	
 			#It is a slave of a hub    
-			print name," sending CMDs to:",hubport
+			print(name," sending CMDs to:",parent_port)
 			self.hasParent=True
-			self.hubCmdPort=hubport
+			self.hubCmdHost=parent_host
+			self.hubCmdPort=parent_port
 		    	self.socketHUBCmd = self.zmqcontext.socket(zmq.REQ)
-		    	self.socketHUBCmd.connect("tcp://localhost:%s" % self.hubCmdPort)
+		    	self.socketHUBCmd.connect("tcp://%s:%i" % (self.hubCmdHost,self.hubCmdPort))
 		else:
 			#it is the hub itself
+			print ("Module:",self.modulename," is a ROOT HUB")
 			self.hasParent=False
 		#self.heartbeatThread = self.moduleheartbeat()
 		self.CMDThread=self.zmqQueue()
@@ -64,7 +67,7 @@ class module(object):
 		try:
 			address, empty, message = self.mySocketCmd.recv_multipart()
 		except:
-			print "Clossing mySocketCmd ZMQ socket."
+			print("Clossing mySocketCmd ZMQ socket.")
 			self.mySocketCmd.close()
 			break
 
@@ -78,13 +81,13 @@ class module(object):
 					        str(reply),
 						])
 
-	    print "CMD LOOP END."
+	    print("CMD LOOP END.")
 	    return
 
 	#Parent heartbeat part
 	def heartbeat(self,arg):
 		module=arg.strip()
-		print "Recivedc a heartBeat from a child class. Module:",module
+		print("Received a heartBeat from a child class. Module:",module)
 		return True
 
 	#Child heartbeat part
@@ -98,9 +101,9 @@ class module(object):
 			time.sleep(1)
 			reply=self.modules[module]['CMDsocket'].recv()
 			if reply:
-				print module,"is alive"
+				print (module,"is alive")
 			else:
-				print module,"is death"		
+				print (module,"is death")		
 
 	#Registrar parent
 	def registrar(self,arg):
@@ -112,13 +115,13 @@ class module(object):
 		socketCmd.connect ("tcp://localhost:%s" % r['port'])
 		self.modules[module]['CMDsocket']=socketCmd
 		self.modules[module]['CMDs']=r['CMDs']
-		print module," sucesfully registed"
+		print (module," sucesfully registed")
 		return json.dumps({'OK':True})
 
 
 	def listModules(self):
 		for m in self.modules.keys():
-			print m
+			print(m)
 
 	def introspect(self,arg):
 		return self.CMDs.keys()
@@ -129,10 +132,10 @@ class module(object):
 			return 0
 		module=s[0]
 		if not (module in self.modules.keys()):
-			print module,"Not such module"
+			print(module,"Not such module")
 			return 0
 		cmd=arg[len(module):].strip()
-		print "exec:",cmd,' on ',module,' from ',self.modulename
+		print("exec:",cmd,' on ',module,' from ',self.modulename)
 		self.modules[module]['CMDsocket'].send(cmd)
 		reply=self.modules[module]['CMDsocket'].recv()
 		return reply
@@ -146,8 +149,8 @@ class module(object):
 		self.socketHUBCmd.send(cmd)
 		reply=json.loads(self.socketHUBCmd.recv())
 		if reply['OK']:
-			print self.modulename," CMD PORT:",self.myCmdPort
-			print self.modulename," CMDs:",modulecmd
+			print(self.modulename," CMD PORT:",self.myCmdPort)
+			print(self.modulename," CMDs:",modulecmd)
 
 	def deregister(self,arg):
 		module=arg.strip()
@@ -156,7 +159,7 @@ class module(object):
 			self.modules.pop(module,None)
 		except:	
 			"Fail closing CMD socket",module
-		print "DEREGISTRING: "+module
+		print("DEREGISTRING: "+module)
 		return "DEREGISTRING: "+module
 	
 	def cmd(self,cmd):
@@ -170,7 +173,7 @@ class module(object):
 		return self.cmd_dummy(cmd)
 
 	def cmd_dummy(self,arg):
-		print "DUMMY CMD:",arg
+		print("DUMMY CMD:",arg)
 		return
 
 	def help(self,arg):
@@ -187,47 +190,47 @@ class module(object):
 	def end(self,arg=''):
 
 		for module in self.modules.keys():
-			print "ASK TO END:",module
+			print("ASK TO END:",module)
 			cmd=str(':end')
 			try:
 				self.modules[module]['CMDsocket'].send(cmd)
 				reply=self.modules[module]['CMDsocket'].recv()
-				print reply
+				print(reply)
 			except:
-				print "ERROR Closing module:",module
+				print("ERROR Closing module:",module)
 
 		if self.hasParent:
 		   try:
 			cmd=str(':deregister '+self.modulename)
 			self.socketHUBCmd.send(cmd)
 			reply=self.socketHUBCmd.recv()
-			print "...."+reply		
+			print("....",reply)
 		   except:
-			print "Parent module is not available"
+			print("Parent module is not available")
 	           finally:
 			self.socketHUBCmd.close()
 
 		self.RUN=False
-		print "Deleting zmqcontext"
+		print("Deleting zmqcontext")
 		self.zmqcontext.destroy()
 
-		print "waiting CMDthread end"
+		print("waiting CMDthread end")
 	        self.CMDThread.join()
-		print "CMDthread ended"
+		print("CMDthread ended")
 
 		return self.modulename+" ***·E·N·D·E·D·***!"
 
 	def dot(self,arg=''):
-		print self.modulename
+		print(self.modulename)
 		for module in self.modules.keys():
-			print "ASK TO END:",module
+			print("ASK TO END:",module)
 			cmd=str(':dot')
 			try:
 				self.modules[module]['CMDsocket'].send(cmd)
 				reply=self.modules[module]['CMDsocket'].recv()
-				print reply
+				print(reply)
 			except:
-				print "ERROR dot module:",module
+				print("ERROR dot module:",module)
 
 		if self.hasParent:
 			pass
@@ -235,7 +238,7 @@ class module(object):
 
 
 	def signal_handler(self,signal, frame):
-		print 'You pressed Ctrl+C!'
+		print('You pressed Ctrl+C!')
 		self.end()
 		exit()
 
@@ -247,8 +250,9 @@ class test_class(module):
 
 if __name__ == '__main__':
 	port=7770
-
-  	e=test_class('test',port)
+	parent_host='localhost'
+	parent_port=False
+  	e=test_class('test',port,parent_host,parent_port)
 	e.run()
 	exit()
 

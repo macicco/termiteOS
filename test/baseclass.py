@@ -8,7 +8,12 @@ import termiteOS.moduleSkull as moduleSkull
 import time
 
 def test_one():
-	e=moduleSkull.test_class('test',7777)
+	name='test_one'
+	moduletype='hub'
+	port=5000
+	parent_host='localhost'
+	parent_port=''
+	e=moduleSkull.test_class(name,moduletype,port,parent_host,parent_port)
 	e.end()
 
 

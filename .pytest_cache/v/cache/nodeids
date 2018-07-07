@@ -1,3 +1,4 @@
 [
-  "test/baseclass.py::test_one"
+  "test/baseclass.py::test_one", 
+  "test/launcher.py::test_launcher"
 ]

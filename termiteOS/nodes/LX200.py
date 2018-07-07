@@ -7,7 +7,7 @@
 LX200 command set
 socat TCP:localhost:6666,reuseaddr pty,link=/tmp/lx200
 '''
-
+from __future__ import print_function
 import socket
 import sys
 import select
@@ -20,22 +20,23 @@ from termiteOS.config import *
 context = zmq.Context()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-def startserver(host,port):
-	print 'Starting LX200 mount controler.'
-	print 'Socket created',host+":",str(port)
+def startserver(port):
+	host=''
+	print('Starting LX200 mount controler.')
+	print('Socket created',host,":",str(port))
 
 	#Bind socket to local host and port
 	try:
 	    s.bind((host, port))
 	except socket.error as msg:
-	    print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
+	    print('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
 	    sys.exit()
      
-	print 'Socket bind complete'
+	print('Socket bind complete')
  
 	#Start listening on socket
 	s.listen(1)
-	print 'Socket now listening'
+	print('Socket now listening')
  
 
 
@@ -50,7 +51,7 @@ def recv_end(conn):
 	    try:	
             	data=conn.recv(1)
 	    except:
-		print "socket close"
+		print("socket close")
 		cmd="SOCKET_CLOSE"	
 		break
 
@@ -72,11 +73,12 @@ def recv_end(conn):
     return cmd
 
 #Function for handling connections. This will be used to create threads
-def clientthread(conn):
+def clientthread(conn,parent_host,parent_port):
     RUN=True
     #  Socket to talk to ZMQserver
     zmqSocket = context.socket(zmq.REQ)
-    zmqSocket.connect("tcp://localhost:%s" % servers['zmqEngineCmdPort'])
+    zmqSocket.connect("tcp://%s:%i" % (parent_host,parent_port))
+    print("Connecting with hub %s:%i"% (parent_host,parent_port))
 
    
     #infinite loop so that function do not terminate and thread do not end.
@@ -94,19 +96,19 @@ def clientthread(conn):
     #came out of loop
     #conn.shutdown(2)    # 0 = done receiving, 1 = done sending, 2 = both
     conn.close()
-    print "Disconnecting.."
+    print("Disconnecting..")
  
-def LX200(host,port):
-	startserver(host,port)
+def runLX200(port,parent_host,parent_port):
+	startserver(port)
 	#now keep talking with the client
 	RUN=True
 	while RUN:
 	  try:
 	    #wait to accept a connection - blocking call
 	    conn, addr = s.accept()
-	    print 'Connected with ' + addr[0] + ':' + str(addr[1])
+	    print('Connected with ' + addr[0] + ':' + str(addr[1]))
      	    #start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
-	    start_new_thread(clientthread ,(conn,))
+	    start_new_thread(clientthread ,(conn,parent_host,parent_port,))
 
 	  except:
 	    RUN=False
@@ -115,4 +117,4 @@ def LX200(host,port):
 
 
 if __name__ == '__main__':
-	LX200()
+	runLX200(5001,'localhost',5000)
