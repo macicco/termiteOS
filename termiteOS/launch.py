@@ -15,21 +15,19 @@ status=True
 
 
 def run_in_separate_process(func, *args, **kwds):
-    #pread, pwrite = os.pipe()
-    pid = os.fork()
-    if pid > 0:
-	status=True
-    else: 
-        try:
-            result = func(*args, **kwds)
-            status = True
-        except Exception, exc:
-            result = exc
-            status = False
-	    print("FAIL:",result)
-
-        #os._exit(status)
-    return status
+	pid = os.fork()
+	if pid > 0:
+		status=True
+    	else: 
+        	try:
+        	    result = func(*args, **kwds)
+        	    status = True
+        	except Exception, exc:
+			result = exc
+			status = False
+			print("FAIL:",result)
+		#os._exit(status)
+	return status
 
 
 
