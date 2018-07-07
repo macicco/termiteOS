@@ -9,7 +9,7 @@ from __future__ import with_statement
 
 import sys
 import yaml
-import termiteOS.nodes.hub as hub
+from termiteOS.nodes import *
 import os
 status=True
 PIDs=[]
@@ -42,7 +42,8 @@ def launchnode(nodedict,parent_host='',parent_port=False):
 	port=elements['port']
 	print("Launching node:"+name+ " type:",nodetype)
 	print("--> Host:",host,"Port:",port,"Parent Host:",parent_host,"Parent Port:",parent_port)
-	status= status and run_in_separate_process(hub.runhub,name,port,parent_host,parent_port)
+	fn_to_call = getattr(globals()[nodetype],'run'+nodetype)
+	status= status and run_in_separate_process(fn_to_call,name,port,parent_host,parent_port)
 	if 'nodes' in elements.keys():
 		print("--> Module:",name," has chidrens. Launching..")
 		for node in elements['nodes']:

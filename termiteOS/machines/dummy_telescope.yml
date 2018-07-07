@@ -1,0 +1,14 @@
+roothub:
+    type: hub
+    host: localhost
+    port: 5000
+    nodes:
+       - LX200:
+            type: LX200
+            host: localhost
+            port: 5001
+       - joy0:
+            type: joystick
+            host: localhost
+            port: 5002
+

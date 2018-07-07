@@ -22,15 +22,15 @@ class module(object):
 		print(name," listen CMDs on:",port)
 		self.zmqcontext = zmq.Context()
 		self.CMDs={ 
-  		":introspect": self.introspect, \
-  		":register": self.register, \
-  		":deregister": self.deregister, \
-  		":registrar": self.registrar, \
-  		":dot": self.dot, \
-  		":end": self.end, \
-  		":heartbeat": self.heartbeat, \
-  		":help": self.help, \
-  		"!": self.exeModuleCmd \
+		":introspect": self.introspect, \
+		":register": self.register, \
+		":deregister": self.deregister, \
+		":registrar": self.registrar, \
+		":dot": self.dot, \
+		":end": self.end, \
+		":heartbeat": self.heartbeat, \
+		":help": self.help, \
+		"!": self.exeModuleCmd \
 		}
 		self.myCmdPort=port
 		self.modules={}
@@ -39,14 +39,14 @@ class module(object):
 		#self.socketStream.bind("tcp://*:%s" % servers['zmqStreamPort'])
 		self.mySocketCmd = self.zmqcontext.socket(zmq.ROUTER)
 		self.mySocketCmd.bind("tcp://*:%s" % self.myCmdPort)
-		if parent_port:	
+		if parent_port:
 			#It is a slave of a hub    
 			print(name," sending CMDs to:",parent_port)
 			self.hasParent=True
 			self.hubCmdHost=parent_host
 			self.hubCmdPort=parent_port
-		    	self.socketHUBCmd = self.zmqcontext.socket(zmq.REQ)
-		    	self.socketHUBCmd.connect("tcp://%s:%i" % (self.hubCmdHost,self.hubCmdPort))
+			self.socketHUBCmd = self.zmqcontext.socket(zmq.REQ)
+			self.socketHUBCmd.connect("tcp://%s:%i" % (self.hubCmdHost,self.hubCmdPort))
 		else:
 			#it is the hub itself
 			print ("Module:",self.modulename," is a ROOT HUB")
@@ -63,26 +63,26 @@ class module(object):
 	#this thread listen all the CMD from other modules
 	@threaded
 	def zmqQueue(self):
-	    while self.RUN:
-		try:
-			address, empty, message = self.mySocketCmd.recv_multipart()
-		except:
-			print("Clossing mySocketCmd ZMQ socket.")
-			self.mySocketCmd.close()
-			break
+		while self.RUN:
+			try:
+				address, empty, message = self.mySocketCmd.recv_multipart()
+			except:
+				print("Clossing mySocketCmd ZMQ socket.")
+				self.mySocketCmd.close()
+				break
 
-		#  Do some 'work'
-		reply=self.cmd(message)
+			#  Do some 'work'
+			reply=self.cmd(message)
 
-		#  Send reply back to client to a specific client
-		self.mySocketCmd.send_multipart([
-					        address,
-					        b'',
-					        str(reply),
+			#  Send reply back to client to a specific client
+			self.mySocketCmd.send_multipart([
+						address,
+						b'',
+						str(reply),
 						])
 
-	    print("CMD LOOP END.")
-	    return
+		print("CMD LOOP END.")
+		return
 
 	#Parent heartbeat part
 	def heartbeat(self,arg):
@@ -93,17 +93,17 @@ class module(object):
 	#Child heartbeat part
 	@threaded
 	def moduleheartbeat(self):
-	    time.sleep(1)
-	    while self.RUN:
-		for module in self.modules.keys():
-			cmd=str(':heartbeat '+module)
-			self.modules[module]['CMDsocket'].send(cmd)
-			time.sleep(1)
-			reply=self.modules[module]['CMDsocket'].recv()
-			if reply:
-				print (module,"is alive")
-			else:
-				print (module,"is death")		
+		time.sleep(1)
+		while self.RUN:
+			for module in self.modules.keys():
+				cmd=str(':heartbeat '+module)
+				self.modules[module]['CMDsocket'].send(cmd)
+				time.sleep(1)
+				reply=self.modules[module]['CMDsocket'].recv()
+				if reply:
+					print (module,"is alive")
+				else:
+					print (module,"is death")
 
 	#Registrar parent
 	def registrar(self,arg):
@@ -143,8 +143,8 @@ class module(object):
 	def register(self):
 		modulecmd=str(self.CMDs.keys())
 		cmdjson=json.dumps({'module':self.modulename,\
-				    'port':self.myCmdPort,\
-				    'CMDs':modulecmd})
+					'port':self.myCmdPort,\
+					'CMDs':modulecmd})
 		cmd=':registrar '+cmdjson
 		self.socketHUBCmd.send(cmd)
 		reply=json.loads(self.socketHUBCmd.recv())
@@ -157,11 +157,11 @@ class module(object):
 		try:
 			self.modules[module]['CMDsocket'].close()
 			self.modules.pop(module,None)
-		except:	
+		except:
 			"Fail closing CMD socket",module
 		print("DEREGISTRING: "+module)
 		return "DEREGISTRING: "+module
-	
+
 	def cmd(self,cmd):
                 for c in self.CMDs.keys():
 			l=len(c)
@@ -184,11 +184,10 @@ class module(object):
 
 	#Normaly overloaded by a child class
 	def run(self):
-	  	while self.RUN:
+		while self.RUN:
 			time.sleep(1)
 
 	def end(self,arg=''):
-
 		for module in self.modules.keys():
 			print("ASK TO END:",module)
 			cmd=str(':end')
@@ -200,22 +199,22 @@ class module(object):
 				print("ERROR Closing module:",module)
 
 		if self.hasParent:
-		   try:
-			cmd=str(':deregister '+self.modulename)
-			self.socketHUBCmd.send(cmd)
-			reply=self.socketHUBCmd.recv()
-			print("....",reply)
-		   except:
-			print("Parent module is not available")
-	           finally:
-			self.socketHUBCmd.close()
+			try:
+				cmd=str(':deregister '+self.modulename)
+				self.socketHUBCmd.send(cmd)
+				reply=self.socketHUBCmd.recv()
+				print("....",reply)
+			except:
+				print("Parent module is not available")
+			finally:
+				self.socketHUBCmd.close()
 
 		self.RUN=False
 		print("Deleting zmqcontext")
 		self.zmqcontext.destroy()
 
 		print("waiting CMDthread end")
-	        self.CMDThread.join()
+		self.CMDThread.join()
 		print("CMDthread ended")
 
 		return self.modulename+" ***·E·N·D·E·D·***!"
@@ -252,7 +251,7 @@ if __name__ == '__main__':
 	port=7770
 	parent_host='localhost'
 	parent_port=False
-  	e=test_class('test',port,parent_host,parent_port)
+	e=test_class('test',port,parent_host,parent_port)
 	e.run()
 	exit()
 
