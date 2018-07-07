@@ -3,7 +3,11 @@ from __future__ import print_function
 import os
 import json
 import threading
-import ConfigParser
+
+try:
+    import ConfigParser
+except ImportError:
+    import configparse as ConfigParser
 from configobj import ConfigObj
 from validate import Validator
 
