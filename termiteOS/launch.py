@@ -12,17 +12,19 @@ import yaml
 import termiteOS.nodes.hub as hub
 import os
 status=True
-
+PIDs=[]
 
 def run_in_separate_process(func, *args, **kwds):
+	global PIDs
 	pid = os.fork()
+	PIDs.append(str(pid))
 	if pid > 0:
 		status=True
-    	else: 
-        	try:
-        	    result = func(*args, **kwds)
-        	    status = True
-        	except Exception, exc:
+	else: 
+		try:
+			result = func(*args, **kwds)
+			status = True
+		except Exception, exc:
 			result = exc
 			status = False
 			print("FAIL:",result)
@@ -32,7 +34,7 @@ def run_in_separate_process(func, *args, **kwds):
 
 
 def launchnode(nodedict,parent_host='',parent_port=False):
-	global status
+	global status,PIDs
 	name=nodedict.keys()[0]
 	elements=nodedict[name]
 	nodetype=elements['type']
@@ -60,7 +62,9 @@ def launchmachine(yamlfile):
 	except:
 		print("Launch:malformed yaml \n"+doc)
 	#print(ydoc)
-	return launchnode(ydoc)
+	rtn=launchnode(ydoc)
+	print (" ".join(PIDs))
+	return rtn
 	
 
 

@@ -38,7 +38,7 @@ class module(object):
 		#self.socketStream = self.zmqcontext.socket(zmq.PUB)
 		#self.socketStream.bind("tcp://*:%s" % servers['zmqStreamPort'])
 		self.mySocketCmd = self.zmqcontext.socket(zmq.ROUTER)
-	    	self.mySocketCmd.bind("tcp://*:%s" % self.myCmdPort)
+		self.mySocketCmd.bind("tcp://*:%s" % self.myCmdPort)
 		if parent_port:	
 			#It is a slave of a hub    
 			print(name," sending CMDs to:",parent_port)
