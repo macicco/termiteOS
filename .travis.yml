@@ -3,16 +3,16 @@ matrix:
     include:
         - python: 2.7
           dist: trusty
-          sudo: false
+          sudo: true
         - python: 2.7
           dist: xenial
-          sudo: false
+          sudo: true
         - python: 3.7
           dist: trusty
-          sudo: false
+          sudo: true
         - python: 3.7
           dist: xenial
-          sudo: false
+          sudo: true
 # command to install dependencies
 install:
   - pip install -r requirements.txt
