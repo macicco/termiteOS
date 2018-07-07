@@ -1,5 +1,7 @@
 language: python
-dist:	xenial
+dist:
+  - trusty
+  - xenial
 python:
   - "2.7"
 # command to install dependencies

@@ -22,7 +22,7 @@ setup(name='termiteOS',
       author_email='mas.ignacio@gmail.com',
       url='https://github.com/nachoplus/termiteOS',
       license='GPL3',
-      packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+      packages=find_packages(exclude=['tests']),
       include_package_data=True,
       zip_safe=False,
       install_requires=[
@@ -32,7 +32,7 @@ setup(name='termiteOS',
           'test': ['pytest'],
       },
       package_data={
-        '': ['config.ini.spec','config.ini.spec'],
+        '': ['config.ini','config.ini.spec'],
       },
       entry_points="""
       [console_scripts]
