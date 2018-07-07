@@ -4,6 +4,7 @@ pyephem
 numpy
 pyfits
 flask
+pyyaml
 pygame
 configobj
 pytest

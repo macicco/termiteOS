@@ -26,7 +26,7 @@ setup(name='termiteOS',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'click','ephem','pigpio'
+          'click','ephem','pigpio','pyyaml'
       ],
       extras_require={
           'test': ['pytest'],

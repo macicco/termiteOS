@@ -1,0 +1,11 @@
+hub:
+    host: localhost
+    port: 5000
+    nodes:
+       - LX200:
+            host: localhost
+            port: 5001
+       - Joy:
+            host: localhost
+            port: 5002
+
