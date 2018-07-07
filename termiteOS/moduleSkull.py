@@ -33,6 +33,7 @@ class module(object):
         ":help": self.help, \
         "!": self.exeModuleCmd \
         }
+        self.myHost='localhost'
         self.myCmdPort = port
         self.modules = {}
         self.RUN = True
@@ -110,9 +111,9 @@ class module(object):
         r = json.loads(arg)
         module = r['module']
         self.deregister(module)
-        self.modules[module] = {'name': r['module'], 'port': r['port']}
+        self.modules[module] = {'name': r['module'],'host': r['host'], 'port': r['port']}
         socketCmd = self.zmqcontext.socket(zmq.REQ)
-        socketCmd.connect("tcp://localhost:%s" % r['port'])
+        socketCmd.connect("tcp://%s:%s" % (r['host'],r['port']))
         self.modules[module]['CMDsocket'] = socketCmd
         self.modules[module]['CMDs'] = r['CMDs']
         print(module, " sucesfully registed")
@@ -142,6 +143,7 @@ class module(object):
     def register(self):
         modulecmd = str(self.CMDs.keys())
         cmdjson=json.dumps({'module':self.modulename,\
+           'host':self.myHost,\
            'port':self.myCmdPort,\
            'CMDs':modulecmd})
         cmd = ':registrar ' + cmdjson

@@ -7,8 +7,4 @@ roothub:
             type: LX200
             host: localhost
             port: 5001
-       - joy0:
-            type: joystick
-            host: localhost
-            port: 5002
 

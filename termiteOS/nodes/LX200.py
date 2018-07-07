@@ -12,9 +12,9 @@ import socket
 import sys
 import select
 import time
-from thread import *
+import threading
 import zmq
-from termiteOS.config import *
+#from termiteOS.config import *
 
 context = zmq.Context()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -86,10 +86,10 @@ def clientthread(conn, parent_host, parent_port):
         cmd = recv_end(conn)
         if cmd == "SOCKET_CLOSE":
             break
-        #print "<-",cmd
+        print("<-",cmd)
         zmqSocket.send(cmd)
         reply = zmqSocket.recv()
-        #print "->",reply
+        print("->",reply)
         conn.send(str(reply))
 
     #came out of loop
@@ -98,7 +98,7 @@ def clientthread(conn, parent_host, parent_port):
     print("Disconnecting..")
 
 
-def runLX200(port, parent_host, parent_port):
+def runLX200(name,port, parent_host, parent_port):
     startserver(port)
     #now keep talking with the client
     RUN = True
@@ -109,15 +109,16 @@ def runLX200(port, parent_host, parent_port):
             print('Connected with ' + addr[0] + ':' + str(addr[1]))
             #start new thread takes 1st argument as a function name to be run,
             # second is the tuple of arguments to the function.
-            start_new_thread(clientthread, (
+            t = threading.Thread(target=clientthread, args=(
                 conn,
                 parent_host,
                 parent_port,
             ))
+            t.start()
         except:
             RUN = False
     s.close()
 
 
 if __name__ == '__main__':
-    runLX200(5001, 'localhost', 5000)
+    runLX200('tcpproxy',5001, 'localhost', 5000)
