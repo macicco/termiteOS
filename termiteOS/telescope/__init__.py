@@ -1,1 +1,1 @@
-name='termiteOS.telescope'
+name = 'termiteOS.telescope'

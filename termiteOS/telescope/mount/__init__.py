@@ -1,1 +1,1 @@
-name='termiteOS.telescope.mount'
+name = 'termiteOS.telescope.mount'

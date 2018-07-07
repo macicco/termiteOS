@@ -11,19 +11,17 @@ import termiteOS.moduleSkull as moduleSkull
 
 
 class hub(moduleSkull.module):
-	def __init__(self,name,port,parent_host,parent_port):
-		super(hub,self).__init__(name,'hub',port,parent_host,parent_port)
+    def __init__(self, name, port, parent_host, parent_port):
+        super(hub, self).__init__(name, 'hub', port, parent_host, parent_port)
 
-def runhub(name,port,parent_host='',parent_port=False):
-	s=hub(name,port,parent_host,parent_port)
-	try:
-		s.run()
-	except:
-		s.end()
+
+def runhub(name, port, parent_host='', parent_port=False):
+    s = hub(name, port, parent_host, parent_port)
+    try:
+        s.run()
+    except:
+        s.end()
+
 
 if __name__ == '__main__':
-  	runhub('ROOTHUB',5000)
-
-
-
-
+    runhub('ROOTHUB', 5000)

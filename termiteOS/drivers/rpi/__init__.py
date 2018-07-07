@@ -1,1 +1,1 @@
-name='termiteOS.drivers.rpi'
+name = 'termiteOS.drivers.rpi'

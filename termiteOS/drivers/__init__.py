@@ -1,1 +1,1 @@
-name='termiteOS.drivers'
+name = 'termiteOS.drivers'

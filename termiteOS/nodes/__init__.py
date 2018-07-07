@@ -1,2 +1,2 @@
-name='termiteOS.nodes'
-__all__=['hub','joystick','LX200']
+name = 'termiteOS.nodes'
+__all__ = ['hub', 'joystick', 'LX200']
