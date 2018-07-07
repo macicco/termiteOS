@@ -36,7 +36,7 @@ def run_in_separate_process(func, *args, **kwds):
 
 def launchnode(nodedict, parent_host='', parent_port=False):
     global status, PIDs
-    name = nodedict.keys()[0]
+    name = list(nodedict.keys())[0]
     elements = nodedict[name]
     nodetype = elements['type']
     host = elements['host']
