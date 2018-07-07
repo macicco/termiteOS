@@ -64,7 +64,7 @@ def launchmachine(yamlfile):
         print("Launch:malformed yaml \n" + doc)
     #print(ydoc)
     rtn = launchnode(ydoc)
-    print(" ".join(PIDs))
+    print("kill -9 "+" ".join(PIDs))
     return rtn
 
 

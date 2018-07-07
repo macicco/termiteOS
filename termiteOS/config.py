@@ -4,10 +4,6 @@ import os
 import json
 import threading
 
-try:
-    import ConfigParser
-except ImportError:
-    import configparse as ConfigParser
 from configobj import ConfigObj
 from validate import Validator
 
