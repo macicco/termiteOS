@@ -33,9 +33,9 @@ setup(
     },
     entry_points="""
       [console_scripts]
-      miteCLI=termiteOS.scripts.cli:cli
       miteLaunch=termiteOS.scripts.cli:launch
       miteJoy=termiteOS.scripts.cli:joystick
       miteLX200=termiteOS.scripts.cli:lx200
-      miteEngine=termiteOS.scripts.cli:hub
+      miteHUB=termiteOS.scripts.cli:hub
+      miteEngine=termiteOS.scripts.cli:engine
       """)

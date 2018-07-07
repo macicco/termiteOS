@@ -2,3 +2,4 @@ include README.rst
 include LICENSE
 include termiteOS/config.ini.spec
 include termiteOS/config.ini
+include termiteOS/astronomy/data/*

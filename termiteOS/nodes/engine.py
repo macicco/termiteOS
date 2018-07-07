@@ -4,7 +4,7 @@
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
 '''
-LX200 command set
+ENGINE
 '''
 import ephem
 import time, datetime
@@ -15,10 +15,9 @@ import termiteOS.drivers.rpi.ramps as ramps
 import termiteOS.moduleSkull as moduleSkull
 
 
-class mainengine(moduleSkull.module):
-    def __init__(self):
-        port = servers['zmqEngineCmdPort']
-        super(mainengine, self).__init__('mainengine', port)
+class engine(moduleSkull.module):
+    def __init__(self, name, port, parent_host, parent_port):
+        super(engine, self).__init__(name, 'engine', port, parent_host, parent_port)
         CMDs={
         chr(6):self.cmd_ack,  \
         ":info": self.cmd_info,  \
@@ -290,13 +289,16 @@ class mainengine(moduleSkull.module):
 
     def end(self, arg=''):
         self.m.end()
-        super(mainengine, self).end()
+        super(engine, self).end()
 
 
-def hub(host, port):
-    m = mainengine()
-    m.run()
+def runengine(name, port, parent_host='', parent_port=False):
+    s = engine(name, port, parent_host, parent_port)
+    try:
+        s.run()
+    except:
+        s.end()
 
 
 if __name__ == '__main__':
-    hub('', 8788)
+    runengine('ENGINE', 5000)
