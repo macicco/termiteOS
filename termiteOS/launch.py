@@ -7,6 +7,7 @@
 from __future__ import print_function
 from __future__ import with_statement
 
+
 import sys
 import yaml
 from termiteOS.nodes import *
@@ -25,8 +26,8 @@ def run_in_separate_process(func, *args, **kwds):
         try:
             result = func(*args, **kwds)
             status = True
-        except Exception, exc:
-            result = exc
+        except Exception as exc:
+            result = str(exc)
             status = False
             print("FAIL:", result)
         #os._exit(status)
