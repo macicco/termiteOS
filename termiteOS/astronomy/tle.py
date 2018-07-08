@@ -43,6 +43,8 @@ class TLEhandler:
 	def TLE(self,sat):
 		data=group(self.data,3)
 		element=filter(lambda x:x[0].find(sat)!=-1, data)
+                if len(element)==0:
+                        return False
 		element=element[0]
 		return ephem.readtle(element[0],element[1],element[2])
 		

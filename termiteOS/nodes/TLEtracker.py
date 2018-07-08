@@ -21,8 +21,9 @@ class TLEtracker(moduleSkull.module):
         def __init__(self, name, port, parent_host, parent_port):
                 super(TLEtracker, self).__init__(name, 'TLEtracker', port, parent_host, parent_port)
 		CMDs={ 
-		"@setfollow": self.cmd_setfollow  \
+		"follow": self.cmd_follow  \
 		}
+                self.addCMDs(CMDs)
 		self.register()
 		self.timestep=0.1
 		self.gearInit()
@@ -33,9 +34,9 @@ class TLEtracker(moduleSkull.module):
 		self.go2rise=False
 
 
-	def cmd_setfollow(self,arg):
+	def cmd_follow(self,arg):
                 sat=arg
-                if len(self.TLEs.TLE(sat))<10:
+                if not self.TLEs.TLE(sat):
                         self.follow='none'
                         return 1
                 else:

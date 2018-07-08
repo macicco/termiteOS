@@ -33,7 +33,7 @@ class tcpproxy(moduleSkull.module):
 
         def startserver(self,port):
                 port=int(port)
-                host = '0.0.0.0'
+                host = ''
                 print('Starting tcpproxy.')
                 print('Socket created', host, ":", str(port))
 
