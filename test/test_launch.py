@@ -8,6 +8,6 @@ import termiteOS.launch as launch
 import time
 
 def test_launcher():
-	launch.launchmachine('termiteOS/machines/basic.yml')
+	launch.launchmachine('termiteOS/machines/multiHUBs.yml')
 
 
