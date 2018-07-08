@@ -10,7 +10,8 @@ from __future__ import with_statement
 
 import sys
 import yaml
-from termiteOS.nodes import *
+import importlib
+#from termiteOS.nodes import *
 import os
 status = True
 PIDs = []
@@ -44,7 +45,9 @@ def launchnode(nodedict, parent_host='', parent_port=False):
     print("Launching node:" + name + " type:", nodetype)
     print("--> Host:", host, "Port:", port, "Parent Host:", parent_host,
           "Parent Port:", parent_port)
-    fn_to_call = getattr(globals()[nodetype], 'run' + nodetype)
+    i = importlib.import_module("termiteOS.nodes."+nodetype)
+    print(i)
+    fn_to_call = getattr(i, 'run' + nodetype)
     status = status and run_in_separate_process(fn_to_call, name, port,
                                                 parent_host, parent_port)
     if 'nodes' in elements.keys():

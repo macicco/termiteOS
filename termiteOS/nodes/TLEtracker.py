@@ -13,7 +13,7 @@ import json
 import math
 from termiteOS.config import *
 import termiteOS.moduleSkull as moduleSkull
-import termiteOS.astronomy.tle as tle
+import termiteOS.astronomy.internetcatalogues as tle
 
 
 class TLEtracker(moduleSkull.module):

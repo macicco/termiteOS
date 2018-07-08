@@ -2,8 +2,9 @@ click
 pyzmq
 pyephem
 numpy
-pyfits
+pyfits==3.3
 flask
+importlib
 pyyaml
 pygame
 configobj

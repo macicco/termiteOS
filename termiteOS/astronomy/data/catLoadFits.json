@@ -1,0 +1,120 @@
+{
+
+  "HIPPARCOS": {
+    "catref":"I/311",
+    "fits": {
+      "HDU": 1,
+      "filename": "HIP.fits"
+    },
+    "rad": true,
+    "RAfields": [
+      "RArad"
+    ],
+    "DECfields": [
+      "DErad"
+    ],
+    "prop": {
+      "color": "B-V",
+      "name": "HIP",
+      "mag": "Hpmag"
+    }
+  },
+  "BSC5": {
+    "catref":"",
+    "fits": {
+      "HDU": 1,
+      "filename": "BSC5.fits"
+    },
+    "rad": false,
+    "RAfields": [
+      "RAh",
+      "RAm",
+      "RAs"
+    ],
+    "DECfields": [
+      "DE-",
+      "DEd",
+      "DEm",
+      "DEs"
+    ],
+    "prop": {
+      "color": "B-V",
+      "name": "SAO",
+      "mag": "Vmag"
+    }
+  },
+
+  "NGC2000": {
+    "catref":"VII/118/",
+    "fits": {
+      "HDU": 1,
+      "filename": "ngc2000.fits"
+    },
+    "rad": false,
+    "RAfields": [
+      "RAh",
+      "RAm"
+    ],
+    "DECfields": [
+      "DE-",
+      "DEd",
+      "DEm"
+    ],
+    "prop": {
+      "type": "Type",
+      "name": "Name",
+      "mag": "mag"
+    }
+  },
+  "DEEPSPACE": {
+    "catref":"IV/27A",
+    "fits": {
+      "HDU": 1,
+      "filename": "deepspace.fits"
+    },
+    "rad": false,
+    "RAfields": [
+      "RAh",
+      "RAm"	
+    ],
+    "DECfields": [
+      "DE-",
+      "DEd",
+      "DEm"
+    ],
+    "prop": {
+      "name": "Name",
+      "NGC_IC": "NGC_IC",
+      "MESSIER": "MESSIER",
+      "type": "Type",
+      "size": "size",
+      "costellation": "Const",
+      "mag":"mag"
+    }
+  },
+  "STARNAMES": {
+    "catref":"preprocessed",
+    "fits": {
+      "HDU": 1,
+      "filename": "starnames.fits"
+    },
+    "rad": false,
+    "RAfields": [
+      "RA"
+    ],
+    "DECfields": [
+      "DEC"
+    ],
+    "prop": {
+      "HD": "HD",
+      "DM": "DM",
+      "HR": "HR",
+      "GC": "GC",
+      "mag":"mag",
+      "name": "Name",
+      "FL": "FL",
+      "BAYER":"BAYER",
+      "CST":"CST"
+    }
+  }
+}
