@@ -1,24 +1,5 @@
 {
 
-  "HIPPARCOS": {
-    "catref":"I/311",
-    "fits": {
-      "HDU": 1,
-      "filename": "HIP.fits"
-    },
-    "rad": true,
-    "RAfields": [
-      "RArad"
-    ],
-    "DECfields": [
-      "DErad"
-    ],
-    "prop": {
-      "color": "B-V",
-      "name": "HIP",
-      "mag": "Hpmag"
-    }
-  },
   "BSC5": {
     "catref":"",
     "fits": {

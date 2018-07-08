@@ -1,6 +1,12 @@
-#!/usr/bin/python
-#-*- coding: iso-8859-15 -*-
-#NACHO MAS
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
+#
+# termiteOS
+# Copyright (c) July 2018 Nacho Mas
+'''
+Internet catalogues
+'''
+from __future__ import print_function
 import ephem,urllib
 
 def group(lst, n):
@@ -25,7 +31,7 @@ class internetCatalogue:
 		#busco una entrada concreta
 		CometID=name
 		comet=filter(lambda x:x.find(CometID)!=-1, s)
-		print comet[0]
+		print(comet[0])
 		return ephem.readdb(comet[0])
 
 	def neo(self,name=''):
@@ -37,7 +43,7 @@ class internetCatalogue:
 		#busco una entrada concreta
 		NeoID=name
 		Neo=filter(lambda x:x.find(NeoID)!=-1, s)
-		print Neo[0]
+		print(Neo[0])
 		return ephem.readdb(Neo[0])
 
 
@@ -103,7 +109,7 @@ if __name__=='__main__':
 	i=internetCatalogue()
 	geo=i.geo('HISPASAT')
 	geo.compute(observer)
-	print geo.ra,geo.dec
+	print(geo.ra,geo.dec)
 
 
 

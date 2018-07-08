@@ -1,0 +1,23 @@
+simple:
+    type: telescope
+    host: localhost
+    port: 5000
+    nodes:
+       - LX200:
+            type: tcpproxy
+            host: localhost
+            port: 5001
+            params: {'tcpport':6001}
+       - tracker:
+            type: TLEtracker
+            host: localhost
+            port: 5002
+            nodes:
+               - trackerctrl:
+                    type: tcpproxy
+                    host: localhost
+                    port: 5003
+                    params: {'tcpport':6003}
+
+
+

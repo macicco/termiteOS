@@ -6,6 +6,7 @@
 '''
 ENGINE
 '''
+from __future__ import print_function
 import ephem
 import time, datetime
 import math
@@ -15,9 +16,9 @@ import termiteOS.drivers.rpi.ramps as ramps
 import termiteOS.moduleSkull as moduleSkull
 
 
-class engine(moduleSkull.module):
+class telescope(moduleSkull.module):
     def __init__(self, name, port, parent_host, parent_port):
-        super(engine, self).__init__(name, 'engine', port, parent_host, parent_port)
+        super(telescope, self).__init__(name, 'telescope', port, parent_host, parent_port)
         CMDs={
         chr(6):self.cmd_ack,  \
         ":info": self.cmd_info,  \
@@ -80,7 +81,7 @@ class engine(moduleSkull.module):
         self.observer.elev = here['elev']
         self.observer.temp = here['temp']
         self.observer.compute_pressure()
-        print self.observer.lat
+        print(self.observer.lat)
 
     def getObserver(self, arg):
         observer = {'lat':str(ephem.degrees(self.observer.lat)),'lon':str(ephem.degrees(self.observer.lon)),\
@@ -93,7 +94,7 @@ class engine(moduleSkull.module):
           'pointError':str(ephem.degrees(self.m.axis1.minMotorStep)),\
           'vmax':str(ephem.degrees(self.m.axis1.vmax)),\
           'FullTurnSteps':self.m.axis1.FullTurnSteps}
-        print data
+        print(data)
         return json.dumps(data)
 
     def setTrackSpeed(self, arg):
@@ -128,7 +129,7 @@ class engine(moduleSkull.module):
             if False:
                 if self.alt <= ephem.degrees('10:00:00'):
                     self.cmd_stopSlew('')
-        print "MOTORS STOPPED"
+        print("MOTORS STOPPED")
 
     def values(self, arg):
         return mogrify('values', self.valuesmsg)
@@ -138,7 +139,6 @@ class engine(moduleSkull.module):
             l = len(c)
             if (cmd[:l] == c):
                 arg = cmd[l:].strip()
-                #print "K",c,"KK",cmd,"KKK",arg
                 return self.CMDs[c](arg)
                 break
 
@@ -192,11 +192,11 @@ class engine(moduleSkull.module):
         #return values 0==OK, 1 == below Horizon
         alt, az = self.altAz_of(self.targetRA, self.targetDEC)
         if alt <= self.observer.horizon and engine['overhorizon']:
-            print "Not slewing: Below horizon"
+            print("Not slewing: Below horizon")
             r = '1'
         else:
             ra = self.hourAngle(self.targetRA)
-            print "slewing to:", self.targetRA, self.targetDEC, " from:", self.RA, self.DEC
+            print("slewing to:", self.targetRA, self.targetDEC, " from:", self.RA, self.DEC)
             self.m.slew(ra, self.targetDEC)
             r = '0'
         return r + "#"
@@ -224,8 +224,6 @@ class engine(moduleSkull.module):
         self.observer.date = ephem.Date(datetime.datetime.utcnow())
         self.sideral = self.observer.sidereal_time()
         beta = float(self.m.axis1.motorBeta) * self.m.axis1.minMotorStep
-        #beta=self.m.axis1.beta
-        #print self.m.axis1.beta-beta
         ra = ephem.hours(self.sideral + beta).norm
         if ra == ephem.hours("24:00:00"):
             ra = ephem.hours("00:00:00")
@@ -289,11 +287,11 @@ class engine(moduleSkull.module):
 
     def end(self, arg=''):
         self.m.end()
-        super(engine, self).end()
+        super(telescope, self).end()
 
 
-def runengine(name, port, parent_host='', parent_port=False):
-    s = engine(name, port, parent_host, parent_port)
+def runtelescope(name, port, parent_host='', parent_port=False):
+    s = telescope(name, port, parent_host, parent_port)
     try:
         s.run()
     except:
@@ -301,4 +299,4 @@ def runengine(name, port, parent_host='', parent_port=False):
 
 
 if __name__ == '__main__':
-    runengine('ENGINE', 5000)
+    runtelescope('TELESCOPE', 5000)

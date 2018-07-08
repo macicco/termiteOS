@@ -1,6 +1,9 @@
-#!/usr/bin/python
-#-*- coding: iso-8859-15 -*-
-
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
+#
+# termiteOS
+# Copyright (c) July 2018 Nacho Mas
+from __future__ import print_function
 import numpy as np
 
 class grids:
@@ -32,8 +35,7 @@ class grids:
 	def grid(self,area=((0,-90),(360,90)),steps=(10,10)):
 		((lon0,lat0),(lon1,lat1))=area		
 		(steplon,steplat)=steps
-		#print ((lon0,lat0),(lon1,lat1))
-		#print (steplon,steplat)
+
 		s={}
 		p={}
 		for lon in range (lon0,lon1+steplon,steplon):
@@ -48,6 +50,6 @@ class grids:
 
 if __name__=='__main__':
 	g=grids()
-	print g.grid()
+	print(g.lonLine(10,(-10,10)))
 
 

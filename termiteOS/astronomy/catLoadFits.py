@@ -1,8 +1,9 @@
-#!/usr/bin/python
-#-*- coding: iso-8859-15 -*-
-#Catalogues loader from CDS Fits
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
 #
-
+# termiteOS
+# Copyright (c) July 2018 Nacho Mas
+from __future__ import print_function
 import pyfits
 import json
 import numpy as np
@@ -12,7 +13,6 @@ import tempfile
 
 import os
 path=os.path.dirname(__file__)
-print(path)
 data_path=path+'/data/'
 print(data_path)
 
@@ -24,12 +24,12 @@ class catLoadFits:
 			self.conf=self.catalogsDefinitions[conf]
 			f=self.conf['fits']		
 		else:
-			print conf+" No Found"
-			print "Available catalogues:",self.catalogsDefinitions.keys()
+			print (conf+" No Found")
+			print ("Available catalogues:",self.catalogsDefinitions.keys())
 
 		self.catname=conf
 		f=self.conf['fits']
-		print f['filename'][:9]
+		#print(f['filename'][:9])
 		self.loadFits(data_path+f['filename'],f['HDU'])
 		self.fieldsDefinition()
 
@@ -44,7 +44,7 @@ class catLoadFits:
 	def findtype(self,varname):
 		i=self.data.names.index(varname)
 		fmt=str(self.data.formats[i])
-		print fmt
+		print(fmt)
 		a=self.data.formats[i][0]
 		aa=self.data.formats[i][-1]
 		dt=[item for item in self.fits_dt if varname in item] 
@@ -102,7 +102,6 @@ class catLoadFits:
 			DECmin=round(min(DEC),2)
 			self.coverage=((RAmin,DECmin),(RAmax,DECmax))
 			self.numrec=RA.size
-
 			d=np.vstack((RA,DEC))
 			dt=[('RA','f8'),('DEC','f8')]
 		else:
@@ -112,16 +111,10 @@ class catLoadFits:
 
 		self.prop=self.conf['prop']
 		for key,p in self.prop.iteritems():
-			#print 'procesing ',key+'='+p
-			#print self.data[p][0],type(self.data[p][0])
-			#datatype=self.findtype(p)
-			#print p
 			datatype=self.data[p].dtype.descr[0][1]
-			#print "typeof",p,datatype
-
 			if len(p)!=0:
 				dd=np.array(self.data[p])
-				#print key,dd.dtype.descr
+
 				dt.append((str(key),datatype))
 				try:
 					d=np.vstack((d,dd))
@@ -132,20 +125,11 @@ class catLoadFits:
 					fieldsname = key
 					fieldsformat = datatype
 					d=dd
-
-				
-
-
-
-		#print fieldsname
-		#print fieldsformat
 		fnames=fieldsname.encode("ascii")
 		fformat=fieldsformat.encode("ascii")
-		#print d
+
 		self.d=np.core.records.fromarrays(d,names=fnames,formats = fformat)
-		#print dt			
-		#self.d=np.array(d,dt)
-		#print self.d.dtype
+
 		if 'name' in self.prop:
 			self.IDs=map(lambda x:x['name'],self.d)
 		else:
@@ -155,13 +139,13 @@ class catLoadFits:
 		dt=array.dtype
 		if array.dtype.descr[0][1]=='<i4':
 			d=['1' for x in array]
-			print "SANITIZE",array.dtype.descr
+			print("SANITIZE",array.dtype.descr)
 			return np.array(d,dtype=dt)
 		return array
 		
 	def search(self,name):
 		if not self.IDs:
-			print "No field \'name\' in prop dictionary"
+			print ("No field \'name\' in prop dictionary")
 			return None
 		try:
 			s=self.d[self.IDs.index(name)]
@@ -176,38 +160,35 @@ class catLoadFits:
 		s=np.array(s,dtype=dt)
 		return s
 
-	def coverage(self):
-		return self.coverage
-
-	def numrec(self):
-		return self.numrec
 
 	def list(self):
 		for c in self.catalogsDefinitions.keys():
 			if c==self.catname:
-				print "*",c
+				print ("*",c)
 			else:
-				print " ",c
+				print (" ",c)
 	def info(self):
-		print "CATALOG NAME:\t",self.catname
-		print "COVERAGE:\t",self.coverage
-		print "NUM RECORDS:\t",self.numrec
+		print ("CATALOG NAME:\t",self.catname)
+		print ("COVERAGE:\t",self.coverage)
+		print ("NUM RECORDS:\t",self.numrec)
 		VARS=''
 		havemag=False
 		for v in self.prop.keys():
 			VARS += v+' '
 			if v=='mag':
 				havemag=True
-		print "ORIGINAL VARIABLES:",self.data.names
-		print "SELECTED VARIABLES:",VARS
-		print "FORMATS:",self.d.dtype.descr
+		print ("ORIGINAL VARIABLES:",self.data.names)
+		print ("SELECTED VARIABLES:",VARS)
+		print ("FORMATS:",self.d.dtype.descr)
 		if havemag:
-			print "MAG max:",min(self.d['mag']),"min:",max(self.d['mag'])
+			print("MAG max:",min(self.d['mag']),"min:",max(self.d['mag']))
 
 if __name__=='__main__':
 	q=catLoadFits('BSC5')
 	for c in q.catalogsDefinitions.keys():
-		print '==================',c,'=================='
+		#print('==================',c,'==================')
 		qq=catLoadFits(c)
-		print qq.info()
+		#print(qq.info())
+                print(c,qq.numrec,qq.coverage)
+
 

@@ -6,6 +6,7 @@
 '''
 TLEtracker
 '''
+from __future__ import print_function
 import zmq
 import time,datetime
 import ephem
@@ -13,35 +14,33 @@ import json
 import math
 from termiteOS.config import *
 import termiteOS.moduleSkull as moduleSkull
-import termiteOS.astronomy.internetcatalogues as tle
+import termiteOS.astronomy.tle as tle
 
 
 class TLEtracker(moduleSkull.module):
         def __init__(self, name, port, parent_host, parent_port):
                 super(TLEtracker, self).__init__(name, 'TLEtracker', port, parent_host, parent_port)
 		CMDs={ 
-		"@readTLEfile":self.readTLEfile,  \
-		"@loadTLE": self.loadTLE,  \
-		"@setTLE2follow": self.setTLE2follow  \
+		"@setfollow": self.cmd_setfollow  \
 		}
 		self.register()
 		self.timestep=0.1
 		self.gearInit()
 		self.observerInit()
 		self.TLEs=tle.TLEhandler()
+                self.follow='none'
 		self.a=0
 		self.go2rise=False
 
 
-
-	def readTLEfile(self,arg):
-		pass
-
-	def loadTLE(self,arg):
-		pass
-
-	def setTLE2follow(self,arg):
-		pass
+	def cmd_setfollow(self,arg):
+                sat=arg
+                if len(self.TLEs.TLE(sat))<10:
+                        self.follow='none'
+                        return 1
+                else:
+                        self.follow=sat
+                        return 0
 
 
 	def observerInit(self):
@@ -55,11 +54,15 @@ class TLEtracker(moduleSkull.module):
 		self.observer.temp=reply['temp']
 		self.observer.compute_pressure()
 
+
 	def gearInit(self):
 		self.socketHUBCmd.send('@getGear')
-		reply=json.loads(self.socketHUBCmd.recv())
+                reply=self.socketHUBCmd.recv()
+                print(reply)
+		reply=json.loads(reply)
 		self.pointError=ephem.degrees(str(reply['pointError']))
-		print self.pointError
+		print(self.pointError)
+
 		
 
 	def trackSatellite(self,sat):
@@ -70,11 +73,11 @@ class TLEtracker(moduleSkull.module):
 		errorRA=ephem.degrees(abs(satRA-self.RA))
 		errorDEC=ephem.degrees(abs(satDEC-self.DEC))
 		if abs(errorRA)>=error or abs(errorDEC)>=error:
-			print "Too much error. Slewing",errorRA,errorDEC,str(error)
+			print("Too much error. Slewing",errorRA,errorDEC,str(error))
 			self.sendSlew(satRA,satDEC)
 		else:
 			pass
-			print "OK",(errorRA),(errorDEC),str(error)
+			print("OK",(errorRA),(errorDEC),str(error))
 
 	def circle(self,re,dec,r,v):
 		#not finished
@@ -108,11 +111,8 @@ class TLEtracker(moduleSkull.module):
 			self.RA=ephem.hours(self.socketHUBCmd.recv())
 			self.socketHUBCmd.send('@getDEC')
 			self.DEC=ephem.degrees(self.socketHUBCmd.recv())
-			#self.trackSatellite('METEOSAT-7')
-			#self.trackSatellite('KAZSAT 3')
-			self.trackSatellite('ISS')
-			#self.trackSatellite('DEIMOS 2')	
-			#self.circle(0,0,ephem.degrees('0:30:00'),0.1)
+                        if not self.follow == 'none':
+        			self.trackSatellite(self.follow)
 
 
 	def satPosition(self,sat):
@@ -125,7 +125,7 @@ class TLEtracker(moduleSkull.module):
 				if engine['go2rising']:
 					info=observer.next_pass(s)
 					ra,dec=observer.radec_of(info[1],observer.horizon)			
-					print "Next pass",info,ra,dec
+					print("Next pass",info,ra,dec)
 				else:
 					ra,dec=(self.RA,self.DEC)
 			return ra,dec

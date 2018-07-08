@@ -1,10 +1,10 @@
-roothub:
-    type: hub
+simple:
+    type: telescope
     host: localhost
     port: 5000
     nodes:
        - LX200:
-            type: LX200
+            type: tcpproxy
             host: localhost
             port: 5001
 

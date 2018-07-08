@@ -1,10 +1,12 @@
-#!/usr/bin/python
-#-*- coding: iso-8859-15 -*-
-
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
+#
+# termiteOS
+# Copyright (c) July 2018 Nacho Mas
+from __future__ import print_function
 import numpy as np
 import os
 path=os.path.dirname(__file__)
-print(path)
 data_path=path+'/data/'
 print(data_path)
 
@@ -15,7 +17,7 @@ class costellation:
 	consGalactic=['CAS','CEP','CYG','PER','AUR','TAU','SER2','CAM','ORI','MON','CMA','PUP','VEL','CRU','SCO',\
 			'SGR','SCT','AQL','VUL','SGE','NOR','CIR','CEN','CAR','ARA']
 	def getCostellations(self):
-		fi=open('./data/costellations_bound_20.dat')
+		fi=open(data_path+'costellations_bound_20.dat')
 		p=[]
 		old_costellation=''
 		for l in fi.readlines():
@@ -95,9 +97,9 @@ class costellation:
 if __name__=='__main__':
 	g=costellation()
 	b=g.costellationBounds()
-	print b
+	#print(b)
 	b=g.costellationFigures()
-	print b
-	print g.getCostellationsLimits(['UMA','UMI'])
-	print g.getCostellations()
+	#print(b)
+	print(g.getCostellationsLimits(['UMA','UMI']))
+	print(g.getCostellations())
 
