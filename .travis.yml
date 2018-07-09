@@ -7,10 +7,10 @@ matrix:
         - python: 2.7
           dist: xenial
           sudo: false
-        - python: 3.6
+        - python: 3.5
           dist: trusty
           sudo: false
-        - python: 3.6
+        - python: 3.5
           dist: xenial
           sudo: false
 # command to install dependencies

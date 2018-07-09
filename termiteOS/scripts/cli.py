@@ -12,15 +12,23 @@ def launch(yamlfile):
     import termiteOS.launch as launch
     launch.launchmachine(yamlfile)
 
+@click.command()
+@click.option('--port', type=int, help='Port to connect', default=5000)
+def console(port):
+    import termiteOS.nodes.console as console
+    console.console(port)
 
 @click.command()
-@click.option('--name', default='lx200', help='module name')
+@click.option('--name', default='tcpproxy', help='module name')
 @click.option('--port', type=int, help='Port listen', default=6001)
 @click.option('--parent_host', default='localhost', help='Parent host')
 @click.option('--parent_port', type=int, help='Parent port', default=5000)
-def lx200(name,port, parent_host, parent_port):
+@click.option('--params', help='Extra parameters', default='{"tcpport":6101}')
+def tcpproxy(name,port, parent_host, parent_port,params):
+    import ast
     import termiteOS.nodes.tcpproxy as tcpproxy
-    tcpproxy.runtcpproxy(name,port, parent_host, parent_port)
+    params=ast.literal_eval(params)
+    tcpproxy.runtcpproxy(name,port, parent_host, parent_port,params)
 
 
 @click.command()

@@ -26,9 +26,12 @@ class tcpproxy(moduleSkull.module):
                 self.parent_port=parent_port
                 self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                print(params)
                 tcpport=int(params['tcpport'])
-                print(tcpport)
+                if 'End' in params.keys():
+                        self.End=params['End']
+                else:
+                        self.End='\n'
+                print('LISTEN ON PORT:',tcpport)
                 self.startserver(tcpport)
 
         def startserver(self,port):
@@ -76,7 +79,7 @@ class tcpproxy(moduleSkull.module):
 
         def recv_end(self,conn):
                 #End='something useable as an end marker'
-                End = '#'
+                End = self.End
                 total_data = []
                 while True:
                         time.sleep(0.05)
@@ -119,6 +122,8 @@ class tcpproxy(moduleSkull.module):
                 cmd = self.recv_end(conn)
                 if cmd == "SOCKET_CLOSE":
                     break
+                if cmd == "quit":
+                    break
                 print("<-",cmd)
                 self.socketHUBCmd.send(cmd)
                 reply = self.socketHUBCmd.recv()
@@ -141,5 +146,5 @@ def runtcpproxy(name,port, parent_host, parent_port,params):
                 p.end()
 
 if __name__ == '__main__':
-    runtcpproxy('tcpproxy',5001, 'localhost', 5000,params={'tcpport':6000})
+    runtcpproxy('tcpproxy0',5001, 'localhost', 5000,params={'tcpport':6000})
 

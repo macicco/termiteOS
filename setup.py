@@ -34,6 +34,7 @@ setup(
     entry_points="""
       [console_scripts]
       miteLaunch=termiteOS.scripts.cli:launch
+      miteConsole=termiteOS.scripts.cli:console
       miteJoy=termiteOS.scripts.cli:joystick
       mitetcpproxy=termiteOS.scripts.cli:tcpproxy
       miteHUB=termiteOS.scripts.cli:hub

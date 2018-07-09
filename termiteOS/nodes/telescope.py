@@ -134,15 +134,6 @@ class telescope(moduleSkull.module):
     def values(self, arg):
         return mogrify('values', self.valuesmsg)
 
-    def cmd(self, cmd):
-        for c in self.CMDs.keys():
-            l = len(c)
-            if (cmd[:l] == c):
-                arg = cmd[l:].strip()
-                return self.CMDs[c](arg)
-                break
-
-        return self.cmd_dummy(cmd)
 
     def cmd_ack(self, arg):
         return "P"
@@ -299,4 +290,4 @@ def runtelescope(name, port, parent_host='', parent_port=False):
 
 
 if __name__ == '__main__':
-    runtelescope('TELESCOPE', 5000)
+    runtelescope('TELESCOPE0', 5000)

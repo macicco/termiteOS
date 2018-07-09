@@ -22,21 +22,24 @@ class module(object):
         self.moduletype = moduletype
         print(name, " listen CMDs on:", port)
         self.zmqcontext = zmq.Context()
+        '''
+        Command explicit matrix.
+        Commands starting with '.' work but are not showed.
+        Also scanCMD add all methods starting with 'cmd_' as a commands
+        '''
         self.CMDs={
-        ":introspect": self.introspect, \
-        ":register": self.register, \
-        ":deregister": self.deregister, \
-        ":registrar": self.registrar, \
-        ":dot": self.dot, \
-        ":end": self.end, \
-        ":heartbeat": self.heartbeat, \
-        ":help": self.help, \
+        ".register": self.register, \
+        ".deregister": self.deregister, \
+        ".registrar": self.registrar, \
+        ".end": self.end, \
+        ".heartbeat": self.heartbeat, \
         "!": self.exeModuleCmd \
         }
         self.myHost='localhost'
         self.myCmdPort = port
         self.modules = {}
         self.RUN = True
+        self.scanCMDs()
         #self.socketStream = self.zmqcontext.socket(zmq.PUB)
         #self.socketStream.bind("tcp://*:%s" % servers['zmqStreamPort'])
         self.mySocketCmd = self.zmqcontext.socket(zmq.ROUTER)
@@ -50,6 +53,7 @@ class module(object):
             self.socketHUBCmd = self.zmqcontext.socket(zmq.REQ)
             self.socketHUBCmd.connect(
                 "tcp://%s:%i" % (self.hubCmdHost, self.hubCmdPort))
+            self.register()
         else:
             #it is the hub itself
             print("Module:", self.modulename, " is a ROOT HUB")
@@ -59,11 +63,20 @@ class module(object):
         signal.signal(signal.SIGINT, self.signal_handler)
 
     def addCMDs(self, CMDs):
+        '''add commands explicitely'''
         self.CMDs.update(CMDs)
 
-    #this thread listen all the CMD from other modules
+    def scanCMDs(self):
+        '''scanCMD add all methods starting with 'cmd_' as a commands'''
+        raw=dir(self)
+        cmd=filter(lambda x:x.startswith('cmd_'),raw)
+        cmdvector={c.replace('cmd_',''):getattr(self,c) for c in cmd }
+        #print('ADDED COMMANDS:',cmd)
+        self.addCMDs(cmdvector)
+
     @threaded
     def zmqQueue(self):
+        '''this thread listen and process all the CMD from other modules'''
         while self.RUN:
             try:
                 address, empty, message = self.mySocketCmd.recv_multipart()
@@ -85,46 +98,44 @@ class module(object):
         print("CMD LOOP END.")
         return
 
-    #Parent heartbeat part
-    def heartbeat(self, arg):
-        module = arg.strip()
-        print("Received a heartBeat from a child class. Module:", module)
-        return True
+    def cmd(self, cmd):
+        for c in self.CMDs.keys():
+            l = len(c)
+            if (cmd[:l] == c):
+                arg = cmd[l:].strip()
+                return self.CMDs[c](arg)
+                break
 
-    #Child heartbeat part
-    @threaded
-    def moduleheartbeat(self):
-        time.sleep(1)
-        while self.RUN:
-            for module in self.modules.keys():
-                cmd = str(':heartbeat ' + module)
-                self.modules[module]['CMDsocket'].send(cmd)
-                time.sleep(1)
-                reply = self.modules[module]['CMDsocket'].recv()
-                if reply:
-                    print(module, "is alive")
-                else:
-                    print(module, "is death")
+        return self.cmddummy(cmd)
 
-    #Registrar parent
-    def registrar(self, arg):
-        r = json.loads(arg)
-        module = r['module']
-        self.deregister(module)
-        self.modules[module] = {'name': r['module'],'host': r['host'], 'port': r['port']}
-        socketCmd = self.zmqcontext.socket(zmq.REQ)
-        socketCmd.connect("tcp://%s:%s" % (r['host'],r['port']))
-        self.modules[module]['CMDsocket'] = socketCmd
-        self.modules[module]['CMDs'] = r['CMDs']
-        print(module, " sucesfully registed")
-        return json.dumps({'OK': True})
+    def cmddummy(self, arg):
+        print("DUMMY CMD:", arg)
+        return
 
-    def listModules(self):
+    def cmd_help(self, arg):
+        string = "Base class. Do nothing"
+        return string
+
+    def cmd_ls(self,arg):
+        visibleCMDs = [ c for c in self.CMDs.keys() if not c.startswith('.')]
+        string = "MODULE:"+self.modulename+". TYPE:"+self.moduletype+"\n"
+        string = string +"\tAvailable commands:\n"
+        for cmd in visibleCMDs:
+            string = string +'\t\t'+ cmd + "\n"
+        return string
+
+    def cmd_modules(self,arg):
+        mod=[m for m in self.modules.keys()]
+        return mod
+
+    def cmd_tree(self, arg):
+        r=[]
         for m in self.modules.keys():
-            print(m)
+                a=(m+' ls').encode("utf8")
+                reply=self.exeModuleCmd(a)
+                r.append(reply)
+        return ''.join(r)
 
-    def introspect(self, arg):
-        return self.CMDs.keys()
 
     def exeModuleCmd(self, arg):
         s = arg.split()
@@ -140,13 +151,27 @@ class module(object):
         reply = self.modules[module]['CMDsocket'].recv()
         return reply
 
-    def register(self):
+    def registrar(self, arg):
+        '''Registrar parent part'''
+        r = json.loads(arg)
+        module = r['module']
+        self.deregister(module)
+        self.modules[module] = {'name': r['module'],'host': r['host'], 'port': r['port']}
+        socketCmd = self.zmqcontext.socket(zmq.REQ)
+        socketCmd.connect("tcp://%s:%s" % (r['host'],r['port']))
+        self.modules[module]['CMDsocket'] = socketCmd
+        self.modules[module]['CMDs'] = r['CMDs']
+        print(module, " sucesfully registed")
+        return json.dumps({'OK': True})
+
+    def register(self,arg=''):
+        '''Call to parent registrar'''
         modulecmd = str(self.CMDs.keys())
         cmdjson=json.dumps({'module':self.modulename,\
            'host':self.myHost,\
            'port':self.myCmdPort,\
            'CMDs':modulecmd})
-        cmd = ':registrar ' + cmdjson
+        cmd = '.registrar ' + cmdjson
         self.socketHUBCmd.send(cmd)
         reply = json.loads(self.socketHUBCmd.recv())
         if reply['OK']:
@@ -163,35 +188,11 @@ class module(object):
         print("DEREGISTRING: " + module)
         return "DEREGISTRING: " + module
 
-    def cmd(self, cmd):
-        for c in self.CMDs.keys():
-            l = len(c)
-            if (cmd[:l] == c):
-                arg = cmd[l:].strip()
-                return self.CMDs[c](arg)
-                break
 
-        return self.cmd_dummy(cmd)
-
-    def cmd_dummy(self, arg):
-        print("DUMMY CMD:", arg)
-        return
-
-    def help(self, arg):
-        string = "Available commands:\n"
-        for cmd in self.CMDs.keys():
-            string = string + cmd + "\n"
-        return string
-
-    #Normaly overloaded by a child class
-    def run(self):
-        while self.RUN:
-            time.sleep(1)
-
-    def end(self, arg=''):
+    def end(self,arg=''):
         for module in self.modules.keys():
             print("ASK TO END:", module)
-            cmd = str(':end')
+            cmd = str('.end')
             try:
                 self.modules[module]['CMDsocket'].send(cmd)
                 reply = self.modules[module]['CMDsocket'].recv()
@@ -201,7 +202,7 @@ class module(object):
 
         if self.hasParent:
             try:
-                cmd = str(':deregister ' + self.modulename)
+                cmd = str('.deregister ' + self.modulename)
                 self.socketHUBCmd.send(cmd)
                 reply = self.socketHUBCmd.recv()
                 print("....", reply)
@@ -211,34 +212,45 @@ class module(object):
                 self.socketHUBCmd.close()
 
         self.RUN = False
+
         print("Deleting zmqcontext")
         self.zmqcontext.destroy()
-
         print("waiting CMDthread end")
         self.CMDThread.join()
         print("CMDthread ended")
 
-        return self.modulename + " ***·E·N·D·E·D·***!"
+        return self.modulename + "***ENDED***"
 
-    def dot(self, arg=''):
-        print(self.modulename)
-        for module in self.modules.keys():
-            print("ASK TO END:", module)
-            cmd = str(':dot')
-            try:
-                self.modules[module]['CMDsocket'].send(cmd)
-                reply = self.modules[module]['CMDsocket'].recv()
-                print(reply)
-            except:
-                print("ERROR dot module:", module)
-
-        if self.hasParent:
-            pass
+    def run(self):
+        '''Dummy. Normaly overloaded by a child class'''
+        while self.RUN:
+            time.sleep(1)
 
     def signal_handler(self, signal, frame):
         print('You pressed Ctrl+C!')
         self.end()
         exit()
+
+    def heartbeat(self, arg):
+        '''heartbeat Parent part'''
+        module = arg.strip()
+        print("Received a heartBeat from a child class. Module:", module)
+        return True
+    
+    @threaded
+    def moduleheartbeat(self):
+        '''Child heartbeat part'''
+        time.sleep(1)
+        while self.RUN:
+            for module in self.modules.keys():
+                cmd = str('.heartbeat ' + module)
+                self.modules[module]['CMDsocket'].send(cmd)
+                time.sleep(1)
+                reply = self.modules[module]['CMDsocket'].recv()
+                if reply:
+                    print(module, "is alive")
+                else:
+                    print(module, "is death")
 
 
 #Child class for testing
@@ -250,6 +262,7 @@ if __name__ == '__main__':
     port = 7770
     parent_host = 'localhost'
     parent_port = False
-    e = test_class('test', port, parent_host, parent_port)
+    e = test_class('test0','test', port, parent_host, parent_port)
+    e.scanCMDs()
     e.run()
     exit()

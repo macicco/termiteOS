@@ -7,13 +7,13 @@ simple:
             type: tcpproxy
             host: localhost
             port: 5001
-            params: {'tcpport':6001}
+            params: {'tcpport':6001,'End':'#'}
        - tracker:
             type: TLEtracker
             host: localhost
             port: 5002
             nodes:
-               - trackerctrl:
+               - trackertcp:
                     type: tcpproxy
                     host: localhost
                     port: 5003
