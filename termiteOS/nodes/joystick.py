@@ -7,14 +7,14 @@ from __future__ import print_function
 import pygame
 import sys, os
 import time
-import termiteOS.moduleSkull as moduleSkull
+import termiteOS.nodeSkull as nodeSkull
 
 os.environ["SDL_VIDEODRIVER"] = "dummy"
 pygame.init()
 pygame.joystick.init()
 
 
-class stick(moduleSkull.module):
+class stick(nodeSkull.node):
     def __init__(self, name, port, parent_host, parent_port):
         super(stick, self).__init__(name, 'joystick', port, parent_host,
                                     parent_port)
@@ -70,8 +70,8 @@ class stick(moduleSkull.module):
 
     def sendTrackSpeed(self, vRA, vDEC):
         return
-        self.socketHUBCmd.send('@setTrackSpeed ' + str(vRA) + ' ' + str(vDEC))
-        reply = self.socketHUBCmd.recv()
+        self.ParentCmdSocket.send('@setTrackSpeed ' + str(vRA) + ' ' + str(vDEC))
+        reply = self.ParentCmdSocket.recv()
 
 
 def runjoystick(name, port, parent_host, parent_port):

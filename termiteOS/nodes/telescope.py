@@ -13,10 +13,10 @@ import math
 import json
 from termiteOS.config import *
 import termiteOS.drivers.rpi.ramps as ramps
-import termiteOS.moduleSkull as moduleSkull
+import termiteOS.nodeSkull as nodeSkull
 
 
-class telescope(moduleSkull.module):
+class telescope(nodeSkull.node):
     def __init__(self, name, port, parent_host, parent_port):
         super(telescope, self).__init__(name, 'telescope', port, parent_host, parent_port)
         CMDs={

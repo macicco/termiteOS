@@ -3,6 +3,11 @@ roothub:
     host: localhost
     port: 5000
     nodes:
+       - tcp:
+            type: tcpproxy
+            host: localhost
+            port: 5004
+            params: {'tcpport':6000}
        - hub0:
             type: hub
             host: localhost

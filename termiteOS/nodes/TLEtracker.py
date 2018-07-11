@@ -13,11 +13,11 @@ import ephem
 import json
 import math
 from termiteOS.config import *
-import termiteOS.moduleSkull as moduleSkull
+import termiteOS.nodeSkull as nodeSkull
 import termiteOS.astronomy.tle as tle
 
 
-class TLEtracker(moduleSkull.module):
+class TLEtracker(nodeSkull.node):
         def __init__(self, name, port, parent_host, parent_port):
                 super(TLEtracker, self).__init__(name, 'TLEtracker', port, parent_host, parent_port)
 		CMDs={ 
@@ -45,8 +45,8 @@ class TLEtracker(moduleSkull.module):
 
 
 	def observerInit(self):
-		self.socketHUBCmd.send('@getObserver')
-		reply=json.loads(self.socketHUBCmd.recv())
+		self.ParentCmdSocket.send('@getObserver')
+		reply=json.loads(self.ParentCmdSocket.recv())
 		self.observer=ephem.Observer()
 		self.observer.lat=ephem.degrees(str(reply['lat']))
 		self.observer.lon=ephem.degrees(str(reply['lon']))
@@ -57,8 +57,8 @@ class TLEtracker(moduleSkull.module):
 
 
 	def gearInit(self):
-		self.socketHUBCmd.send('@getGear')
-                reply=self.socketHUBCmd.recv()
+		self.ParentCmdSocket.send('@getGear')
+                reply=self.ParentCmdSocket.recv()
                 print(reply)
 		reply=json.loads(reply)
 		self.pointError=ephem.degrees(str(reply['pointError']))
@@ -89,16 +89,16 @@ class TLEtracker(moduleSkull.module):
 
 
 	def sendSlew(self,RA,DEC):
-		self.socketHUBCmd.send(':Sr '+str(RA))
-		reply=self.socketHUBCmd.recv()
-		self.socketHUBCmd.send(':Sd '+str(DEC))
-		reply=self.socketHUBCmd.recv()
-		self.socketHUBCmd.send(':MS')
-		reply=self.socketHUBCmd.recv()
+		self.ParentCmdSocket.send(':Sr '+str(RA))
+		reply=self.ParentCmdSocket.recv()
+		self.ParentCmdSocket.send(':Sd '+str(DEC))
+		reply=self.ParentCmdSocket.recv()
+		self.ParentCmdSocket.send(':MS')
+		reply=self.ParentCmdSocket.recv()
 
 	def sendTrackSpeed(self,vRA,vDEC):
-		self.socketHUBCmd.send('@setTrackSpeed '+str(vRA)+' '+str(vDEC))
-		reply=self.socketHUBCmd.recv()
+		self.ParentCmdSocket.send('@setTrackSpeed '+str(vRA)+' '+str(vDEC))
+		reply=self.ParentCmdSocket.recv()
 
 
 
@@ -108,10 +108,10 @@ class TLEtracker(moduleSkull.module):
 			time.sleep(self.timestep)
 			#self.values=self.lastValue()
 			#Call to the RA/DEC primitives for accuracy
-			self.socketHUBCmd.send('@getRA')
-			self.RA=ephem.hours(self.socketHUBCmd.recv())
-			self.socketHUBCmd.send('@getDEC')
-			self.DEC=ephem.degrees(self.socketHUBCmd.recv())
+			self.ParentCmdSocket.send('@getRA')
+			self.RA=ephem.hours(self.ParentCmdSocket.recv())
+			self.ParentCmdSocket.send('@getDEC')
+			self.DEC=ephem.degrees(self.ParentCmdSocket.recv())
                         if not self.follow == 'none':
         			self.trackSatellite(self.follow)
 
@@ -158,6 +158,6 @@ def runTLEtracker(name, port, parent_host='', parent_port=False):
         s.end()
 
 if __name__ == '__main__':
-        runTLEtracker('TLEtracker',5001,'localhost',5000)
+        runTLEtracker('TLEtracker',5002,'localhost',5000)
 	
 

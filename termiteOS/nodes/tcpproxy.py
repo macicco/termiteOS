@@ -14,12 +14,12 @@ import select
 import time
 import threading
 import zmq
-import termiteOS.moduleSkull as moduleSkull
+import termiteOS.nodeSkull as nodeSkull
 
 
 context = zmq.Context()
 
-class tcpproxy(moduleSkull.module):
+class tcpproxy(nodeSkull.node):
         def __init__(self, name, port, parent_host, parent_port,params):
                 super(tcpproxy, self).__init__(name, 'tcpproxy', port, parent_host, parent_port)
                 self.parent_host=parent_host
@@ -33,6 +33,7 @@ class tcpproxy(moduleSkull.module):
                         self.End='\n'
                 print('LISTEN ON PORT:',tcpport)
                 self.startserver(tcpport)
+                self.connections=[]
 
         def startserver(self,port):
                 port=int(port)
@@ -72,6 +73,7 @@ class tcpproxy(moduleSkull.module):
                                         self.parent_port,
                                         ))
                                 t.start()
+                                self.connections.append((conn,t))
                         except:
                                 self.RUN = False
                 self.s.close()
@@ -113,27 +115,51 @@ class tcpproxy(moduleSkull.module):
         def clientthread(self,conn, parent_host, parent_port):
             self.RUN = True
             #  Socket to talk to ZMQserver
-            #zmqSocket = context.socket(zmq.REQ)
-            #zmqSocket.connect("tcp://%s:%i" % (parent_host, parent_port))
-            #print("Connecting with hub %s:%i" % (parent_host, parent_port))
+            zmqSocket = context.socket(zmq.REQ)
+            zmqSocket.connect("tcp://%s:%i" % (parent_host, parent_port))
+            print("Connecting with hub %s:%i" % (parent_host, parent_port))
 
             #infinite loop so that function do not terminate and thread do not end.
             while self.RUN:
-                cmd = self.recv_end(conn)
+                try:
+                        cmd = self.recv_end(conn)
+                except:
+                        print("TCP socket rcv error")
+                        break
+
                 if cmd == "SOCKET_CLOSE":
                     break
                 if cmd == "quit":
                     break
                 print("<-",cmd)
-                self.socketHUBCmd.send(cmd)
-                reply = self.socketHUBCmd.recv()
+                try:
+                        self.ParentCmdSocket.send(cmd)
+                except:
+                        print("Error sending to zmq")
+                        break
+                try:
+                        reply = self.ParentCmdSocket.recv()
+                except:
+                        print("Error sending to zmq")
+                        break
+
+
                 print("->",reply)
-                conn.send(str(reply))
-        
+                try:
+                        conn.send(str(reply))
+                except:
+                        print("TCP socket send error")
+                        break
             #came out of loop
             #conn.shutdown(2)    # 0 = done receiving, 1 = done sending, 2 = both
             conn.close()
+            zmqSocket.close()
             print("Disconnecting..")
+
+        def end(self, arg=''):
+                for conn,t in self.connections:
+                        conn.close()
+                super(tcpproxy, self).end()
 
 
 def runtcpproxy(name,port, parent_host, parent_port,params):

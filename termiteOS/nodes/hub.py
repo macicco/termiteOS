@@ -7,10 +7,10 @@
 Conection HUB
 '''
 from __future__ import print_function
-import termiteOS.moduleSkull as moduleSkull
+import termiteOS.nodeSkull as nodeSkull
 
 
-class hub(moduleSkull.module):
+class hub(nodeSkull.node):
     def __init__(self, name, port, parent_host, parent_port):
         super(hub, self).__init__(name, 'hub', port, parent_host, parent_port)
 

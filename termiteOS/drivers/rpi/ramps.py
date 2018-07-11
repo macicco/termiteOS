@@ -475,8 +475,8 @@ class mount:
         self.run()
 
     def run(self):
-        self.axis1.run()
-        self.axis2.run()
+        self.threadAxis1=self.axis1.run()
+        self.threadAxis2=self.axis2.run()
 
     def slew(self, x, y, blocking=False):
         self.setVmax(x, y)
@@ -531,6 +531,9 @@ class mount:
     def end(self):
         self.axis1.RUN = False
         self.axis2.RUN = False
+        self.threadAxis1.join()
+        self.threadAxis2.join()
+
 
 
 if __name__ == '__main__':
