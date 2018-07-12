@@ -13,7 +13,8 @@ import cmd, sys
 context = zmq.Context()
 
 class termiteShell(cmd.Cmd):
-        intro = 'Welcome to the termiteOS shell.   Type help or ? to list commands.\n'
+        intro = 'Welcome to the termiteOS shell.   Type help or ? to list commands.'
+
         prompt = '(termite) '
         def do_hello(self):
                 'Say Hello'

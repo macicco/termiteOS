@@ -84,7 +84,11 @@ class node(object):
                 except:
                         self.myCmdSocket.close()
                         break
-                '''special case for .end command.'''
+
+                '''
+                Special case for .end command.
+                Calling end() close all sockets so we have to answer before.
+                '''
                 if message == '.end':
                         reply='Last message from '+self.nodename+'. Closing socket'
                         self.myCmdSocket.send_multipart([
@@ -92,7 +96,7 @@ class node(object):
                                 b'',
                                 str(reply),
                                 ])
-                        self.myCmdSocket.close()
+                        #self.myCmdSocket.close()
                         self.end()
                         break
                 else:
@@ -241,6 +245,8 @@ class node(object):
                 print(reply)
             except:
                 print("ERROR Closing node:", node)
+            finally:
+                socket.close()
 
         '''Deregisting myshelf if I have parent'''
         if self.hasParent:
@@ -256,12 +262,15 @@ class node(object):
 
         '''Now kill myshelf'''
         self.RUN = False
-
+        self.myCmdSocket.close()
         print(self.nodename+": term zmqcontext")
         self.zmqcontext.term()
         
         print(self.nodename+": waiting CMDthread end")
-        self.CMDThread.join(2)
+        try:
+                self.CMDThread.join()
+        except:
+                print("Can join thread:",self.CMDThread)
 
         print(self.nodename + "***ENDED***")
         return
