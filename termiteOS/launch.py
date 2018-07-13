@@ -25,6 +25,7 @@ def run_in_separate_process(func, *args, **kwds):
         try:
             result = func(*args, **kwds)
             status = True
+            os._exit(0)
         except Exception as exc:
             result = str(exc)
             status = False

@@ -11,16 +11,18 @@ from __future__ import print_function
 import time, datetime
 import zmq
 import json
+import logging
 import signal
 from termiteOS.config import *
 
 
 class node(object):
     def __init__(self, name, nodetype, port, parent_host, parent_port):
-        print("Creating node ", name, ". node type:", nodetype)
+        logging.basicConfig(filename=name+'.log',format='%(asctime)s %(levelname)s:'+name+' %(message)s',level=logging.DEBUG)
+        logging.info("Creating node %s. node type:%s", name, nodetype)
         self.nodename = name
         self.nodetype = nodetype
-        print(name, " listen CMDs on:", port)
+        logging.info("%s listen CMDs on:%i",name, port)
         self.zmqcontext = zmq.Context()
         '''
         Command explicit matrix.
@@ -46,7 +48,7 @@ class node(object):
         self.myCmdSocket.bind("tcp://*:%s" % self.myCmdPort)
         if parent_port:
             #It is a slave of a hub
-            print(name, " sending CMDs to:", parent_port)
+            logging.info("HasParent parent at %s:%i",parent_host, parent_port)
             self.hasParent = True
             self.hubCmdHost = parent_host
             self.hubCmdPort = parent_port
@@ -56,11 +58,12 @@ class node(object):
             self.register()
         else:
             #it is the hub itself
-            print("node:", self.nodename, " is a ROOT HUB")
+            logging.info("Node is a ROOT HUB")
             self.hasParent = False
         #self.heartbeatThread = self.nodeheartbeat()
         self.CMDThread = self.zmqQueue()
         signal.signal(signal.SIGINT, self.signal_handler)
+
 
     def addCMDs(self, CMDs):
         '''add commands explicitely'''
@@ -71,7 +74,6 @@ class node(object):
         raw=dir(self)
         cmd=filter(lambda x:x.startswith('cmd_'),raw)
         cmdvector={c.replace('cmd_',''):getattr(self,c) for c in cmd }
-        #print('ADDED COMMANDS:',cmd)
         self.addCMDs(cmdvector)
 
     @threaded
@@ -109,37 +111,7 @@ class node(object):
                                 b'',
                                 str(reply),
                                 ])
-            '''
-            try:
-                address, empty, message = self.myCmdSocket.recv_multipart()
-
-                if message == '.end':
-                        reply='Last message from '+self.nodename+'. Closing socket'
-                        self.myCmdSocket.send_multipart([
-                                address,
-                                b'',
-                                str(reply),
-                                ])
-                        self.myCmdSocket.close()
-                        self.end()
-                        print("CMD LOOP END.")
-                        return
-                else:
-                        #  Do some 'work'
-                        reply = self.cmd(message)
-
-                        #  Send reply back to a specific client
-                        self.myCmdSocket.send_multipart([
-                                address,
-                                b'',
-                                str(reply),
-                                ])
-            except:
-                print("Clossing"+self.nodename+ " myCmdSocket ZMQ socket.")
-                self.myCmdSocket.close()
-                break
-            '''
-        print("CMD LOOP END.")
+        logging.info("CMD LOOP END.")
         return
 
     def cmd(self, cmd):
@@ -153,7 +125,7 @@ class node(object):
         return self.cmddummy(cmd)
 
     def cmddummy(self, arg):
-        print("DUMMY CMD:", arg)
+        logging.info("DUMMY CMD:%s", arg)
         return
 
     def cmd_help(self, arg):
@@ -187,10 +159,10 @@ class node(object):
             return 0
         node = s[0]
         if not (node in self.nodes.keys()):
-            print(node, "Not such node")
+            logging.warn("External cmd on %s:Not such node",node)
             return 0
         cmd = arg[len(node):].strip()
-        print("exec:", cmd, ' on ', node, ' from ', self.nodename)
+        logging.info("exec:send % to %s from %s", cmd, node,self.nodename)
         self.nodes[node]['CMDsocket'].send(cmd)
         reply = self.nodes[node]['CMDsocket'].recv()
         return reply
@@ -205,11 +177,12 @@ class node(object):
         socketCmd.connect("tcp://%s:%s" % (r['host'],r['port']))
         self.nodes[node]['CMDsocket'] = socketCmd
         self.nodes[node]['CMDs'] = r['CMDs']
-        print(node, " sucesfully registed")
+        logging.info("Node sucesfully registed")
         return json.dumps({'OK': True})
 
     def register(self,arg=''):
         '''Call to parent registrar'''
+        logging.info("Asking parent to registe")
         nodecmd = str(self.CMDs.keys())
         cmdjson=json.dumps({'node':self.nodename,\
            'host':self.myHost,\
@@ -219,8 +192,8 @@ class node(object):
         self.ParentCmdSocket.send(cmd)
         reply = json.loads(self.ParentCmdSocket.recv())
         if reply['OK']:
-            print(self.nodename, " CMD PORT:", self.myCmdPort)
-            print(self.nodename, " CMDs:", nodecmd)
+            logging.info("Registed at parent  %s:%i",self.hubCmdHost, self.hubCmdPort)
+
 
     def deregister(self, arg):
         node = arg.strip()
@@ -228,23 +201,23 @@ class node(object):
             self.nodes[node]['CMDsocket'].close()
             self.nodes.pop(node, None)
         except:
-            print("Fail closing CMD socket for node:", node)
-        print("UNREGISTRING: " + node)
+            logging.warn("Fail closing CMD socket for node:%s", node)
+        logging.info("UNREGISTRING: %s ", node)
         return node+" UNREGISTRED"
 
     def end(self,arg=''):
-        print("ENDING node:",self.nodename)
+        logging.info("ENDING node: %s",self.nodename)
         '''end all childrennodes'''
         for node in self.nodes.keys():
-            print("ASK TO END:", node)
+            logging.info("ASK TO END: %s", node)
             cmd = str('.end')
             socket=self.nodes[node]['CMDsocket']
             try:
                 socket.send(cmd)
                 reply = socket.recv()
-                print(reply)
+                logging.info(reply)
             except:
-                print("ERROR Closing node:", node)
+                logging.warn("ERROR Closing node:%s", node)
             finally:
                 socket.close()
 
@@ -254,42 +227,42 @@ class node(object):
                 cmd = str('.deregister ' + self.nodename)
                 self.ParentCmdSocket.send(cmd)
                 reply = self.ParentCmdSocket.recv()
-                print(reply)
+                logging.info(reply)
             except:
-                print("Parent node is not available")
+                logging.warn("Parent node is not available")
             finally:
                 self.ParentCmdSocket.close()
 
         '''Now kill myshelf'''
         self.RUN = False
         self.myCmdSocket.close()
-        print(self.nodename+": term zmqcontext")
+        logging.info("Term zmqcontext")
         self.zmqcontext.term()
         
-        print(self.nodename+": waiting CMDthread end")
+        logging.info("Waiting CMDthread end")
         try:
                 self.CMDThread.join()
         except:
-                print("Can join thread:",self.CMDThread)
+                logging.warn("Can't join CMD thread")
 
-        print(self.nodename + "***ENDED***")
+        logging.info("***ENDED***")
         return
 
     def run(self):
         '''Dummy. Normaly overloaded by a child class'''
         while self.RUN:
             time.sleep(1)
-        print(self.nodename+" RUN ENDED")
+        logging.info("MAIN LOOP RUN ENDED")
 
     def signal_handler(self, signal, frame):
-        print('You pressed Ctrl+C!')
+        logging.info('You pressed Ctrl+C!')
         self.end()
         exit()
 
     def heartbeat(self, arg):
         '''heartbeat Parent part'''
         node = arg.strip()
-        print("Received a heartBeat from a child class. node:", node)
+        logging.info("Received a heartBeat from a child class. node:%s", node)
         return True
     
     @threaded
@@ -303,9 +276,9 @@ class node(object):
                 time.sleep(1)
                 reply = self.nodes[node]['CMDsocket'].recv()
                 if reply:
-                    print(node, "is alive")
+                    logging.info("is alive")
                 else:
-                    print(node, "is death")
+                    logging.info("is death")
 
 
 #Child class for testing
