@@ -4,7 +4,7 @@
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
 
-import termiteOS.moduleSkull as moduleSkull
+import termiteOS.nodeSkull as nodeSkull
 import time
 
 def test_one():
@@ -13,7 +13,7 @@ def test_one():
 	port=5000
 	parent_host='localhost'
 	parent_port=''
-	e=moduleSkull.test_class(name,moduletype,port,parent_host,parent_port)
+	e=nodeSkull.test_class(name,moduletype,port,parent_host,parent_port)
 	e.end()
 
 
