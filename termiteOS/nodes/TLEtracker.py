@@ -26,7 +26,7 @@ class TLEtracker(nodeSkull.node):
 		}
                 self.addCMDs(CMDs)
 		self.register()
-		self.timestep=0.1
+		self.timestep=1
 		self.gearInit()
 		self.observerInit()
 		self.TLEs=tle.TLEhandler()
@@ -75,11 +75,11 @@ class TLEtracker(nodeSkull.node):
 		errorRA=ephem.degrees(abs(satRA-self.RA))
 		errorDEC=ephem.degrees(abs(satDEC-self.DEC))
 		if abs(errorRA)>=error or abs(errorDEC)>=error:
-			logging.debug("Too much error. Slewing Errors RA:%f DEC:%f %s",errorRA,errorDEC,str(error))
+			logging.debug("Errors RA:%s DEC:%s. Slewing",errorRA,errorDEC)
 			self.sendSlew(satRA,satDEC)
 		else:
 			pass
-			logging.debug("OK. Errors RA:%f DEC:%f %s",(errorRA),(errorDEC),str(error))
+			logging.debug("Errors RA:%s DEC:%s. OK",(errorRA),(errorDEC))
 
 	def circle(self,re,dec,r,v):
 		#not finished
@@ -127,7 +127,7 @@ class TLEtracker(nodeSkull.node):
 				if engine['go2rising']:
 					info=observer.next_pass(s)
 					ra,dec=observer.radec_of(info[1],observer.horizon)			
-					logging.info("Next pass %s %f %f",info,ra,dec)
+					logging.info("Next pass %s %s %s",info,ra,dec)
 				else:
 					ra,dec=(self.RA,self.DEC)
 			return ra,dec

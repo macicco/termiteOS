@@ -4,7 +4,7 @@
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
 '''
-node Skeleton virtual class
+node virtual class.
 '''
 
 from __future__ import print_function
@@ -84,6 +84,7 @@ class node(object):
             if True:
                 try:
                         address, empty, message = self.myCmdSocket.recv_multipart()
+                        logging.debug("RECV CMD: %s", message)
                 except:
                         self.myCmdSocket.close()
                         break
@@ -94,6 +95,7 @@ class node(object):
                 '''
                 if message == '.end':
                         reply='Last message from '+self.nodename+'. Closing socket'
+                        logging.info(".end CMD: %s", reply)
                         self.myCmdSocket.send_multipart([
                                 address,
                                 b'',
@@ -104,7 +106,7 @@ class node(object):
                 else:
                         #  Do some 'work'
                         reply = self.cmd(message)
-
+                        logging.debug("SEND CMD response: %s", reply)
                         #  Send reply back to a specific client
                         self.myCmdSocket.send_multipart([
                                 address,
@@ -265,7 +267,32 @@ class node(object):
         node = arg.strip()
         logging.info("Received a heartBeat from a child class. node:%s", node)
         return True
-    
+
+    def HasChildren(self):
+        if len(self.nodes.keys())>0:
+                return True
+        else:
+                return False
+
+    def cmd_ping(self,arg):
+        response={}
+        if self.HasChildren():
+            for node in self.nodes.keys():
+                logging.info("ASK TO ping: %s", node)
+                cmd = str('ping')
+                socket=self.nodes[node]['CMDsocket']
+                try:
+                        socket.send(cmd)
+                        reply = socket.recv()
+                        logging.info(reply)
+                        response[node]=reply
+                except:
+                        logging.warn("ERROR ping node %s", node)
+        else:
+                response[self.nodename]='pong'       
+                logging.info("PING response:", response)         
+                return response
+                
     @threaded
     def nodeheartbeat(self):
         '''Child heartbeat part'''

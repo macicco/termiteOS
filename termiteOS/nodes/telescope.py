@@ -82,7 +82,7 @@ class telescope(nodeSkull.node):
         self.observer.elev = here['elev']
         self.observer.temp = here['temp']
         self.observer.compute_pressure()
-        logging.info("Observer Lat: %f",self.observer.lat)
+        logging.info("Observer Lat: %s",self.observer.lat)
 
     def getObserver(self, arg):
         observer = {'lat':str(ephem.degrees(self.observer.lat)),'lon':str(ephem.degrees(self.observer.lon)),\
@@ -188,7 +188,7 @@ class telescope(nodeSkull.node):
             r = '1'
         else:
             ra = self.hourAngle(self.targetRA)
-            logging.info("slewing to:%f %f from %f %f", self.targetRA, self.targetDEC, self.RA, self.DEC)
+            logging.info("slewing from:%s %s to %s %s", self.RA, self.DEC, self.targetRA, self.targetDEC)
             self.m.slew(ra, self.targetDEC)
             r = '0'
         return r + "#"

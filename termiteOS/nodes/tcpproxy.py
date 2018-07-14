@@ -190,5 +190,5 @@ def runtcpproxy(name,port, parent_host, parent_port,params):
                 p.end()
 
 if __name__ == '__main__':
-    runtcpproxy('tcpproxy0',5001, 'localhost', 5000,params={'tcpport':6000})
+    runtcpproxy('tcpproxy0',5001, 'localhost', 5000,params={'tcpport':6000,'End':'#'})
 

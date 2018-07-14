@@ -1,0 +1,3 @@
+[submodule "termiteOS/maths/ivPID"]
+	path = termiteOS/maths/ivPID
+	url = https://github.com/ivmech/ivPID.git
