@@ -18,7 +18,8 @@ from termiteOS.config import *
 
 class node(object):
     def __init__(self, name, nodetype, port, parent_host, parent_port):
-        logging.basicConfig(filename=name+'.log',format='%(asctime)s %(levelname)s:'+name+' %(message)s',level=logging.DEBUG)
+        #logging.basicConfig(filename=name+'.log',format='%(asctime)s %(levelname)s:'+name+' %(message)s',level=logging.DEBUG)
+        logging.basicConfig(format='%(asctime)s %(levelname)s:'+name+' %(message)s',level=logging.DEBUG)
         logging.info("Creating node %s. node type:%s", name, nodetype)
         self.nodename = name
         self.nodetype = nodetype
@@ -48,7 +49,7 @@ class node(object):
         self.myCmdSocket.bind("tcp://*:%s" % self.myCmdPort)
         if parent_port:
             #It is a slave of a hub
-            logging.info("HasParent parent at %s:%i",parent_host, parent_port)
+            logging.info("HasParent parent at %s:%i Connecting..",parent_host, parent_port)
             self.hasParent = True
             self.hubCmdHost = parent_host
             self.hubCmdPort = parent_port
@@ -98,7 +99,6 @@ class node(object):
                                 b'',
                                 str(reply),
                                 ])
-                        #self.myCmdSocket.close()
                         self.end()
                         break
                 else:
@@ -162,7 +162,7 @@ class node(object):
             logging.warn("External cmd on %s:Not such node",node)
             return 0
         cmd = arg[len(node):].strip()
-        logging.info("exec:send % to %s from %s", cmd, node,self.nodename)
+        logging.info("exec:send %s to %s from %s", cmd, node,self.nodename)
         self.nodes[node]['CMDsocket'].send(cmd)
         reply = self.nodes[node]['CMDsocket'].recv()
         return reply
@@ -177,12 +177,12 @@ class node(object):
         socketCmd.connect("tcp://%s:%s" % (r['host'],r['port']))
         self.nodes[node]['CMDsocket'] = socketCmd
         self.nodes[node]['CMDs'] = r['CMDs']
-        logging.info("Node sucesfully registed")
+        logging.info("REGISTER: node %s sucesfully registed",node)
         return json.dumps({'OK': True})
 
     def register(self,arg=''):
         '''Call to parent registrar'''
-        logging.info("Asking parent to registe")
+        logging.info("Asking parent to register")
         nodecmd = str(self.CMDs.keys())
         cmdjson=json.dumps({'node':self.nodename,\
            'host':self.myHost,\
@@ -201,9 +201,9 @@ class node(object):
             self.nodes[node]['CMDsocket'].close()
             self.nodes.pop(node, None)
         except:
-            logging.warn("Fail closing CMD socket for node:%s", node)
-        logging.info("UNREGISTRING: %s ", node)
-        return node+" UNREGISTRED"
+            logging.warn("DEREGISTRING: Fail closing CMD socket for node:%s", node)
+        logging.info("UNREGISTED: %s ", node)
+        return node+" UNREGISTED"
 
     def end(self,arg=''):
         logging.info("ENDING node: %s",self.nodename)
@@ -221,9 +221,10 @@ class node(object):
             finally:
                 socket.close()
 
-        '''Deregisting myshelf if I have parent'''
+        '''Unregisting myshelf if I have parent'''
         if self.hasParent:
             try:
+                logging.info("Ask parent to unregister")
                 cmd = str('.deregister ' + self.nodename)
                 self.ParentCmdSocket.send(cmd)
                 reply = self.ParentCmdSocket.recv()

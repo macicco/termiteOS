@@ -11,6 +11,7 @@ import ephem
 import time, datetime
 import math
 import json
+import logging
 from termiteOS.config import *
 import termiteOS.drivers.rpi.ramps as ramps
 import termiteOS.nodeSkull as nodeSkull
@@ -81,7 +82,7 @@ class telescope(nodeSkull.node):
         self.observer.elev = here['elev']
         self.observer.temp = here['temp']
         self.observer.compute_pressure()
-        print(self.observer.lat)
+        logging.info("Observer Lat: %f",self.observer.lat)
 
     def getObserver(self, arg):
         observer = {'lat':str(ephem.degrees(self.observer.lat)),'lon':str(ephem.degrees(self.observer.lon)),\
@@ -94,7 +95,7 @@ class telescope(nodeSkull.node):
           'pointError':str(ephem.degrees(self.m.axis1.minMotorStep)),\
           'vmax':str(ephem.degrees(self.m.axis1.vmax)),\
           'FullTurnSteps':self.m.axis1.FullTurnSteps}
-        print(data)
+        logging.info("getGear:%s",data)
         return json.dumps(data)
 
     def setTrackSpeed(self, arg):
@@ -129,7 +130,7 @@ class telescope(nodeSkull.node):
             if False:
                 if self.alt <= ephem.degrees('10:00:00'):
                     self.cmd_stopSlew('')
-        print("MOTORS STOPPED")
+        logging.info("ALL MOTORS STOPPED")
 
     def values(self, arg):
         return mogrify('values', self.valuesmsg)
@@ -183,11 +184,11 @@ class telescope(nodeSkull.node):
         #return values 0==OK, 1 == below Horizon
         alt, az = self.altAz_of(self.targetRA, self.targetDEC)
         if alt <= self.observer.horizon and engine['overhorizon']:
-            print("Not slewing: Below horizon")
+            logging.info("Not slewing: Below horizon")
             r = '1'
         else:
             ra = self.hourAngle(self.targetRA)
-            print("slewing to:", self.targetRA, self.targetDEC, " from:", self.RA, self.DEC)
+            logging.info("slewing to:%f %f from %f %f", self.targetRA, self.targetDEC, self.RA, self.DEC)
             self.m.slew(ra, self.targetDEC)
             r = '0'
         return r + "#"

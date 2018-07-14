@@ -11,6 +11,7 @@ import zmq
 import time,datetime
 import ephem
 import json
+import logging
 import math
 from termiteOS.config import *
 import termiteOS.nodeSkull as nodeSkull
@@ -59,10 +60,10 @@ class TLEtracker(nodeSkull.node):
 	def gearInit(self):
 		self.ParentCmdSocket.send('@getGear')
                 reply=self.ParentCmdSocket.recv()
-                print(reply)
+                logging.info(reply)
 		reply=json.loads(reply)
 		self.pointError=ephem.degrees(str(reply['pointError']))
-		print(self.pointError)
+		logging.info(self.pointError)
 
 		
 
@@ -74,11 +75,11 @@ class TLEtracker(nodeSkull.node):
 		errorRA=ephem.degrees(abs(satRA-self.RA))
 		errorDEC=ephem.degrees(abs(satDEC-self.DEC))
 		if abs(errorRA)>=error or abs(errorDEC)>=error:
-			print("Too much error. Slewing",errorRA,errorDEC,str(error))
+			logging.info("Too much error. Slewing Errors RA:%f DEC:%f %s",errorRA,errorDEC,str(error))
 			self.sendSlew(satRA,satDEC)
 		else:
 			pass
-			print("OK",(errorRA),(errorDEC),str(error))
+			logging.info("OK. Errors RA:%f DEC:%f %s",(errorRA),(errorDEC),str(error))
 
 	def circle(self,re,dec,r,v):
 		#not finished
@@ -106,7 +107,7 @@ class TLEtracker(nodeSkull.node):
 	def run(self):
 		while self.RUN:
 			time.sleep(self.timestep)
-			#self.values=self.lastValue()
+			#self.values=self.lastValue()19963
 			#Call to the RA/DEC primitives for accuracy
 			self.ParentCmdSocket.send('@getRA')
 			self.RA=ephem.hours(self.ParentCmdSocket.recv())
@@ -126,7 +127,7 @@ class TLEtracker(nodeSkull.node):
 				if engine['go2rising']:
 					info=observer.next_pass(s)
 					ra,dec=observer.radec_of(info[1],observer.horizon)			
-					print("Next pass",info,ra,dec)
+					logging.info("Next pass %s %f %f",info,ra,dec)
 				else:
 					ra,dec=(self.RA,self.DEC)
 			return ra,dec
@@ -158,6 +159,6 @@ def runTLEtracker(name, port, parent_host='', parent_port=False):
         s.end()
 
 if __name__ == '__main__':
-        runTLEtracker('TLEtracker',5002,'localhost',5000)
+        runTLEtracker('TLEtracker0',5002,'localhost',5000)
 	
 
