@@ -75,11 +75,11 @@ class TLEtracker(nodeSkull.node):
 		errorRA=ephem.degrees(abs(satRA-self.RA))
 		errorDEC=ephem.degrees(abs(satDEC-self.DEC))
 		if abs(errorRA)>=error or abs(errorDEC)>=error:
-			logging.info("Too much error. Slewing Errors RA:%f DEC:%f %s",errorRA,errorDEC,str(error))
+			logging.debug("Too much error. Slewing Errors RA:%f DEC:%f %s",errorRA,errorDEC,str(error))
 			self.sendSlew(satRA,satDEC)
 		else:
 			pass
-			logging.info("OK. Errors RA:%f DEC:%f %s",(errorRA),(errorDEC),str(error))
+			logging.debug("OK. Errors RA:%f DEC:%f %s",(errorRA),(errorDEC),str(error))
 
 	def circle(self,re,dec,r,v):
 		#not finished
