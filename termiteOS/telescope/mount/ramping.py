@@ -7,6 +7,7 @@
 import math
 import time, datetime
 import ephem
+import termiteOS.drivers.rpi.rpiDRV8825Hut as rpihut
 from termiteOS.config import *
 
 
@@ -23,7 +24,7 @@ class axis(object):
         self.acceleration = ephem.degrees(engine['acceleration'])
         self.a = ephem.degrees(0)
         self.v = ephem.degrees(0)
-        self.vmax = ephem.degrees(ephem.degrees('05:00:00'))
+        self.vmax = ephem.degrees(ephem.degrees('10:00:00'))
         self.beta = ephem.degrees(0)
         self.beta_target = ephem.degrees(0)
         self.t2target = 0
@@ -184,15 +185,170 @@ class axis(object):
         self.logfile.write(line)
 
 
+#Stepper raspberry implementation
+class AxisDriver(axis,rpihut.rpiDRV8825Hut):
+    def __init__(self, name, driverID):
+        super(AxisDriver, self).__init__(name)
+        super(rpihut.rpiDRV8825Hut, self).__init__(servers['pigpio'],driverID)
+        self.lock = threading.Lock()
+        self.PIN = self.pinout['STEP']
+        self.DIR_PIN = self.pinout['DIR']
+        self.stepsPerRevolution = gear['motorStepsRevolution'] * gear['microstep'] * gear['reducer']
+        self.corona = gear['corona']
+        self.plate = gear['pinion']
+        self.FullTurnSteps = self.plate * self.stepsPerRevolution / self.corona
+        self.stepsRest = 0
+        self.maxPPS = engine['maxPPSbase'] * gear['microstep']
+        self.pulseWidth = 1. / float(self.maxPPS)
+        self.timestepMax = self.pulseWidth * 10
+        self.timestepMin = self.pulseWidth * 5
+        self.timestep = self.timestepMax
+        self.pulseDuty = 0.5
+        self.minMotorStep = math.pi * 2 / float(self.FullTurnSteps)
+        self.vmax = self.minMotorStep / self.pulseWidth
+        self._vmax = self.vmax
+        self.pointError = self.minMotorStep
+        self.stepTarget = 0
+        self.motorBeta = 0
+        self.dire = 1
+        self.pi.write(self.DIR_PIN, self.dire > 0)
+        self.freq = 0
+        self.updatePWM = False
+        self.deltavFine = 0
+        self.PWMwatchdog = 0
+        self.pi.hardware_PWM(self.PIN, 10, 0)
+        cb1 = self.pi.callback(self.PIN, pigpio.RISING_EDGE, self.stepCounter)
+        cb2 = self.pi.callback(self.PIN, pigpio.FALLING_EDGE, self.falling)
+
+        print "StepsPerRev",self.stepsPerRevolution \
+         ,"FullTurnSteps: ",self.FullTurnSteps \
+         ,"PPS",1/self.pulseWidth,"Phisical:",self.minMotorStep
+        print "Min step (point Error)",ephem.degrees(self.minMotorStep) \
+         ,"Max speed: ",ephem.degrees(self._vmax)
+
+
+    def doSteps(self, delta):
+        #Distribute steps on
+        #delta is in radians. Calculate actual steps
+        steps = delta / self.minMotorStep + self.stepsRest
+        Isteps = round(steps)
+
+        #acumultate the fractional part to the next step
+        self.stepsRest = steps - Isteps
+
+        if self.log:
+            motorBeta = float(self.motorBeta) * self.minMotorStep
+            self.saveDebug(self.stepTarget - self.motorBeta, motorBeta)
+            #self.saveDebug(self.deltavFine,motorBeta)
+            #self.saveDebug(self.stepTarget,motorBeta)
+
+        #calculate direction of motion
+        '''Now is done in setPWMSpeed() '''
+
+        #calculate target steps
+        self.stepTarget = self.stepTarget + Isteps
+
+        self.deltavFine = ephem.degrees(self.beta -
+                                        self.motorBeta * self.minMotorStep)
+        self.setPWMspeed(self.v + self.deltavFine)
+        #self.setPWMspeed(self.v)
+        '''
+		if self.v==0:
+			self.extraSteps()'''
+
+    #NOT IN USE.
+    #do extra steeps to get stepTarget
+    def extraSteps(self):
+        deltaSteps = self.beta / self.minMotorStep
+        deltaFine = int(deltaSteps - self.motorBeta)
+        if abs(deltaFine) >= 1:
+            d = math.copysign(1, deltaFine)
+            self.pi.write(self.DIR_PIN, d > 0)
+            print deltaFine
+            self.pi.hardware_PWM(self.PIN, 0, self.pulseDuty * 1000000)
+            for i in range(0, abs(deltaFine)):
+                self.pi.write(self.PIN, 1)
+                time.sleep(self.pulseWidth)
+                self.pi.write(self.PIN, 0)
+                time.sleep(self.pulseWidth)
+            self.pi.hardware_PWM(self.PIN, self.freq, self.pulseDuty * 1000000)
+
+    def setPWMspeed(self, v):
+        with self.lock:
+            freq = 0
+            #calculate direction of motion
+            if self.dire * v < 0:
+                self.dire = math.copysign(1, v)
+                self.pi.write(self.DIR_PIN, self.dire > 0)
+
+            freq = round(abs(v) / self.minMotorStep)
+            if freq >= self.maxPPS:
+                freq = self.maxPPS
+
+            #PWM freq change on falling edge so we need to start if stopped
+            PWMstopped = (self.pi.get_PWM_dutycycle(self.PIN) == 0)
+            if (PWMstopped or freq < 10) and freq != 0:
+                self.freq = freq
+                self.pi.hardware_PWM(self.PIN, self.freq,
+                                     self.pulseDuty * 1000000)
+                '''if self.freq!=0:
+					self.pi.hardware_PWM(self.PIN,self.freq,self.pulseDuty*1000000)
+				else:
+					self.pi.hardware_PWM(self.PIN,10,0)'''
+                self.updatePWM = False
+            else:
+                self.freq = freq
+                self.updatePWM = True
+            self.PWMwatchdog += 1
+        return self.freq
+
+    def falling(self, gpio, level, tick):
+        with self.lock:
+            if self.updatePWM == True:
+                if self.freq != 0:
+                    self.pi.hardware_PWM(self.PIN, self.freq,
+                                         self.pulseDuty * 1000000)
+                else:
+                    self.pi.hardware_PWM(self.PIN, 10, 0)
+                self.updatePWM == False
+
+    def stepCounter(self, gpio, level, tick):
+        #avoid to put locks here. Danger of miss steps!
+        #with self.lock:
+        self.PWMwatchdog = 0
+        dire = self.pi.read(self.DIR_PIN)
+        if dire == 1:
+            dire = 1
+        else:
+            dire = -1
+        self.motorBeta = self.motorBeta + 1 * dire
+
+
 class mount:
     def __init__(self):
-        self.axis1 = axis('RA')
-        self.axis2 = axis('DEC')
+        simulation = False
+        import pigpio
+        pi = pigpio.pi(servers['pigpio'])
+        if simulation:
+            self.axis1 = axis('RA')
+            self.axis2 = axis('DEC')
+        else:
+            ''' RASPBERRY B+ PWM PINOUT
+			12  PWM channel 0  All models but A and B
+			13  PWM channel 1  All models but A and B
+			18  PWM channel 0  All models
+			19  PWM channel 1  All models but A and B
+			CHOSE DIFERENT CHANNELS FOR RA AND DEC !!
+   	    '''
+   
+
+            self.axis1 = AxisDriver('RA', 0)
+            self.axis2 = AxisDriver('DEC',1)
         self.run()
 
     def run(self):
-        self.axis1.run()
-        self.axis2.run()
+        self.threadAxis1=self.axis1.run()
+        self.threadAxis2=self.axis2.run()
 
     def slew(self, x, y, blocking=False):
         self.setVmax(x, y)
@@ -247,9 +403,15 @@ class mount:
     def end(self):
         self.axis1.RUN = False
         self.axis2.RUN = False
+        self.threadAxis1.join()
+        self.threadAxis2.join()
+
 
 
 if __name__ == '__main__':
+    m0=rpihut.rpiDRV8825Hut(servers['pigpio'],0)
+    m1=rpihut.rpiDRV8825Hut(servers['pigpio'],0)
+
     m = mount()
     vRA = ephem.degrees('-00:00:15')
     m.trackSpeed(vRA, 0)
