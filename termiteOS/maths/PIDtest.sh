@@ -1,5 +1,5 @@
 #!/bin/sh
-./ivPID.py >ivPID.dat
+./hPID.py >ivPID.dat
 gnuplot << EOF
 h=1200
 set term png size h*4/3,h

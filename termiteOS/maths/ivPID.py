@@ -64,7 +64,7 @@ class PID:
         # Windup Guard
         self.int_error = 0.0
         self.windup_guard = 0
-
+        self.SetPoint=0.0
 
     def update(self, feedback_value):
         """Calculates PID value for given reference feedback
@@ -136,20 +136,16 @@ class PID:
         self.windup_guard = windup
 
 if __name__ == '__main__':
-        END=100
-        pid = PID(sampletime=1,kp=1.,ki=1,kd=0.005)
-        pid.SetPoint=0.0
-        pid.setSampleTime(0.01)
-        pid.setWindup(0)
+        END=50
+        pid = PID(sampletime=0.1,kp=1.,ki=1,kd=0.005)
         feedback=0
         pid.output=0
         for i in range(1, END):
-            pid.update(feedback)
-            output = pid.output
+            output = pid.update(feedback)
             if pid.SetPoint > 0:
                 feedback += (output - (1/i))
             if i>9:
                 pid.SetPoint = 1
-            time.sleep(0.02)
+            time.sleep(0.2)
             print(i,pid.SetPoint,feedback)
 

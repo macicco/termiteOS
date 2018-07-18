@@ -9,13 +9,14 @@ This board has two DRV8825 able to driver 2 motors
 See hardware termiteOS/driver/rpi/hardware
 
 INTERFACE TO OTHER MODULES
-- betaMotor
+- motorBeta
 - pinout
 - microsteps
 - clutch()
 - reset()
 - sleep()
 - set_microsteps(microsteps)
+- sync(motorBeta) 
 
 RASPBERRY B+ PWM PINOUT:
 			12  PWM channel 0  All models but A and B
@@ -27,7 +28,7 @@ RASPBERRY B+ PWM PINOUT:
 '''
 
 import pigpio
-
+import logging
 
 
 class rpiDRV8825Hut(object):
@@ -36,6 +37,7 @@ class rpiDRV8825Hut(object):
                         1:{'STEP':18,'DIR':22,'ENABLE': 8,'FAULT':17,'RESET':25,'SLEEP':24,'M0':11,'M1': 9,'M2':10}}
                 self.pinout=PINOUT[driverID]
 		self.pi=pigpio.pi(raspberry)
+                self.logger = logging.getLogger(type(self).__name__)
 		pi=self.pi
 		pi.set_mode(self.pinout['STEP'], pigpio.OUTPUT)
 		pi.set_mode(self.pinout['DIR'], pigpio.OUTPUT)
@@ -62,6 +64,10 @@ class rpiDRV8825Hut(object):
 
 	def clutch(self,ON_OFF):
 		self.pi.write(self.pinout['ENABLE'],ON_OFF)
+                if ON_OFF:
+                        self.logger.debug("CLUTCH ON")
+                else:
+                        self.logger.debug("CLUTCH OFF")
 
 	def set_microsteps(self,microsteps):
 		'''
@@ -94,6 +100,7 @@ class rpiDRV8825Hut(object):
 		self.pi.write(self.pinout['M1'], msteping['M1'])
 		self.pi.write(self.pinout['M0'], msteping['M0'])
 		self.microsteps=microsteps
+                self.logger.debug("SET MICROSTEPS=%i",microsteps)
 
 
         def set_dir(self,dir):
@@ -102,10 +109,19 @@ class rpiDRV8825Hut(object):
         def reset(self,ON_OFF):
                 NOT_ON_OFF=not ON_OFF
 		self.pi.write(self.pinout['RESET'], NOT_ON_OFF)
+                if ON_OFF:
+                        self.logger.debug("RESET")
 
 	def sleep(self,ON_OFF):
                 NOT_ON_OFF=not ON_OFF
 		self.pi.write(self.pinout['SLEEP'], NOT_ON_OFF)
+                if ON_OFF:
+                        self.logger.debug("SLEEPPING")
+                else:
+                        self.logger.debug("WAKE UP")
+
+        def sync(self,position):
+                self.motorBeta=position
 
 	def stepcounter(self,gpio, level, tick):
 		self.motorBeta=self.motorBeta+self.dir
@@ -113,6 +129,7 @@ class rpiDRV8825Hut(object):
 	def fault(self,gpio, level, tick):
 		if level==1:
 			self.fault=True
+                        self.logger.error("MOTOR FAULT!")
 		else:
 			self.fault=False
 

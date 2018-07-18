@@ -4,7 +4,9 @@
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
 # Adapted from: https://github.com/hirschmann/pid-autotune/blob/master/pid.py
+from __future__ import print_function
 from time import time
+from time import sleep
 import logging
 
 class PID(object):
@@ -44,7 +46,7 @@ class PID(object):
         self._last_output = 0
         self._last_calc_timestamp = 0
         self._time = time
-        self.setPoint=0
+        self.SetPoint=0
 
     def update(self, input_val):
         """Adjusts and holds the given setpoint.
@@ -81,12 +83,22 @@ class PID(object):
         self._last_output = max(self._last_output, self._out_min)
 
         # Log some debug info
-        self._logger.debug('P: {0}'.format(p))
-        self._logger.debug('I: {0}'.format(i))
-        self._logger.debug('D: {0}'.format(d))
-        self._logger.debug('output: {0}'.format(self._last_output))
+        self._logger.debug('P:{0} I:{1} D:{2} output:{3}'.format(p,i,d,self._last_output))
 
         # Remember some variables for next time
         self._last_input = input_val
         self._last_calc_timestamp = now
         return self._last_output
+
+if __name__ == '__main__':
+        END=50
+        feedback=0
+        pid = PID(sampletime=0.1,kp=1.,ki=1,kd=0.005)
+        for i in range(1, END):
+            output = pid.update(feedback)
+            if pid.SetPoint > 0:
+                feedback += (output - (1/i))
+            if i>9:
+                pid.SetPoint = 1
+            sleep(0.2)
+            print(i,pid.SetPoint,feedback)
