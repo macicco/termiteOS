@@ -19,7 +19,7 @@ from termiteOS.config import *
 class node(object):
     def __init__(self, name, nodetype, port, parent_host, parent_port):
         #logging.basicConfig(filename=name+'.log',format='%(asctime)s %(levelname)s:'+name+' %(message)s',level=logging.DEBUG)
-        logging.basicConfig(format='%(asctime)s %(levelname)s:'+name+' %(message)s',level=logging.DEBUG)
+        logging.basicConfig(format='%(asctime)s %(levelname)s:'+name+' %(message)s',level=logging.INFO)
         logging.info("Creating node %s. node type:%s", name, nodetype)
         self.nodename = name
         self.nodetype = nodetype

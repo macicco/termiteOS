@@ -48,6 +48,12 @@ class PID(object):
         self._time = time
         self.SetPoint=0
 
+    def reset(self):
+        self._integral = 0
+        self._last_input = 0
+        self._last_output = 0
+        self._last_calc_timestamp = 0
+
     def update(self, input_val):
         """Adjusts and holds the given setpoint.
         Args:
