@@ -1,1 +1,0 @@
-name = 'termiteOS.telescope.mount'

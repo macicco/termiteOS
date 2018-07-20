@@ -13,7 +13,7 @@ import math
 import json
 import logging
 from termiteOS.config import *
-import termiteOS.drivers.rpi.ramps as ramps
+from termiteOS.drivers.motorHub import motorHub as motorHub
 import termiteOS.nodeSkull as nodeSkull
 
 
@@ -52,7 +52,7 @@ class telescope(nodeSkull.node):
           "@setTrackSpeed": self.setTrackSpeed, \
           "@values": self.values
         }
-        self.m = ramps.mount()
+        self.m = motorHub(microstepping=16,raspberry='192.168.1.11')
         self.valuesmsg = {}
         self.addCMDs(CMDs)
         self.observerInit()
@@ -72,7 +72,7 @@ class telescope(nodeSkull.node):
 
         vRA = -ephem.hours("00:00:01")
         vDEC = ephem.degrees("00:00:00")
-        self.m.trackSpeed(vRA, vDEC)
+        self.m.setTrackSpeed(vRA, vDEC)
 
     def observerInit(self):
         self.observer = ephem.Observer()
@@ -100,9 +100,9 @@ class telescope(nodeSkull.node):
 
     def setTrackSpeed(self, arg):
         c = arg.split()
-        vRA = c[0]
-        vDEC = c[1]
-        self.m.trackSpeed(vRA, vDEC)
+        vRA = ephem.degrees(c[0])
+        vDEC = ephem.degrees(c[1])
+        self.m.setTrackSpeed(vRA, vDEC)
 
     def altAz_of(self, ra, dec):
         p = ephem.FixedBody()
@@ -118,14 +118,16 @@ class telescope(nodeSkull.node):
             dec = self.getDEC('')
             #np=ephem.Equatorial(ra,dec,epoch=ephem.now()) #!bad
             self.alt, self.az = self.altAz_of(ra, dec)
+            '''
             self.valuesmsg = {'time':str(self.observer.date),'LST':str(self.sideral),\
              'RA':str(self.RA),'DEC':str(self.DEC),\
              'ALT':str(self.alt),'AZ':str(self.az),\
              'targetRA':str(self.targetRA),'targetDEC':str(self.targetDEC),\
              'speedRA':str(self.m.axis1.v),'speedDEC':str(self.m.axis2.v),\
-             'trackingSpeedRA':str(self.m.axis1.vtracking),'trackingSpeedDEC':str(self.m.axis2.vtracking),\
-             'slewendRA':str(self.m.axis1.slewend),'slewendDEC':str(self.m.axis2.slewend)\
+             'trackingSpeedRA':str(self.m.axis1._trackSpeed),'trackingSpeedDEC':str(self.m.axis2._trackSpeed),\
+             'slewendRA':str(self.m.axis1.gotoEnd),'slewendDEC':str(self.m.axis2.gotoEnd)\
              }
+            '''
             #self.socketStream.send(mogrify('values',msg))
             if False:
                 if self.alt <= ephem.degrees('10:00:00'):
@@ -189,7 +191,7 @@ class telescope(nodeSkull.node):
         else:
             ra = self.hourAngle(self.targetRA)
             logging.info("slewing from:%s %s to %s %s", self.RA, self.DEC, self.targetRA, self.targetDEC)
-            self.m.slew(ra, self.targetDEC)
+            self.m.goto(ra, self.targetDEC)
             r = '0'
         return r + "#"
 
@@ -202,20 +204,20 @@ class telescope(nodeSkull.node):
         return ra_
 
     def cmd_stopSlew(self, arg):
-        self.m.stopSlew()
+        self.m.stop()
         return 1
 
     def track(self):
         vRA = ephem.hours("00:00:01")
         vDEC = ephem.degrees("00:00:00")
-        self.m.track(vRA, vDEC)
+        self.m.setSpeed(vRA, vDEC)
         return
 
     #Update RA primitive
     def getRA(self, arg):
         self.observer.date = ephem.Date(datetime.datetime.utcnow())
         self.sideral = self.observer.sidereal_time()
-        beta = float(self.m.axis1.motorBeta) * self.m.axis1.minMotorStep
+        beta = float(self.m.axis1.pos)
         ra = ephem.hours(self.sideral + beta).norm
         if ra == ephem.hours("24:00:00"):
             ra = ephem.hours("00:00:00")
@@ -224,7 +226,7 @@ class telescope(nodeSkull.node):
 
     #Update DEC primitive
     def getDEC(self, arg):
-        beta = float(self.m.axis2.motorBeta) * self.m.axis2.minMotorStep
+        beta = float(self.m.axis2.pos) 
         #beta=self.m.axis2.beta
         sign = math.copysign(1, beta)
         self.DEC = ephem.degrees(beta)
@@ -284,6 +286,7 @@ class telescope(nodeSkull.node):
 
 def runtelescope(name, port, parent_host='', parent_port=False):
     s = telescope(name, port, parent_host, parent_port)
+    s.run()
     try:
         s.run()
     except:

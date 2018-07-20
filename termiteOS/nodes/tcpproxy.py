@@ -78,7 +78,7 @@ class tcpproxy(nodeSkull.node):
                                         t.start()
                                         self.connections.append((conn,t))
                                 else:
-                                        logging.info('NOT RUN. Thread wasnt fired')
+                                        logging.error('NOT RUN. Thread wasnt fired')
                                         break
                         except:
                                 self.RUN = False
@@ -97,7 +97,7 @@ class tcpproxy(nodeSkull.node):
                         try:
                                 data = conn.recv(1)
                         except:
-                                logging.info("TCP socket close while reciving..")
+                                logging.error("TCP socket close while reciving..")
                                 cmd = "SOCKET_CLOSE"
                                 break
 
@@ -131,31 +131,31 @@ class tcpproxy(nodeSkull.node):
                 try:
                         cmd = self.recv_end(conn)
                 except:
-                        logging.info("TCP socket rcv error")
+                        logging.error("TCP socket rcv error")
                         break
 
                 if cmd == "SOCKET_CLOSE":
                     break
                 if cmd == "quit":
                     break
-                logging.info("<-%s",cmd)
+                logging.debug("<-%s",cmd)
                 try:
                         self.ParentCmdSocket.send(cmd)
                 except:
-                        logging.info("Error sending to zmq")
+                        logging.error("Error sending to zmq")
                         break
                 try:
                         reply = self.ParentCmdSocket.recv()
                 except:
-                        logging.info("Error sending to zmq")
+                        logging.error("Error sending to zmq")
                         break
 
 
-                logging.info("->%s",reply)
+                logging.debug("->%s",reply)
                 try:
                         conn.send(str(reply))
                 except:
-                        logging.info("TCP socket send error")
+                        logging.error("TCP socket send error")
                         break
             #came out of loop
             #conn.shutdown(2)    # 0 = done receiving, 1 = done sending, 2 = both
