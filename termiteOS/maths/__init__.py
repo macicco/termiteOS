@@ -1,2 +1,2 @@
 name = 'termiteOS.maths'
-__all__ = ['ivPID']
+__all__ = ['hPID']

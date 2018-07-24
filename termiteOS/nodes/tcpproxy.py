@@ -65,6 +65,7 @@ class tcpproxy(nodeSkull.node):
                 while self.RUN:
                         try:
                                 #wait to accept a connection - blocking call
+                                logging.info('Waiting for a new TCP conection..')
                                 conn, addr = self.s.accept()
                                 logging.info('New TCP client %s:%i', addr[0],addr[1])
                                 #start newthread takes 1st argument as a function name to be run,
@@ -138,7 +139,7 @@ class tcpproxy(nodeSkull.node):
                     break
                 if cmd == "quit":
                     break
-                logging.debug("<-%s",cmd)
+                logging.info("<-%s",cmd)
                 try:
                         self.ParentCmdSocket.send(cmd)
                 except:
@@ -151,7 +152,7 @@ class tcpproxy(nodeSkull.node):
                         break
 
 
-                logging.debug("->%s",reply)
+                logging.info("->%s",reply)
                 try:
                         conn.send(str(reply))
                 except:

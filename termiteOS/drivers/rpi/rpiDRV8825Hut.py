@@ -5,6 +5,14 @@
 # Copyright (c) July 2018 Nacho Mas
 '''
 DIY DRV8825 driver  Hut interface.
+
+.. image:: schema.png
+   :width: 200px
+   :height: 100px
+   :scale: 50 %
+   :alt: alternate text
+   :align: right
+
 This board has two DRV8825 able to driver 2 motors
 See hardware termiteOS/driver/rpi/hardware
 
@@ -17,21 +25,42 @@ INTERFACE TO OTHER MODULES
 - sleep()
 - set_microsteps(microsteps)
 - sync(motorBeta) 
-
-RASPBERRY B+ PWM PINOUT:
-			12  PWM channel 0  All models but A and B
-			13  PWM channel 1  All models but A and B
-			18  PWM channel 0  All models
-			19  PWM channel 1  All models but A and B
-			CHOSE DIFERENT CHANNELS FOR EACH MOTOR !!
-
 '''
+
+#      MICROSTEPS                    
+#		        M2 M1 M0
+#			0  0  0 Full step (2-phase excitation) with 71% current
+#			0  0  1 1/2 step (1-2 phase excitation)
+#			0  1  0 1/4 step (W1-2 phase excitation)
+#			0  1  1 8 microsteps/step
+#			1  0  0 16 microsteps/step
+#			1  0  1 32 microsteps/step
+#			1  1  0 32 microsteps/step
+#			1  1  1 32 microsteps/step
+#
+#			RESET=HIGH DEVICE ENABLE
+#			SLEEP=HIGH DEVICE ENABLE
+#			ENABLE=LOW DEVICE ENABLE
+#
+#      RASPBERRY B+ PWM PINOUT:
+#			12  PWM channel 0  All models but A and B
+#			13  PWM channel 1  All models but A and B
+#			18  PWM channel 0  All models
+#			19  PWM channel 1  All models but A and B
+#			CHOSE DIFERENT CHANNELS FOR EACH MOTOR !!
+
+
 
 import pigpio
 import logging
 
 
 class rpiDRV8825Hut(object):
+        '''
+        This class define the PIN mapping and basic methods for the rpiDVR8825 Hut
+
+        .. note:: Posible values of driverID 0 or 1.
+        '''
 	def __init__(self,raspberry,driverID,**kwds):
                 PINOUT={0:{'STEP':13,'DIR': 5,'ENABLE':21,'FAULT': 4,'RESET':12,'SLEEP': 6,'M0':20,'M1':19,'M2':16},\
                         1:{'STEP':18,'DIR':22,'ENABLE': 8,'FAULT':17,'RESET':25,'SLEEP':24,'M0':11,'M1': 9,'M2':10}}
@@ -63,6 +92,7 @@ class rpiDRV8825Hut(object):
 
 
 	def clutch(self,ON_OFF):
+                ''' Engage or Disengage(free spinnig) the motors'''
 		self.pi.write(self.pinout['ENABLE'],ON_OFF)
                 if ON_OFF:
                         self.logger.debug("CLUTCH ON")
@@ -70,21 +100,7 @@ class rpiDRV8825Hut(object):
                         self.logger.debug("CLUTCH OFF")
 
 	def set_microsteps(self,microsteps):
-		'''
-			M2 M1 M0
-			0  0  0 Full step (2-phase excitation) with 71% current
-			0  0  1 1/2 step (1-2 phase excitation)
-			0  1  0 1/4 step (W1-2 phase excitation)
-			0  1  1 8 microsteps/step
-			1  0  0 16 microsteps/step
-			1  0  1 32 microsteps/step
-			1  1  0 32 microsteps/step
-			1  1  1 32 microsteps/step
-
-			RESET=HIGH DEVICE ENABLE
-			SLEEP=HIGH DEVICE ENABLE
-			ENABLE=LOW DEVICE ENABLE
-		'''
+		''' Set microstepping mode of the driver'''
 		microstep_table={1:{'M2':False,'M1':False,'M0':False}, \
 				 2:{'M2':False,'M1':False,'M0':True},  \
 				 4:{'M2':False,'M1':True,'M0':False},  \
@@ -104,15 +120,18 @@ class rpiDRV8825Hut(object):
 
 
         def set_dir(self,dir):
+                '''Set the direction of motion'''
 		self.pi.write(self.pinout['DIR'],dir > 0)
 
         def reset(self,ON_OFF):
+                '''Reset the driver circuit'''
                 NOT_ON_OFF=not ON_OFF
 		self.pi.write(self.pinout['RESET'], NOT_ON_OFF)
                 if ON_OFF:
                         self.logger.debug("RESET")
 
 	def sleep(self,ON_OFF):
+                '''Sleep or wake up the driver circuit'''
                 NOT_ON_OFF=not ON_OFF
 		self.pi.write(self.pinout['SLEEP'], NOT_ON_OFF)
                 if ON_OFF:
@@ -121,12 +140,15 @@ class rpiDRV8825Hut(object):
                         self.logger.debug("WAKE UP")
 
         def sync(self,position):
+                '''Set the actual internal position == position'''
                 self.motorBeta=position
 
 	def stepcounter(self,gpio, level, tick):
+                '''Callback function to update internal position counter'''
 		self.motorBeta=self.motorBeta+self.dir
 
 	def fault(self,gpio, level, tick):
+                '''Callback function to check internal driver faults'''
 		if level==1:
 			self.fault=True
                         self.logger.error("MOTOR FAULT!")
@@ -134,6 +156,7 @@ class rpiDRV8825Hut(object):
 			self.fault=False
 
         def test(self):
+                '''Test the Hut sending steps'''
                 for i in range(1600):
                         self.pi.write(self.pinout['STEP'], True)           
                         self.pi.write(self.pinout['STEP'], False)          
