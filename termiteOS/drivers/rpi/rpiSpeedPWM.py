@@ -5,25 +5,30 @@
 # Copyright (c) July 2018 Nacho Mas
 '''
 Raspberry PWM motor driver.
-INTERFACE:
-inherits several methods from rpiDRV8825Hut base class
-- betaMotor
-- pinout
-- microsteps
-- clutch()
-- reset()
-- sleep()
-- set_microsteps(microsteps)
-- sync(position)
 
-Own methods:
--setSpeed (radians/seconds)
--setRPM(RPM)
--SetPoint(setpoint)
--goto() -> absolute SetPoint
--move() -> relative SetPoint
--stop()
--isStopped()
+
+INTERFACE:
+
+        * inherits several methods from rpiDRV8825Hut base class
+                - betaMotor
+                - pinout
+                - microsteps
+                - clutch()
+                - reset()
+                - sleep()
+                - set_microsteps(microsteps)
+                - sync(position)
+
+        * Own methods:
+                - setSpeed (radians/seconds)
+                - setRPM(RPM)
+                - SetPoint(setpoint)
+                - goto() -> absolute SetPoint
+                - move() -> relative SetPoint
+                - stop()
+                - isStopped
+                - gotoEnd
+                - pos
 
 '''
 from __future__ import print_function
@@ -33,9 +38,12 @@ import pigpio
 import logging
 import threading
 import termiteOS.maths.hPID as PID
-import termiteOS.drivers.rpi.rpiDRV8825Hut as rpihut
+import termiteOS.drivers.rpi.rpiDRV8825Hat as rpihat
 
 def threaded(fn):
+    '''
+    Multithread wrapper. Used as a function decorator
+    '''
     def wrapper(*args, **kwargs):
         t1 = threading.Thread(target=fn, args=args, kwargs=kwargs)
         t1.start()
@@ -44,7 +52,13 @@ def threaded(fn):
     return wrapper
 
 #Stepper raspberry implementation
-class rpiSpeedPWM(rpihut.rpiDRV8825Hut):
+class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
+    '''
+    This class do the PWM control calling the underlying
+    pigpiod daemon. 
+
+    .. note:: Up to dates only PID control is implemented.
+    '''
     def __init__(self, driverID,microsteps,FullTurnSteps,gear=1,name='Axis', raspberry='localhost'):
         super(rpiSpeedPWM, self).__init__(raspberry,driverID,microstepping=microsteps)
         self.logger = logging.getLogger(type(self).__name__)
@@ -67,18 +81,22 @@ class rpiSpeedPWM(rpihut.rpiDRV8825Hut):
         self.logger.debug("rpiSpeedPWM Controller created")
 
     def sync(self,newposition):
+        '''Establish newposition as current possition (motorBeta)'''
         self.motorBeta=newposition
 
     def stop(self):
+        '''Not implemented'''
         #TBD
         pass
 
     def stopPWM(self):
+        '''Stop PWM generation without any check'''
         self.pi.hardware_PWM(self.STEP_PIN, 0, 0)
         self.logger.debug("STOPPED")
 
     @property
     def isStopped(self):
+        '''True if is stopped, False otherwise'''
         try:
                 PWMstop =  (self.pi.get_PWM_dutycycle(self.STEP_PIN) == 0) 
         except:
@@ -87,6 +105,7 @@ class rpiSpeedPWM(rpihut.rpiDRV8825Hut):
 
     @property
     def gotoEnd(self):
+        '''True if the axis finally arrive to destination(_SetPoint), False otherwise'''
         try:
                 PWMstop =  (self.pi.get_PWM_dutycycle(self.STEP_PIN) == 0) 
         except:
@@ -95,11 +114,13 @@ class rpiSpeedPWM(rpihut.rpiDRV8825Hut):
         return stopped
 
     def setRPM(self,rpm):
+        '''Set and start PWM to obtain rpm'''
         v=rpm*2.*math.pi/60.
         self.setSpeed(v)
         self.logger.debug("RPM %f",v)
 
     def setSpeed(self, v):
+        '''Set and start PWM to obtain radians/seconds'''
         #print("setSpeed V:", v)
         # v in radians/s    
         freq = 0
@@ -119,9 +140,11 @@ class rpiSpeedPWM(rpihut.rpiDRV8825Hut):
         return self.freq
 
     def trackSpeed(self,trackSpeed):
+        '''Set axis track speed. Track speed*timestep is add to the _SetPoint value '''
         self._trackSpeed=trackSpeed*self.gear*self.FullTurnSteps
 
     def rampUp(self,v,deltaT,out_min=-750,out_max=750):
+        '''Limit motor speed changes to avoid axis stalling'''
         deltaV=(v-self.Vold)
         self.logger.debug("RAMPUPV DELTA_V:%f V:%f oldV:%f",deltaV,v,self.Vold)
         if abs(deltaV)>=self.maxAccel*deltaT:
@@ -138,10 +161,12 @@ class rpiSpeedPWM(rpihut.rpiDRV8825Hut):
         return v
 
     def move(self,relsetpoint):
+        '''Relative movement'''
         self.logger.debug("RELATIVE MOVE TO:%f",relsetpoint)
         return self.goto(self._SetPoint+relsetpoint*self.gear*self.FullTurnSteps)
 
     def goto(self,setpoint,blocking=False):
+        '''Absolute movement'''
         self._SetPoint=setpoint*self.gear*self.FullTurnSteps
         self.logger.debug("ABSOLUTED MOVE TO:%f",setpoint)
         if blocking:
@@ -153,14 +178,19 @@ class rpiSpeedPWM(rpihut.rpiDRV8825Hut):
                 return False
 
     def SetPoint(self,setpoint):
+        '''Establish the _SetPoint value'''
         self._SetPoint=setpoint*self.gear*self.FullTurnSteps
 
     @property
     def pos(self):
+        '''Actual position (Corrected motorBeta)'''
         return self.motorBeta/(self.gear*self.FullTurnSteps)
         
     @threaded
     def run(self):
+        '''
+        The main loop. Do not exit until self.RUN is False
+        '''
         self.T = time.time()
 
         _kp=0.015*16/self.microsteps

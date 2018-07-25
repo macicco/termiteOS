@@ -28,14 +28,6 @@ termiteOS.nodes.costellations module
     :undoc-members:
     :show-inheritance:
 
-termiteOS.nodes.costellations_old module
-----------------------------------------
-
-.. automodule:: termiteOS.nodes.costellations_old
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 termiteOS.nodes.hub module
 --------------------------
 

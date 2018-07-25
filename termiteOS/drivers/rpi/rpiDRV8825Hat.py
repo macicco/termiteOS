@@ -4,27 +4,27 @@
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
 '''
-DIY DRV8825 driver  Hut interface.
+DIY DRV8825 driver  Hat interface.
 
-.. image:: schema.png
-   :width: 200px
-   :height: 100px
+.. image:: ../../../../DRV8825HAT.jpg
+   :width: 400px
    :scale: 50 %
-   :alt: alternate text
-   :align: right
+   :alt: DRV8825Hat
+   :align: center
+
 
 This board has two DRV8825 able to driver 2 motors
-See hardware termiteOS/driver/rpi/hardware
+See hardware on termiteOS/driver/rpi/hardware
 
-INTERFACE TO OTHER MODULES
-- motorBeta
-- pinout
-- microsteps
-- clutch()
-- reset()
-- sleep()
-- set_microsteps(microsteps)
-- sync(motorBeta) 
+INTERFACE TO OTHER MODULES:
+        * motorBeta
+        * pinout
+        * microsteps
+        * clutch()
+        * reset()
+        * sleep()
+        * set_microsteps(microsteps)
+        * sync(motorBeta) 
 '''
 
 #      MICROSTEPS                    
@@ -55,11 +55,11 @@ import pigpio
 import logging
 
 
-class rpiDRV8825Hut(object):
+class rpiDRV8825Hat(object):
         '''
-        This class define the PIN mapping and basic methods for the rpiDVR8825 Hut
+        This class define the PIN mapping and basic methods for the rpiDVR8825 Hat
 
-        .. note:: Posible values of driverID 0 or 1.
+        .. note:: Posible values of driverID can be 0 or 1.
         '''
 	def __init__(self,raspberry,driverID,**kwds):
                 PINOUT={0:{'STEP':13,'DIR': 5,'ENABLE':21,'FAULT': 4,'RESET':12,'SLEEP': 6,'M0':20,'M1':19,'M2':16},\
@@ -156,18 +156,18 @@ class rpiDRV8825Hut(object):
 			self.fault=False
 
         def test(self):
-                '''Test the Hut sending steps'''
+                '''Test the Hat sending steps'''
                 for i in range(1600):
                         self.pi.write(self.pinout['STEP'], True)           
                         self.pi.write(self.pinout['STEP'], False)          
 
 if __name__ == '__main__':
     raspberry='192.168.1.11'
-    m0 = rpiDRV8825Hut(raspberry,0,microstepping=8)
+    m0 = rpiDRV8825Hat(raspberry,0,microstepping=8)
     m0.test()
     m0.clutch(True)
 
-    m1 = rpiDRV8825Hut(raspberry,1)
+    m1 = rpiDRV8825Hat(raspberry,1)
     m1.test()
     m1.clutch(True)
 

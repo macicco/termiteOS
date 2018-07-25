@@ -4,6 +4,17 @@
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
 # Adapted from: https://github.com/hirschmann/pid-autotune/blob/master/pid.py
+'''
+Adapted from: https://github.com/hirschmann/pid-autotune/blob/master/pid.py
+
+.. image:: https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/PID_en.svg/971px-PID_en.svg.png
+   :width: 800px
+   :scale: 50 %
+   :alt: DRV8825Hat
+   :align: center
+
+
+'''
 from __future__ import print_function
 from time import time
 from time import sleep
@@ -12,13 +23,14 @@ import logging
 class PID(object):
     """A proportional-integral-derivative controller.
     Args:
-        sampletime (float): The interval between calc() calls.
-        kp (float): Proportional coefficient.
-        ki (float): Integral coefficient.
-        kd (float): Derivative coefficient.
-        out_min (float): Lower output limit.
-        out_max (float): Upper output limit.
-        time (function): A function which returns the current time in seconds.
+        :param sampletime (float): The min interval between update() calls.
+        :param kp (float): Proportional coefficient.
+        :param ki (float): Integral coefficient.
+        :param kd (float): Derivative coefficient.
+        :param out_min (float): Lower output limit.
+        :param out_max (float): Upper output limit.
+        :param time (function): A function which returns the current time in seconds.
+        :returns: New output
     """
 
     def __init__(self, sampletime, kp, ki, kd, out_min=float('-inf'),
@@ -49,18 +61,19 @@ class PID(object):
         self.SetPoint=0
 
     def reset(self):
+        '''Reset internal values. Forget the history'''
         self._integral = 0
         self._last_input = 0
         self._last_output = 0
         self._last_calc_timestamp = 0
 
     def update(self, input_val):
-        """Adjusts and holds the given setpoint.
+        """
+        Adjusts and holds the given setpoint.
         Args:
-            input_val (float): The input value.
-            setpoint (float): The target value.
-        Returns:
-            A value between `out_min` and `out_max`.
+            :param input_val (float): The input value.
+            :param setpoint (float): The target value. No an argument. Set self.SetPoint instead
+            :returns: A value between `out_min` and `out_max`.
         """
         setpoint=self.SetPoint
         now = self._time() * 1000

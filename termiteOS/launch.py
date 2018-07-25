@@ -3,7 +3,7 @@
 #
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
-
+'''Launch tools to run a rig. Run several daemons at once'''
 from __future__ import print_function
 from __future__ import with_statement
 
@@ -34,6 +34,7 @@ logger.addHandler(ch)
 
 
 def run_in_separate_process(func, *args, **kwds):
+    '''Run function in a separate process. To background executables'''
     global PIDs
     pid = os.fork()
     if pid > 0:
@@ -54,6 +55,7 @@ def run_in_separate_process(func, *args, **kwds):
 
 
 def launchnode(nodedict, parent_host='', parent_port=False):
+    '''Launch a node defined in dictionary. Called recursively'''
     global status, PIDs
     name = list(nodedict.keys())[0]
     elements = nodedict[name]
@@ -80,6 +82,7 @@ def launchnode(nodedict, parent_host='', parent_port=False):
 
 
 def launchmachine(yamlfile):
+    '''Launch an arragement of daemons defined in a yaml file'''
     with open(yamlfile) as y:
         doc = y.read()
     try:

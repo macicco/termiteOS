@@ -4,10 +4,10 @@ termiteOS.drivers.rpi package
 Submodules
 ----------
 
-termiteOS.drivers.rpi.rpiDRV8825Hut module
+termiteOS.drivers.rpi.rpiDRV8825Hat module
 ------------------------------------------
 
-.. automodule:: termiteOS.drivers.rpi.rpiDRV8825Hut
+.. automodule:: termiteOS.drivers.rpi.rpiDRV8825Hat
     :members:
     :undoc-members:
     :show-inheritance:

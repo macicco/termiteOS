@@ -3,9 +3,7 @@
 #
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
-'''
-node virtual class.
-'''
+
 
 from __future__ import print_function
 import time, datetime
@@ -17,6 +15,13 @@ from termiteOS.config import *
 
 
 class node(object):
+    '''
+    Node virtual class. Implements all comunication logic and basic functions.
+
+    .. note:: For the derived class: self.CMDs is the command matrix. Call addCMD() after set.
+              Commands starting with '.' work but are not showed.
+              Also calling scanCMDS() add all class methods starting with 'cmd_' as a commands.
+    '''
     def __init__(self, name, nodetype, port, parent_host, parent_port):
         #logging.basicConfig(filename=name+'.log',format='%(asctime)s %(levelname)s:'+name+' %(message)s',level=logging.DEBUG)
         logging.basicConfig(format='%(asctime)s %(levelname)s:'+name+' %(message)s',level=logging.INFO)
@@ -25,11 +30,6 @@ class node(object):
         self.nodetype = nodetype
         logging.info("%s listen CMDs on:%i",name, port)
         self.zmqcontext = zmq.Context()
-        '''
-        Command explicit matrix.
-        Commands starting with '.' work but are not showed.
-        Also scanCMD add all methods starting with 'cmd_' as a commands
-        '''
         self.CMDs={
         ".register": self.register, \
         ".deregister": self.deregister, \
@@ -79,7 +79,7 @@ class node(object):
 
     @threaded
     def zmqQueue(self):
-        '''this thread listen and process all the CMD from other nodes'''
+        '''this thread listen and process all the CMD from other nodes. **Run in background** '''
         while self.RUN:
             if True:
                 try:
@@ -117,6 +117,12 @@ class node(object):
         return
 
     def cmd(self, cmd):
+        '''Execute the cmd command
+
+           :param cmd: string contain the command with his parameters
+
+           :returns: A message containing the answer
+        '''
         for c in self.CMDs.keys():
             l = len(c)
             if (cmd[:l] == c):
@@ -127,14 +133,17 @@ class node(object):
         return self.cmddummy(cmd)
 
     def cmddummy(self, arg):
+        '''Default cmd to execute when not knowed cmd match. Do nothing'''
         logging.info("DUMMY CMD:%s", arg)
         return
 
     def cmd_help(self, arg):
+        '''Print help text. Do nothing. Normaly overloaded by a child class'''
         string = "Base class. Do nothing"
         return string
 
     def cmd_ls(self,arg):
+        '''list the commands'''
         visibleCMDs = [ c for c in self.CMDs.keys() if not c.startswith('.')]
         string = "node:"+self.nodename+". TYPE:"+self.nodetype+"\n"
         string = string +"\tAvailable commands:\n"
@@ -143,10 +152,16 @@ class node(object):
         return string
 
     def cmd_nodes(self,arg):
+        '''
+        list the children nodes:
+
+        :returns: a python list with all the children names
+        '''
         mod=[m for m in self.nodes.keys()]
         return mod
 
     def cmd_tree(self, arg):
+        '''Print all node and children availabled commands'''
         r=[]
         for m in self.nodes.keys():
                 a=(m+' ls').encode("utf8")
@@ -156,6 +171,7 @@ class node(object):
 
 
     def exenodeCmd(self, arg):
+        '''Execute the command in the children'''
         s = arg.split()
         if len(s) == 0:
             return 0
@@ -198,6 +214,7 @@ class node(object):
 
 
     def deregister(self, arg):
+        '''Close the zmq socket and deleted node from the children list'''
         node = arg.strip()
         try:
             self.nodes[node]['CMDsocket'].close()
@@ -208,8 +225,9 @@ class node(object):
         return node+" UNREGISTED"
 
     def end(self,arg=''):
+        '''End all'''
         logging.info("ENDING node: %s",self.nodename)
-        '''end all childrennodes'''
+        #end all childrennodes
         for node in self.nodes.keys():
             logging.info("ASK TO END: %s", node)
             cmd = str('.end')
@@ -223,7 +241,7 @@ class node(object):
             finally:
                 socket.close()
 
-        '''Unregisting myshelf if I have parent'''
+        #Unregisting myshelf if I have parent
         if self.hasParent:
             try:
                 logging.info("Ask parent to unregister")
@@ -236,7 +254,7 @@ class node(object):
             finally:
                 self.ParentCmdSocket.close()
 
-        '''Now kill myshelf'''
+        #Now kill myshelf
         self.RUN = False
         self.myCmdSocket.close()
         logging.info("Term zmqcontext")
@@ -258,6 +276,7 @@ class node(object):
         logging.info("MAIN LOOP RUN ENDED")
 
     def signal_handler(self, signal, frame):
+        '''Capture Ctril+C key'''
         logging.info('You pressed Ctrl+C!')
         self.end()
         exit()
@@ -269,6 +288,9 @@ class node(object):
         return True
 
     def HasChildren(self):
+        '''
+        :Return: **True** if the node has childrens. **False** otherwise
+        '''
         if len(self.nodes.keys())>0:
                 return True
         else:

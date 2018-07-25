@@ -13,11 +13,11 @@ import ephem
 import json
 import math
 from termiteOS.config import *
-import termiteOS.moduleSkull as moduleSkull
+import termiteOS.nodeSkull as nodeSkull
 import termiteOS.astronomy.tle as tle
 
 
-class costellation(moduleSkull.module):
+class costellation(nodeSkull.node):
         def __init__(self, name, port, parent_host, parent_port):
                 super(costellation, self).__init__(name, 'costellation', port, parent_host, parent_port)
 		CMDs={ 

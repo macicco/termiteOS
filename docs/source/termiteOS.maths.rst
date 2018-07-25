@@ -12,14 +12,6 @@ termiteOS.maths.hPID module
     :undoc-members:
     :show-inheritance:
 
-termiteOS.maths.trapeze module
-------------------------------
-
-.. automodule:: termiteOS.maths.trapeze
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------

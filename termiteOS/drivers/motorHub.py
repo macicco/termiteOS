@@ -10,6 +10,18 @@ from termiteOS.drivers.rpi import rpiSpeedPWM as AxisDriver
 
 
 class motorHub:
+    '''
+       Orchestate several motors.
+
+       .. image:: ../../../../RPI_DRV8825HAT.jpg
+                :width: 400px
+                :scale: 50 %
+                :alt: RPI_DRV8825HAT
+                :align: center
+
+
+       .. note:: Up to date only rpiSpeedPWM driver is implemented
+    '''
     def __init__(self,FullTurnSteps=200,microstepping=32,raspberry='localhost'):
         self.logger = logging.getLogger(type(self).__name__)
         self.axis1 = AxisDriver.rpiSpeedPWM(0,microstepping,FullTurnSteps,name='RA',raspberry=raspberry,gear=100)

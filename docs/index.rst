@@ -3,20 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to termiteOS's documentation!
+TermiteOS documentation
 =====================================
-
-Contents:
 
 .. toctree::
    :maxdepth: 2
 
-.. image:: termiteOS.jpg
-   :width: 300px
-   :height: 300px
-   :scale: 50 %
-   :alt: termiteOS
-   :align: center
 
 Indices and tables
 ==================
@@ -25,4 +17,7 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-logo by toyto www.toyto.tv
+.. include:: ../README.rst
+
+
+
