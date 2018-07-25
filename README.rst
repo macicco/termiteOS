@@ -4,7 +4,7 @@ termiteOS
 .. image:: https://travis-ci.org/nachoplus/termiteOS.svg
    :target: https://travis-ci.org/nachoplus/termiteOS
 
-.. image:: docs/logo.jpg
+.. image:: docs/logo.png
    :width: 400px
    :scale: 50 %
    :alt: logo
