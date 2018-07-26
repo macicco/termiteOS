@@ -4,13 +4,7 @@ termiteOS
 .. image:: https://travis-ci.org/nachoplus/termiteOS.svg
    :target: https://travis-ci.org/nachoplus/termiteOS
 
-.. image:: docs/logo.png
-   :width: 400px
-   :scale: 50 %
-   :alt: logo
-   :align: center
-
-A telescope Operating System base on zmq and Protocol Buffers. 
+A telescope Operating System base on zmq and Protocol Buffers. Documentation https://nachoplus.github.io/termiteOS/index.html
    
 
 Introduction
