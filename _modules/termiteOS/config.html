@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.config &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.config</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for termiteOS.config</h1><div class="highlight"><pre>
+<span class="ch">#!/usr/bin/python</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="kn">from</span> <span class="nn">configobj</span> <span class="k">import</span> <span class="n">ConfigObj</span>
+<span class="kn">from</span> <span class="nn">validate</span> <span class="k">import</span> <span class="n">Validator</span>
+
+
+<div class="viewcode-block" id="saveConfig"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.config.saveConfig">[docs]</a><span class="k">def</span> <span class="nf">saveConfig</span><span class="p">():</span>
+    <span class="c1">#TBD</span>
+    <span class="n">Config</span> <span class="o">=</span> <span class="n">ConfigObj</span><span class="p">()</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+    <span class="n">Config</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/config.ini&quot;</span>
+
+    <span class="c1">#configuration options</span>
+    <span class="n">gear</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">gear</span><span class="p">[</span><span class="s1">&#39;maxPPS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1024</span>
+    <span class="n">gear</span><span class="p">[</span><span class="s1">&#39;motorStepsRevolution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
+    <span class="n">gear</span><span class="p">[</span><span class="s1">&#39;microstep&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="n">gear</span><span class="p">[</span><span class="s1">&#39;corona&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">gear</span><span class="p">[</span><span class="s1">&#39;pinion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">300</span>
+
+    <span class="n">Config</span><span class="p">[</span><span class="s1">&#39;gear&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gear</span>
+
+    <span class="n">here</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">here</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;40.440154&quot;</span>
+    <span class="n">here</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;-3.668747&quot;</span>
+    <span class="n">here</span><span class="p">[</span><span class="s1">&#39;horizon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;10:00:00&quot;</span>
+    <span class="n">here</span><span class="p">[</span><span class="s1">&#39;elev&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">700</span>
+    <span class="n">here</span><span class="p">[</span><span class="s1">&#39;temp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span><span class="n">e0</span>
+    <span class="n">Config</span><span class="p">[</span><span class="s1">&#39;observer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">here</span>
+
+    <span class="n">servers</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">servers</span><span class="p">[</span><span class="s1">&#39;tleurl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;http://www.idb.com.au/files/TLE_DATA/ALL_TLE.ZIP&quot;</span>
+    <span class="n">servers</span><span class="p">[</span><span class="s1">&#39;zmqStreamPort&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7556</span>
+    <span class="n">servers</span><span class="p">[</span><span class="s1">&#39;zmqCmdPort&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7557</span>
+    <span class="n">servers</span><span class="p">[</span><span class="s1">&#39;socketsPort&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7999</span>
+    <span class="n">servers</span><span class="p">[</span><span class="s1">&#39;httpPort&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7000</span>
+    <span class="n">Config</span><span class="p">[</span><span class="s1">&#39;servers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">servers</span>
+
+    <span class="n">Config</span><span class="o">.</span><span class="n">write</span><span class="p">()</span></div>
+
+
+<span class="c1">#Ancillary functions</span>
+
+
+<div class="viewcode-block" id="mogrify"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.config.mogrify">[docs]</a><span class="k">def</span> <span class="nf">mogrify</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; json encode the message and prepend the topic &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">topic</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="demogrify"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.config.demogrify">[docs]</a><span class="k">def</span> <span class="nf">demogrify</span><span class="p">(</span><span class="n">topicmsg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Inverse of mogrify() &quot;&quot;&quot;</span>
+    <span class="n">json0</span> <span class="o">=</span> <span class="n">topicmsg</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">)</span>
+    <span class="n">topic</span> <span class="o">=</span> <span class="n">topicmsg</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">json0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">topicmsg</span><span class="p">[</span><span class="n">json0</span><span class="p">:])</span>
+    <span class="k">return</span> <span class="n">topic</span><span class="p">,</span> <span class="n">msg</span></div>
+
+
+<div class="viewcode-block" id="threaded"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.config.threaded">[docs]</a><span class="k">def</span> <span class="nf">threaded</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">t1</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+<div class="viewcode-block" id="group"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.config.group">[docs]</a><span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">),</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
+
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">configFile</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/config.ini&quot;</span>
+<span class="n">configFileSpec</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/config.ini.spec&quot;</span>
+<span class="n">Config</span> <span class="o">=</span> <span class="n">ConfigObj</span><span class="p">(</span><span class="n">configFile</span><span class="p">,</span> <span class="n">configspec</span><span class="o">=</span><span class="n">configFileSpec</span><span class="p">)</span>
+<span class="n">val</span> <span class="o">=</span> <span class="n">Validator</span><span class="p">()</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">test</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Config OK&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Config wrong!!!&#39;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Check that &#39;</span> <span class="o">+</span> <span class="n">configFile</span> <span class="o">+</span> <span class="s2">&quot; match the rules in &quot;</span> <span class="o">+</span> <span class="n">configFileSpec</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">gear</span> <span class="o">=</span> <span class="n">Config</span><span class="p">[</span><span class="s1">&#39;gear&#39;</span><span class="p">]</span>
+<span class="n">here</span> <span class="o">=</span> <span class="n">Config</span><span class="p">[</span><span class="s1">&#39;here&#39;</span><span class="p">]</span>
+<span class="n">servers</span> <span class="o">=</span> <span class="n">Config</span><span class="p">[</span><span class="s1">&#39;servers&#39;</span><span class="p">]</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">Config</span><span class="p">[</span><span class="s1">&#39;engine&#39;</span><span class="p">]</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">print(here)</span>
+<span class="sd">print(gear)</span>
+<span class="sd">print(servers)</span>
+<span class="sd">print(engine)</span>
+<span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

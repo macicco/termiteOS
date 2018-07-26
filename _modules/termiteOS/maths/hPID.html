@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.maths.hPID &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../../../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../../../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.maths.hPID</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for termiteOS.maths.hPID</h1><div class="highlight"><pre>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: iso-8859-15 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># termiteOS</span>
+<span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
+<span class="c1"># Adapted from: https://github.com/hirschmann/pid-autotune/blob/master/pid.py</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Adapted from: https://github.com/hirschmann/pid-autotune/blob/master/pid.py</span>
+
+<span class="sd">.. image:: https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/PID_en.svg/971px-PID_en.svg.png</span>
+<span class="sd">   :width: 800px</span>
+<span class="sd">   :scale: 50 %</span>
+<span class="sd">   :alt: DRV8825Hat</span>
+<span class="sd">   :align: center</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<div class="viewcode-block" id="PID"><a class="viewcode-back" href="../../../source/termiteOS.maths.html#termiteOS.maths.hPID.PID">[docs]</a><span class="k">class</span> <span class="nc">PID</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A proportional-integral-derivative controller.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        :param sampletime (float): The min interval between update() calls.</span>
+<span class="sd">        :param kp (float): Proportional coefficient.</span>
+<span class="sd">        :param ki (float): Integral coefficient.</span>
+<span class="sd">        :param kd (float): Derivative coefficient.</span>
+<span class="sd">        :param out_min (float): Lower output limit.</span>
+<span class="sd">        :param out_max (float): Upper output limit.</span>
+<span class="sd">        :param time (function): A function which returns the current time in seconds.</span>
+<span class="sd">        :returns: New output</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampletime</span><span class="p">,</span> <span class="n">kp</span><span class="p">,</span> <span class="n">ki</span><span class="p">,</span> <span class="n">kd</span><span class="p">,</span> <span class="n">out_min</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">),</span>
+                 <span class="n">out_max</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span> <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">kp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;kp must be specified&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ki</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;ki must be specified&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;kd must be specified&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sampletime</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;sampletime must be greater than 0&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">out_min</span> <span class="o">&gt;=</span> <span class="n">out_max</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;out_min must be less than out_max&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Kp</span> <span class="o">=</span> <span class="n">kp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Ki</span> <span class="o">=</span> <span class="n">ki</span> <span class="o">*</span> <span class="n">sampletime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Kd</span> <span class="o">=</span> <span class="n">kd</span> <span class="o">/</span> <span class="n">sampletime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sampletime</span> <span class="o">=</span> <span class="n">sampletime</span> <span class="o">*</span> <span class="mi">1000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_min</span> <span class="o">=</span> <span class="n">out_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_max</span> <span class="o">=</span> <span class="n">out_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_integral</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_input</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_calc_timestamp</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_time</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SetPoint</span><span class="o">=</span><span class="mi">0</span>
+
+<div class="viewcode-block" id="PID.reset"><a class="viewcode-back" href="../../../source/termiteOS.maths.html#termiteOS.maths.hPID.PID.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Reset internal values. Forget the history&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_integral</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_input</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_calc_timestamp</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="PID.update"><a class="viewcode-back" href="../../../source/termiteOS.maths.html#termiteOS.maths.hPID.PID.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_val</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adjusts and holds the given setpoint.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            :param input_val (float): The input value.</span>
+<span class="sd">            :param setpoint (float): The target value. No an argument. Set self.SetPoint instead</span>
+<span class="sd">            :returns: A value between `out_min` and `out_max`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">setpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SetPoint</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span>
+
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_calc_timestamp</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampletime</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span>
+
+        <span class="c1"># Compute all the working error variables</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">setpoint</span> <span class="o">-</span> <span class="n">input_val</span>
+        <span class="n">input_diff</span> <span class="o">=</span> <span class="n">input_val</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_input</span>
+
+        <span class="c1"># In order to prevent windup, only integrate if the process is not saturated</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_max</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_min</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_integral</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ki</span> <span class="o">*</span> <span class="n">error</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_integral</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_integral</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_max</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_integral</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_integral</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_min</span><span class="p">)</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Kp</span> <span class="o">*</span> <span class="n">error</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_integral</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Kd</span> <span class="o">*</span> <span class="n">input_diff</span><span class="p">)</span>
+
+        <span class="c1"># Compute PID Output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">d</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_max</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_min</span><span class="p">)</span>
+
+        <span class="c1"># Log some debug info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;P:{0} I:{1} D:{2} output:{3}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span><span class="p">))</span>
+
+        <span class="c1"># Remember some variables for next time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_input</span> <span class="o">=</span> <span class="n">input_val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_calc_timestamp</span> <span class="o">=</span> <span class="n">now</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_output</span></div></div>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+        <span class="n">END</span><span class="o">=</span><span class="mi">50</span>
+        <span class="n">feedback</span><span class="o">=</span><span class="mi">0</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="n">PID</span><span class="p">(</span><span class="n">sampletime</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span><span class="n">kp</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span><span class="n">ki</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">kd</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">END</span><span class="p">):</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">pid</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">feedback</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">feedback</span> <span class="o">+=</span> <span class="p">(</span><span class="n">output</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">i</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">&gt;</span><span class="mi">9</span><span class="p">:</span>
+                <span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span><span class="p">,</span><span class="n">feedback</span><span class="p">)</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.drivers.rpi.rpiDRV8825Hat &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../../../../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../../../../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.drivers.rpi.rpiDRV8825Hat</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for termiteOS.drivers.rpi.rpiDRV8825Hat</h1><div class="highlight"><pre>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: iso-8859-15 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># termiteOS</span>
+<span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">DIY DRV8825 driver  Hat interface.</span>
+
+<span class="sd">.. image:: ../../../../DRV8825HAT.jpg</span>
+<span class="sd">   :width: 400px</span>
+<span class="sd">   :scale: 50 %</span>
+<span class="sd">   :alt: DRV8825Hat</span>
+<span class="sd">   :align: center</span>
+
+
+<span class="sd">This board has two DRV8825 able to driver 2 motors</span>
+<span class="sd">See hardware on termiteOS/driver/rpi/hardware</span>
+
+<span class="sd">INTERFACE TO OTHER MODULES:</span>
+<span class="sd">        * motorBeta</span>
+<span class="sd">        * pinout</span>
+<span class="sd">        * microsteps</span>
+<span class="sd">        * clutch()</span>
+<span class="sd">        * reset()</span>
+<span class="sd">        * sleep()</span>
+<span class="sd">        * set_microsteps(microsteps)</span>
+<span class="sd">        * sync(motorBeta) </span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1">#      MICROSTEPS                    </span>
+<span class="c1">#		        M2 M1 M0</span>
+<span class="c1">#			0  0  0 Full step (2-phase excitation) with 71% current</span>
+<span class="c1">#			0  0  1 1/2 step (1-2 phase excitation)</span>
+<span class="c1">#			0  1  0 1/4 step (W1-2 phase excitation)</span>
+<span class="c1">#			0  1  1 8 microsteps/step</span>
+<span class="c1">#			1  0  0 16 microsteps/step</span>
+<span class="c1">#			1  0  1 32 microsteps/step</span>
+<span class="c1">#			1  1  0 32 microsteps/step</span>
+<span class="c1">#			1  1  1 32 microsteps/step</span>
+<span class="c1">#</span>
+<span class="c1">#			RESET=HIGH DEVICE ENABLE</span>
+<span class="c1">#			SLEEP=HIGH DEVICE ENABLE</span>
+<span class="c1">#			ENABLE=LOW DEVICE ENABLE</span>
+<span class="c1">#</span>
+<span class="c1">#      RASPBERRY B+ PWM PINOUT:</span>
+<span class="c1">#			12  PWM channel 0  All models but A and B</span>
+<span class="c1">#			13  PWM channel 1  All models but A and B</span>
+<span class="c1">#			18  PWM channel 0  All models</span>
+<span class="c1">#			19  PWM channel 1  All models but A and B</span>
+<span class="c1">#			CHOSE DIFERENT CHANNELS FOR EACH MOTOR !!</span>
+
+
+
+<span class="kn">import</span> <span class="nn">pigpio</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+
+<div class="viewcode-block" id="rpiDRV8825Hat"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat">[docs]</a><span class="k">class</span> <span class="nc">rpiDRV8825Hat</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This class define the PIN mapping and basic methods for the rpiDVR8825 Hat</span>
+
+<span class="sd">        .. note:: Posible values of driverID can be 0 or 1.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">raspberry</span><span class="p">,</span><span class="n">driverID</span><span class="p">,</span><span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+                <span class="n">PINOUT</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:{</span><span class="s1">&#39;STEP&#39;</span><span class="p">:</span><span class="mi">13</span><span class="p">,</span><span class="s1">&#39;DIR&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span><span class="s1">&#39;ENABLE&#39;</span><span class="p">:</span><span class="mi">21</span><span class="p">,</span><span class="s1">&#39;FAULT&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span><span class="s1">&#39;RESET&#39;</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span><span class="s1">&#39;SLEEP&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="mi">19</span><span class="p">,</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="mi">16</span><span class="p">},</span>\
+                        <span class="mi">1</span><span class="p">:{</span><span class="s1">&#39;STEP&#39;</span><span class="p">:</span><span class="mi">18</span><span class="p">,</span><span class="s1">&#39;DIR&#39;</span><span class="p">:</span><span class="mi">22</span><span class="p">,</span><span class="s1">&#39;ENABLE&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span><span class="s1">&#39;FAULT&#39;</span><span class="p">:</span><span class="mi">17</span><span class="p">,</span><span class="s1">&#39;RESET&#39;</span><span class="p">:</span><span class="mi">25</span><span class="p">,</span><span class="s1">&#39;SLEEP&#39;</span><span class="p">:</span><span class="mi">24</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="mi">11</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">}}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="o">=</span><span class="n">PINOUT</span><span class="p">[</span><span class="n">driverID</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">=</span><span class="n">pigpio</span><span class="o">.</span><span class="n">pi</span><span class="p">(</span><span class="n">raspberry</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+		<span class="n">pi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span>
+		<span class="n">pi</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;STEP&#39;</span><span class="p">],</span> <span class="n">pigpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">)</span>
+		<span class="n">pi</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;DIR&#39;</span><span class="p">],</span> <span class="n">pigpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">)</span>
+		<span class="n">pi</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;ENABLE&#39;</span><span class="p">],</span> <span class="n">pigpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">)</span>
+		<span class="n">pi</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;M2&#39;</span><span class="p">],</span> <span class="n">pigpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">)</span>
+		<span class="n">pi</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;M1&#39;</span><span class="p">],</span> <span class="n">pigpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">)</span>
+		<span class="n">pi</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;M0&#39;</span><span class="p">],</span> <span class="n">pigpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">)</span>
+		<span class="n">pi</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;RESET&#39;</span><span class="p">],</span> <span class="n">pigpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">)</span>
+		<span class="n">pi</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;SLEEP&#39;</span><span class="p">],</span> <span class="n">pigpio</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">)</span>
+		<span class="n">pi</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;FAULT&#39;</span><span class="p">],</span> <span class="n">pigpio</span><span class="o">.</span><span class="n">INPUT</span><span class="p">)</span>
+		<span class="n">cb1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;STEP&#39;</span><span class="p">],</span> <span class="n">pigpio</span><span class="o">.</span><span class="n">RISING_EDGE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stepcounter</span><span class="p">)</span>
+		<span class="n">cb2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;FAULT&#39;</span><span class="p">],</span> <span class="n">pigpio</span><span class="o">.</span><span class="n">EITHER_EDGE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fault</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">maxPPS</span> <span class="o">=</span> <span class="mi">200000</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="o">=</span><span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">motorBeta</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="s1">&#39;microstepping&#39;</span> <span class="ow">in</span> <span class="n">kwds</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_microsteps</span><span class="p">(</span><span class="n">kwds</span><span class="p">[</span><span class="s1">&#39;microstepping&#39;</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_microsteps</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">clutch</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="rpiDRV8825Hat.clutch"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.clutch">[docs]</a>	<span class="k">def</span> <span class="nf">clutch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ON_OFF</span><span class="p">):</span>
+                <span class="sd">&#39;&#39;&#39; Engage or Disengage(free spinnig) the motors&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;ENABLE&#39;</span><span class="p">],</span><span class="n">ON_OFF</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ON_OFF</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;CLUTCH ON&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;CLUTCH OFF&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="rpiDRV8825Hat.set_microsteps"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.set_microsteps">[docs]</a>	<span class="k">def</span> <span class="nf">set_microsteps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">microsteps</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39; Set microstepping mode of the driver&#39;&#39;&#39;</span>
+		<span class="n">microstep_table</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span> \
+				 <span class="mi">2</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>  \
+				 <span class="mi">4</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>  \
+				 <span class="mi">8</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>   \
+				 <span class="mi">16</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>  \
+				 <span class="mi">32</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">}}</span>
+                <span class="k">if</span> <span class="n">microsteps</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">microstep_table</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bad microsteps paramater&quot;</span><span class="p">,</span><span class="n">microsteps</span><span class="p">)</span>
+                        <span class="k">return</span>
+		<span class="n">msteping</span><span class="o">=</span><span class="n">microstep_table</span><span class="p">[</span><span class="n">microsteps</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">microsteps</span><span class="o">=</span><span class="n">microsteps</span>	
+		<span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;M2&#39;</span><span class="p">],</span> <span class="n">msteping</span><span class="p">[</span><span class="s1">&#39;M2&#39;</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;M1&#39;</span><span class="p">],</span> <span class="n">msteping</span><span class="p">[</span><span class="s1">&#39;M1&#39;</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;M0&#39;</span><span class="p">],</span> <span class="n">msteping</span><span class="p">[</span><span class="s1">&#39;M0&#39;</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">microsteps</span><span class="o">=</span><span class="n">microsteps</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;SET MICROSTEPS=</span><span class="si">%i</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">microsteps</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="rpiDRV8825Hat.set_dir"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.set_dir">[docs]</a>        <span class="k">def</span> <span class="nf">set_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">dir</span><span class="p">):</span>
+                <span class="sd">&#39;&#39;&#39;Set the direction of motion&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;DIR&#39;</span><span class="p">],</span><span class="nb">dir</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="rpiDRV8825Hat.reset"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.reset">[docs]</a>        <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ON_OFF</span><span class="p">):</span>
+                <span class="sd">&#39;&#39;&#39;Reset the driver circuit&#39;&#39;&#39;</span>
+                <span class="n">NOT_ON_OFF</span><span class="o">=</span><span class="ow">not</span> <span class="n">ON_OFF</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;RESET&#39;</span><span class="p">],</span> <span class="n">NOT_ON_OFF</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ON_OFF</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;RESET&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="rpiDRV8825Hat.sleep"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.sleep">[docs]</a>	<span class="k">def</span> <span class="nf">sleep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ON_OFF</span><span class="p">):</span>
+                <span class="sd">&#39;&#39;&#39;Sleep or wake up the driver circuit&#39;&#39;&#39;</span>
+                <span class="n">NOT_ON_OFF</span><span class="o">=</span><span class="ow">not</span> <span class="n">ON_OFF</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;SLEEP&#39;</span><span class="p">],</span> <span class="n">NOT_ON_OFF</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ON_OFF</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;SLEEPPING&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;WAKE UP&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="rpiDRV8825Hat.sync"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.sync">[docs]</a>        <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">position</span><span class="p">):</span>
+                <span class="sd">&#39;&#39;&#39;Set the actual internal position == position&#39;&#39;&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">motorBeta</span><span class="o">=</span><span class="n">position</span></div>
+
+<div class="viewcode-block" id="rpiDRV8825Hat.stepcounter"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.stepcounter">[docs]</a>	<span class="k">def</span> <span class="nf">stepcounter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">gpio</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">tick</span><span class="p">):</span>
+                <span class="sd">&#39;&#39;&#39;Callback function to update internal position counter&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">motorBeta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">motorBeta</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span></div>
+
+<div class="viewcode-block" id="rpiDRV8825Hat.fault"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.fault">[docs]</a>	<span class="k">def</span> <span class="nf">fault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">gpio</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">tick</span><span class="p">):</span>
+                <span class="sd">&#39;&#39;&#39;Callback function to check internal driver faults&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="n">level</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fault</span><span class="o">=</span><span class="kc">True</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;MOTOR FAULT!&quot;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fault</span><span class="o">=</span><span class="kc">False</span></div>
+
+<div class="viewcode-block" id="rpiDRV8825Hat.test"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.test">[docs]</a>        <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="sd">&#39;&#39;&#39;Test the Hat sending steps&#39;&#39;&#39;</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1600</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;STEP&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>           
+                        <span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;STEP&#39;</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>          </div></div>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">raspberry</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span>
+    <span class="n">m0</span> <span class="o">=</span> <span class="n">rpiDRV8825Hat</span><span class="p">(</span><span class="n">raspberry</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">microstepping</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">m0</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
+    <span class="n">m0</span><span class="o">.</span><span class="n">clutch</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">m1</span> <span class="o">=</span> <span class="n">rpiDRV8825Hat</span><span class="p">(</span><span class="n">raspberry</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">m1</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
+    <span class="n">m1</span><span class="o">.</span><span class="n">clutch</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

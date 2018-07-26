@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.nodes.telescope &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../../../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../../../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.nodes.telescope</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for termiteOS.nodes.telescope</h1><div class="highlight"><pre>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: iso-8859-15 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># termiteOS</span>
+<span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">ENGINE</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">ephem</span>
+<span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">termiteOS.config</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">termiteOS.drivers.motorHub</span> <span class="k">import</span> <span class="n">motorHub</span> <span class="k">as</span> <span class="n">motorHub</span>
+<span class="kn">import</span> <span class="nn">termiteOS.nodeSkull</span> <span class="k">as</span> <span class="nn">nodeSkull</span>
+
+
+<div class="viewcode-block" id="telescope"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope">[docs]</a><span class="k">class</span> <span class="nc">telescope</span><span class="p">(</span><span class="n">nodeSkull</span><span class="o">.</span><span class="n">node</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">telescope</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;telescope&#39;</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">)</span>
+        <span class="n">CMDs</span><span class="o">=</span><span class="p">{</span>
+        <span class="nb">chr</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd_ack</span><span class="p">,</span>  \
+        <span class="s2">&quot;:info&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_info</span><span class="p">,</span>  \
+          <span class="s2">&quot;:FirmWareDate&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_firware_date</span><span class="p">,</span>  \
+          <span class="s2">&quot;:GVF&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_firware_ver</span><span class="p">,</span>  \
+          <span class="s2">&quot;:V&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_firware_ver</span><span class="p">,</span>  \
+          <span class="s2">&quot;:GVD&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_firware_date</span><span class="p">,</span>  \
+          <span class="s2">&quot;:GC&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_getLocalDate</span><span class="p">,</span>  \
+          <span class="s2">&quot;:GL&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_getLocalTime</span><span class="p">,</span>  \
+          <span class="s2">&quot;:GS&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_getSideralTime</span><span class="p">,</span>  \
+          <span class="s2">&quot;:Sr&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_setTargetRA</span><span class="p">,</span>  \
+          <span class="s2">&quot;:Sd&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_setTargetDEC</span><span class="p">,</span>  \
+          <span class="s2">&quot;:MS&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_slew</span><span class="p">,</span>  \
+          <span class="s2">&quot;:Q&quot;</span><span class="p">:</span>  <span class="bp">self</span><span class="o">.</span><span class="n">cmd_stopSlew</span><span class="p">,</span>  \
+          <span class="s2">&quot;:Gr&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_getTargetRA</span><span class="p">,</span>  \
+          <span class="s2">&quot;:Gd&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_getTargetDEC</span><span class="p">,</span>  \
+          <span class="s2">&quot;:GR&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_getTelescopeRA</span><span class="p">,</span>  \
+          <span class="s2">&quot;:GD&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_getTelescopeDEC</span><span class="p">,</span>  \
+          <span class="s2">&quot;:RS&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_setMaxSlewRate</span><span class="p">,</span>  \
+          <span class="s2">&quot;:RM&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_slewRate</span><span class="p">,</span>  \
+          <span class="s2">&quot;:Me&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_pulseE</span><span class="p">,</span>  \
+          <span class="s2">&quot;:Mw&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_pulseW</span><span class="p">,</span>  \
+          <span class="s2">&quot;:Mn&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_pulseN</span><span class="p">,</span>  \
+          <span class="s2">&quot;:Ms&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_pulseS</span><span class="p">,</span>  \
+          <span class="s2">&quot;:CM&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_align2target</span><span class="p">,</span>  \
+          <span class="s2">&quot;@getObserver&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getObserver</span><span class="p">,</span> \
+          <span class="s2">&quot;@getGear&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getGear</span><span class="p">,</span> \
+          <span class="s2">&quot;@getRA&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getRA</span><span class="p">,</span> \
+          <span class="s2">&quot;@getDEC&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDEC</span><span class="p">,</span> \
+          <span class="s2">&quot;@setTrackSpeed&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">setTrackSpeed</span><span class="p">,</span> \
+          <span class="s2">&quot;@values&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">motorHub</span><span class="p">(</span><span class="n">microstepping</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span><span class="n">raspberry</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valuesmsg</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addCMDs</span><span class="p">(</span><span class="n">CMDs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observerInit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targetRA</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targetDEC</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ra</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">sidereal_time</span><span class="p">())</span>
+        <span class="n">dec</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">star</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">FixedBody</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">observer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="s1">&#39;2016.4&#39;</span><span class="p">)</span>
+        <span class="n">star</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RA</span> <span class="o">=</span> <span class="n">star</span><span class="o">.</span><span class="n">ra</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">DEC</span> <span class="o">=</span> <span class="n">star</span><span class="o">.</span><span class="n">dec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alt</span> <span class="o">=</span> <span class="n">star</span><span class="o">.</span><span class="n">alt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">az</span> <span class="o">=</span> <span class="n">star</span><span class="o">.</span><span class="n">az</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pulseStep</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="s1">&#39;00:00:01&#39;</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="s1">&#39;00:20:00&#39;</span><span class="p">)</span>
+
+        <span class="n">vRA</span> <span class="o">=</span> <span class="o">-</span><span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="s2">&quot;00:00:01&quot;</span><span class="p">)</span>
+        <span class="n">vDEC</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="s2">&quot;00:00:00&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">setTrackSpeed</span><span class="p">(</span><span class="n">vRA</span><span class="p">,</span> <span class="n">vDEC</span><span class="p">)</span>
+
+<div class="viewcode-block" id="telescope.observerInit"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.observerInit">[docs]</a>    <span class="k">def</span> <span class="nf">observerInit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observer</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">Observer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">here</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">here</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">horizon</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">here</span><span class="p">[</span><span class="s1">&#39;horizon&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">elev</span> <span class="o">=</span> <span class="n">here</span><span class="p">[</span><span class="s1">&#39;elev&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="n">here</span><span class="p">[</span><span class="s1">&#39;temp&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">compute_pressure</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Observer Lat: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="telescope.getObserver"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.getObserver">[docs]</a>    <span class="k">def</span> <span class="nf">getObserver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="n">observer</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lat&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">lat</span><span class="p">)),</span><span class="s1">&#39;lon&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">lon</span><span class="p">)),</span>\
+          <span class="s1">&#39;horizon&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">horizon</span><span class="p">)),</span>\
+          <span class="s1">&#39;elev&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">elev</span><span class="p">,</span><span class="s1">&#39;temp&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">temp</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="telescope.getGear"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.getGear">[docs]</a>    <span class="k">def</span> <span class="nf">getGear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;acceleration&#39;</span><span class="p">:</span><span class="n">engine</span><span class="p">[</span><span class="s1">&#39;acceleration&#39;</span><span class="p">],</span>\
+          <span class="s1">&#39;pointError&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">axis1</span><span class="o">.</span><span class="n">minMotorStep</span><span class="p">)),</span>\
+          <span class="s1">&#39;vmax&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">axis1</span><span class="o">.</span><span class="n">vmax</span><span class="p">)),</span>\
+          <span class="s1">&#39;FullTurnSteps&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">axis1</span><span class="o">.</span><span class="n">FullTurnSteps</span><span class="p">}</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;getGear:</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="telescope.setTrackSpeed"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.setTrackSpeed">[docs]</a>    <span class="k">def</span> <span class="nf">setTrackSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">vRA</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">vDEC</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">setTrackSpeed</span><span class="p">(</span><span class="n">vRA</span><span class="p">,</span> <span class="n">vDEC</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="telescope.altAz_of"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.altAz_of">[docs]</a>    <span class="k">def</span> <span class="nf">altAz_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">FixedBody</span><span class="p">()</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">_ra</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">_dec</span> <span class="o">=</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">alt</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">az</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="telescope.run"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+            <span class="c1">#update</span>
+            <span class="n">ra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getRA</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">dec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDEC</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="c1">#np=ephem.Equatorial(ra,dec,epoch=ephem.now()) #!bad</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">az</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">altAz_of</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            self.valuesmsg = {&#39;time&#39;:str(self.observer.date),&#39;LST&#39;:str(self.sideral),\</span>
+<span class="sd">             &#39;RA&#39;:str(self.RA),&#39;DEC&#39;:str(self.DEC),\</span>
+<span class="sd">             &#39;ALT&#39;:str(self.alt),&#39;AZ&#39;:str(self.az),\</span>
+<span class="sd">             &#39;targetRA&#39;:str(self.targetRA),&#39;targetDEC&#39;:str(self.targetDEC),\</span>
+<span class="sd">             &#39;speedRA&#39;:str(self.m.axis1.v),&#39;speedDEC&#39;:str(self.m.axis2.v),\</span>
+<span class="sd">             &#39;trackingSpeedRA&#39;:str(self.m.axis1._trackSpeed),&#39;trackingSpeedDEC&#39;:str(self.m.axis2._trackSpeed),\</span>
+<span class="sd">             &#39;slewendRA&#39;:str(self.m.axis1.gotoEnd),&#39;slewendDEC&#39;:str(self.m.axis2.gotoEnd)\</span>
+<span class="sd">             }</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="c1">#self.socketStream.send(mogrify(&#39;values&#39;,msg))</span>
+            <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alt</span> <span class="o">&lt;=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="s1">&#39;10:00:00&#39;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">cmd_stopSlew</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ALL MOTORS STOPPED&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="telescope.values"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.values">[docs]</a>    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">mogrify</span><span class="p">(</span><span class="s1">&#39;values&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">valuesmsg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="telescope.cmd_ack"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_ack">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_ack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;P&quot;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_info"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_info">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;pyLX200 driver#&quot;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_firware_date"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_firware_date">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_firware_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;01/02/2016#&quot;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_firware_ver"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_firware_ver">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_firware_ver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;LX200 Master. Python mount controler. Ver 0.1#&quot;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_getLocalDate"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_getLocalDate">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_getLocalDate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%y&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;#&#39;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_getLocalTime"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_getLocalTime">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_getLocalTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;#&#39;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_getSideralTime"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_getSideralTime">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_getSideralTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="n">sideralTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">sidereal_time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sideralTime</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;#&#39;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_getTargetRA"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_getTargetRA">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_getTargetRA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targetRA</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;#&#39;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_getTargetDEC"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_getTargetDEC">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_getTargetDEC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targetDEC</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;#&#39;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_setTargetRA"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_setTargetRA">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_setTargetRA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targetRA</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_setTargetDEC"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_setTargetDEC">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_setTargetDEC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mi">223</span><span class="p">),</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;â&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targetDEC</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_align2target"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_align2target">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_align2target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="n">ra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hourAngle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targetRA</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">sync</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetDEC</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;target#&quot;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_slew"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_slew">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_slew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="c1">#return values 0==OK, 1 == below Horizon</span>
+        <span class="n">alt</span><span class="p">,</span> <span class="n">az</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">altAz_of</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targetRA</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetDEC</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">alt</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">horizon</span> <span class="ow">and</span> <span class="n">engine</span><span class="p">[</span><span class="s1">&#39;overhorizon&#39;</span><span class="p">]:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Not slewing: Below horizon&quot;</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hourAngle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targetRA</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;slewing from:</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> to </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">RA</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEC</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetRA</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetDEC</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetDEC</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+        <span class="k">return</span> <span class="n">r</span> <span class="o">+</span> <span class="s2">&quot;#&quot;</span></div>
+
+<div class="viewcode-block" id="telescope.hourAngle"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.hourAngle">[docs]</a>    <span class="k">def</span> <span class="nf">hourAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sideral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">sidereal_time</span><span class="p">()</span>
+        <span class="n">ra_</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="n">ra</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">sideral</span><span class="p">)</span><span class="o">.</span><span class="n">znorm</span>
+        <span class="k">if</span> <span class="n">ra_</span> <span class="o">==</span> <span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="s2">&quot;24:00:00&quot;</span><span class="p">):</span>
+            <span class="n">ra</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="s2">&quot;00:00:00&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ra_</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_stopSlew"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_stopSlew">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_stopSlew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="telescope.track"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.track">[docs]</a>    <span class="k">def</span> <span class="nf">track</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">vRA</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="s2">&quot;00:00:01&quot;</span><span class="p">)</span>
+        <span class="n">vDEC</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="s2">&quot;00:00:00&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">setSpeed</span><span class="p">(</span><span class="n">vRA</span><span class="p">,</span> <span class="n">vDEC</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+    <span class="c1">#Update RA primitive</span>
+<div class="viewcode-block" id="telescope.getRA"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.getRA">[docs]</a>    <span class="k">def</span> <span class="nf">getRA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">Date</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sideral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">sidereal_time</span><span class="p">()</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">axis1</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
+        <span class="n">ra</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sideral</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)</span><span class="o">.</span><span class="n">norm</span>
+        <span class="k">if</span> <span class="n">ra</span> <span class="o">==</span> <span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="s2">&quot;24:00:00&quot;</span><span class="p">):</span>
+            <span class="n">ra</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="s2">&quot;00:00:00&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RA</span> <span class="o">=</span> <span class="n">ra</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">RA</span></div>
+
+    <span class="c1">#Update DEC primitive</span>
+<div class="viewcode-block" id="telescope.getDEC"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.getDEC">[docs]</a>    <span class="k">def</span> <span class="nf">getDEC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">axis2</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span> 
+        <span class="c1">#beta=self.m.axis2.beta</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">copysign</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">DEC</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEC</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_getTelescopeRA"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_getTelescopeRA">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_getTelescopeRA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getRA</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RA</span><span class="p">)</span>
+        <span class="n">H</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">S</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">S</span><span class="p">))</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">d</span> <span class="o">+</span> <span class="s1">&#39;#&#39;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_getTelescopeDEC"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_getTelescopeDEC">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_getTelescopeDEC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getDEC</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DEC</span><span class="p">)</span>
+        <span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">S</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+            <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">S</span><span class="p">))</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s%02d</span><span class="s2">*</span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">D</span><span class="p">),</span> <span class="n">M</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">223</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">d</span> <span class="o">+</span> <span class="s1">&#39;#&#39;</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_pulseE"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_pulseE">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_pulseE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targetRA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetRA</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">pulseStep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_slew</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_pulseW"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_pulseW">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_pulseW</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targetRA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetRA</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pulseStep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_slew</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_pulseN"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_pulseN">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_pulseN</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targetDEC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetDEC</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">pulseStep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_slew</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_pulseS"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_pulseS">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_pulseS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targetDEC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetDEC</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pulseStep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_slew</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_setMaxSlewRate"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_setMaxSlewRate">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_setMaxSlewRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="telescope.cmd_slewRate"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.cmd_slewRate">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_slewRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="telescope.end"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.telescope.end">[docs]</a>    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">telescope</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="runtelescope"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.runtelescope">[docs]</a><span class="k">def</span> <span class="nf">runtelescope</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">parent_port</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">telescope</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">end</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">runtelescope</span><span class="p">(</span><span class="s1">&#39;TELESCOPE0&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

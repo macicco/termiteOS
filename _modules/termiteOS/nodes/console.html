@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.nodes.console &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../../../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../../../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.nodes.console</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for termiteOS.nodes.console</h1><div class="highlight"><pre>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: iso-8859-15 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># termiteOS</span>
+<span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">General propose console to termiteOS</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">zmq</span>
+<span class="kn">import</span> <span class="nn">cmd</span><span class="o">,</span> <span class="nn">sys</span>
+
+
+<span class="n">context</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+
+<div class="viewcode-block" id="termiteShell"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.console.termiteShell">[docs]</a><span class="k">class</span> <span class="nc">termiteShell</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">Cmd</span><span class="p">):</span>
+        <span class="n">intro</span> <span class="o">=</span> <span class="s1">&#39;Welcome to the termiteOS shell.   Type help or ? to list commands.&#39;</span>
+
+        <span class="n">prompt</span> <span class="o">=</span> <span class="s1">&#39;(termite) &#39;</span>
+<div class="viewcode-block" id="termiteShell.do_hello"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.console.termiteShell.do_hello">[docs]</a>        <span class="k">def</span> <span class="nf">do_hello</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="s1">&#39;Say Hello&#39;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="termiteShell.do_exit"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.console.termiteShell.do_exit">[docs]</a>        <span class="k">def</span> <span class="nf">do_exit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">arg</span><span class="p">):</span>
+                <span class="s1">&#39;Say bye&#39;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bye&quot;</span><span class="p">)</span>
+                <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div></div>
+
+
+
+<div class="viewcode-block" id="console"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.console.console">[docs]</a><span class="k">def</span> <span class="nf">console</span><span class="p">(</span><span class="n">port</span><span class="p">):</span>
+        <span class="n">zmqSocket</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REQ</span><span class="p">)</span>
+        <span class="n">zmqSocket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;tcp://localhost:</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">port</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+	        <span class="n">cmd</span> <span class="o">=</span> <span class="n">raw_input</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
+	        <span class="n">zmqSocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+	        <span class="n">reply</span><span class="o">=</span><span class="n">zmqSocket</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+	        <span class="nb">print</span> <span class="n">reply</span>
+        <span class="nb">print</span> <span class="s2">&quot;Disconnecting..&quot;</span>
+        <span class="n">zmqSocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+        <span class="n">shell</span><span class="o">=</span><span class="n">termiteShell</span><span class="p">()</span>
+        <span class="n">shell</span><span class="o">.</span><span class="n">cmdloop</span><span class="p">()</span>
+
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

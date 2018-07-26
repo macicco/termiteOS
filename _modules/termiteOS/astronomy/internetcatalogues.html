@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.astronomy.internetcatalogues &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../../../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../../../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.astronomy.internetcatalogues</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for termiteOS.astronomy.internetcatalogues</h1><div class="highlight"><pre>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: iso-8859-15 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># termiteOS</span>
+<span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Internet catalogues</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">ephem</span><span class="o">,</span><span class="nn">urllib</span>
+
+<div class="viewcode-block" id="group"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.internetcatalogues.group">[docs]</a><span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">),</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
+
+<span class="c1">#Code to get TLE and Comet (format Xephem) from Minor Planet Center</span>
+
+<div class="viewcode-block" id="internetCatalogue"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.internetcatalogues.internetCatalogue">[docs]</a><span class="k">class</span> <span class="nc">internetCatalogue</span><span class="p">:</span>
+
+<div class="viewcode-block" id="internetCatalogue.comet"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.internetcatalogues.internetCatalogue.comet">[docs]</a>	<span class="k">def</span> <span class="nf">comet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">commet</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">commet</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+			<span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://www.minorplanetcenter.org/iau/Ephemerides/Comets/Soft03Cmt.txt&quot;</span>
+	        <span class="k">else</span><span class="p">:</span>
+			<span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://www.minorplanetcenter.net/iau/Ephemerides/Unusual/Soft03Unusual.txt&quot;</span>
+		<span class="n">f</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+		<span class="n">s</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+		<span class="c1">#Elimino texto sobrante</span>
+		<span class="n">s</span><span class="o">=</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">!=</span><span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span><span class="n">s</span><span class="p">)</span>
+		<span class="c1">#busco una entrada concreta</span>
+		<span class="n">CometID</span><span class="o">=</span><span class="n">name</span>
+		<span class="n">comet</span><span class="o">=</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">CometID</span><span class="p">)</span><span class="o">!=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">comet</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+		<span class="k">return</span> <span class="n">ephem</span><span class="o">.</span><span class="n">readdb</span><span class="p">(</span><span class="n">comet</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="internetCatalogue.neo"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.internetcatalogues.internetCatalogue.neo">[docs]</a>	<span class="k">def</span> <span class="nf">neo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+
+		<span class="n">f</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+		<span class="n">s</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+		<span class="c1">#Elimino texto sobrante</span>
+		<span class="n">s</span><span class="o">=</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">!=</span><span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span><span class="n">s</span><span class="p">)</span>
+		<span class="c1">#busco una entrada concreta</span>
+		<span class="n">NeoID</span><span class="o">=</span><span class="n">name</span>
+		<span class="n">Neo</span><span class="o">=</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">NeoID</span><span class="p">)</span><span class="o">!=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">Neo</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+		<span class="k">return</span> <span class="n">ephem</span><span class="o">.</span><span class="n">readdb</span><span class="p">(</span><span class="n">Neo</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+
+
+	<span class="c1">#TLE from http://celestrak.com/NORAD/elements/</span>
+<div class="viewcode-block" id="internetCatalogue.readTLE"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.internetcatalogues.internetCatalogue.readTLE">[docs]</a>	<span class="k">def</span> <span class="nf">readTLE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">url</span><span class="p">):</span>
+		<span class="n">url</span><span class="o">=</span><span class="n">url</span>
+		<span class="n">f</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+		<span class="n">data</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
+		<span class="n">s</span><span class="o">=</span><span class="n">group</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="internetCatalogue.TLE"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.internetcatalogues.internetCatalogue.TLE">[docs]</a>	<span class="k">def</span> <span class="nf">TLE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">url</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+		<span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">readTLE</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+		<span class="n">element</span><span class="o">=</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">!=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+		<span class="n">element</span><span class="o">=</span><span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="k">return</span> <span class="n">ephem</span><span class="o">.</span><span class="n">readtle</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">element</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">element</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span></div>
+		
+
+<div class="viewcode-block" id="internetCatalogue.ISS"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.internetcatalogues.internetCatalogue.ISS">[docs]</a>	<span class="k">def</span> <span class="nf">ISS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>	
+	<span class="c1">#ISS http://celestrak.com/NORAD/elements/stations.txt</span>
+		<span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://celestrak.com/NORAD/elements/stations.txt&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">TLE</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="s1">&#39;ISS&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="internetCatalogue.iridium"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.internetcatalogues.internetCatalogue.iridium">[docs]</a>	<span class="k">def</span> <span class="nf">iridium</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+		<span class="c1">#Iridium http://celestrak.com/NORAD/elements/iridium.txt</span>
+		<span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://celestrak.com/NORAD/elements/iridium.txt&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">TLE</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="s1">&#39;IRIDIUM &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="internetCatalogue.geo"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.internetcatalogues.internetCatalogue.geo">[docs]</a>	<span class="k">def</span> <span class="nf">geo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>	
+	<span class="c1">#GEOSTATIONARY http://celestrak.com/NORAD/elements/geo.txt</span>
+		<span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://celestrak.com/NORAD/elements/geo.txt&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">TLE</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">name</span><span class="p">)</span></div>
+
+<span class="c1">#Los 100 mas brillantes</span>
+<span class="c1">#http://celestrak.com/NORAD/elements/visual.txt</span>
+
+
+
+<div class="viewcode-block" id="internetCatalogue.allIridium"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.internetcatalogues.internetCatalogue.allIridium">[docs]</a>	<span class="k">def</span> <span class="nf">allIridium</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://celestrak.com/NORAD/elements/iridium.txt&quot;</span>
+		<span class="n">iri</span><span class="o">=</span><span class="p">[]</span>
+		<span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">readTLE</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;+&#39;</span><span class="p">:</span>
+				<span class="n">iri</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ephem</span><span class="o">.</span><span class="n">readtle</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">element</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">element</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+		<span class="k">return</span> <span class="n">iri</span></div>
+		
+<div class="viewcode-block" id="internetCatalogue.allTLE"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.internetcatalogues.internetCatalogue.allTLE">[docs]</a>	<span class="k">def</span> <span class="nf">allTLE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">url</span><span class="p">):</span>
+		<span class="n">TLEs</span><span class="o">=</span><span class="p">[]</span>
+		<span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">readTLE</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+				<span class="n">TLEs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ephem</span><span class="o">.</span><span class="n">readtle</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">element</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">element</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+		<span class="k">return</span> <span class="n">TLEs</span></div></div>
+
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+	
+	<span class="n">observer</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">city</span><span class="p">(</span><span class="s1">&#39;Madrid&#39;</span><span class="p">)</span>
+	<span class="n">observer</span><span class="o">.</span><span class="n">date</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">Date</span><span class="p">(</span><span class="s1">&#39;2018/07/06 20:00&#39;</span><span class="p">)</span>
+	<span class="n">i</span><span class="o">=</span><span class="n">internetCatalogue</span><span class="p">()</span>
+	<span class="n">geo</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">geo</span><span class="p">(</span><span class="s1">&#39;HISPASAT&#39;</span><span class="p">)</span>
+	<span class="n">geo</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">geo</span><span class="o">.</span><span class="n">ra</span><span class="p">,</span><span class="n">geo</span><span class="o">.</span><span class="n">dec</span><span class="p">)</span>
+
+
+
+
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

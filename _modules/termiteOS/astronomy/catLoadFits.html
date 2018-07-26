@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.astronomy.catLoadFits &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../../../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../../../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.astronomy.catLoadFits</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for termiteOS.astronomy.catLoadFits</h1><div class="highlight"><pre>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: iso-8859-15 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># termiteOS</span>
+<span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">pyfits</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span>
+<span class="kn">import</span> <span class="nn">StringIO</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+<span class="n">data_path</span><span class="o">=</span><span class="n">path</span><span class="o">+</span><span class="s1">&#39;/data/&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="catLoadFits"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits">[docs]</a><span class="k">class</span> <span class="nc">catLoadFits</span><span class="p">:</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">conf</span><span class="p">,</span><span class="n">area</span><span class="o">=</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span><span class="n">jsonfile</span><span class="o">=</span><span class="n">data_path</span><span class="o">+</span><span class="s1">&#39;catLoadFits.json&#39;</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">catalogsDefinitions</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">jsonfile</span><span class="p">))</span>
+		<span class="k">if</span> <span class="n">conf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">catalogsDefinitions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">catalogsDefinitions</span><span class="p">[</span><span class="n">conf</span><span class="p">]</span>
+			<span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;fits&#39;</span><span class="p">]</span>		
+		<span class="k">else</span><span class="p">:</span>
+			<span class="nb">print</span> <span class="p">(</span><span class="n">conf</span><span class="o">+</span><span class="s2">&quot; No Found&quot;</span><span class="p">)</span>
+			<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Available catalogues:&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">catalogsDefinitions</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">catname</span><span class="o">=</span><span class="n">conf</span>
+		<span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;fits&#39;</span><span class="p">]</span>
+		<span class="c1">#print(f[&#39;filename&#39;][:9])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">loadFits</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">],</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;HDU&#39;</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fieldsDefinition</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="catLoadFits.loadFits"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.loadFits">[docs]</a>	<span class="k">def</span> <span class="nf">loadFits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">table</span><span class="p">):</span>
+		<span class="n">hdulist</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+		<span class="n">hdulist</span><span class="p">[</span><span class="n">table</span><span class="p">]</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s1">&#39;silentfix&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="n">hdulist</span><span class="p">[</span><span class="n">table</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fits_dt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">descr</span></div>
+
+
+<div class="viewcode-block" id="catLoadFits.findtype"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.findtype">[docs]</a>	<span class="k">def</span> <span class="nf">findtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">varname</span><span class="p">):</span>
+		<span class="n">i</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span>
+		<span class="n">fmt</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+		<span class="n">a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">aa</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">dt</span><span class="o">=</span><span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fits_dt</span> <span class="k">if</span> <span class="n">varname</span> <span class="ow">in</span> <span class="n">item</span><span class="p">]</span> 
+		<span class="k">if</span> <span class="n">fmt</span><span class="o">==</span><span class="s1">&#39;char&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="s1">&#39;S50&#39;</span>		
+		<span class="k">if</span> <span class="n">fmt</span><span class="o">==</span><span class="s1">&#39;long&#39;</span> <span class="ow">or</span> <span class="n">fmt</span><span class="o">==</span><span class="s1">&#39;int&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="s1">&#39;i8&#39;</span>		
+		<span class="k">if</span> <span class="n">fmt</span><span class="o">==</span><span class="s1">&#39;float&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="s1">&#39;f8&#39;</span>		
+		<span class="k">if</span> <span class="n">fmt</span><span class="o">==</span><span class="s1">&#39;double&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="s1">&#39;f16&#39;</span>
+		<span class="k">if</span> <span class="n">a</span><span class="o">==</span><span class="s1">&#39;A&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">dt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">a</span><span class="o">==</span><span class="s1">&#39;F&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="s2">&quot;f8&quot;</span>
+		<span class="k">if</span> <span class="n">a</span><span class="o">==</span><span class="s1">&#39;D&#39;</span> <span class="ow">or</span> <span class="n">a</span><span class="o">==</span><span class="s1">&#39;E&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="s2">&quot;f16&quot;</span>
+		<span class="k">if</span> <span class="n">a</span><span class="o">==</span><span class="s1">&#39;I&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="s2">&quot;i8&quot;</span>
+		<span class="k">if</span> <span class="n">aa</span><span class="o">==</span><span class="s1">&#39;A&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="s2">&quot;S&quot;</span><span class="o">+</span><span class="n">fmt</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">return</span> <span class="s1">&#39;S50&#39;</span>		</div>
+
+<div class="viewcode-block" id="catLoadFits.fieldsDefinition"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.fieldsDefinition">[docs]</a>	<span class="k">def</span> <span class="nf">fieldsDefinition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">if</span> <span class="s1">&#39;RAfields&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">RAfields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;RAfields&#39;</span><span class="p">]</span>
+			<span class="n">DECfields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;DECfields&#39;</span><span class="p">]</span>
+			<span class="n">rad</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;rad&#39;</span><span class="p">]</span>
+			<span class="n">fieldsname</span><span class="o">=</span><span class="s1">&#39;RA,DEC&#39;</span>
+			<span class="n">fieldsformat</span> <span class="o">=</span> <span class="s1">&#39;f8, f8&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">RAfields</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+				<span class="n">RA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">RAfields</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>		
+			<span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">RAfields</span><span class="p">)</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+				<span class="n">RAh</span><span class="p">,</span><span class="n">RAm</span><span class="o">=</span><span class="n">RAfields</span>
+				<span class="n">RA</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">RAh</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">RAm</span><span class="p">]</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span><span class="o">*</span><span class="mi">15</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">RAh</span><span class="p">,</span><span class="n">RAm</span><span class="p">,</span><span class="n">RAs</span><span class="o">=</span><span class="n">RAfields</span>
+				<span class="n">RA</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">RAh</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">RAm</span><span class="p">]</span><span class="o">/</span><span class="mf">60.</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">RAs</span><span class="p">]</span><span class="o">/</span><span class="mf">3600.</span><span class="p">)</span><span class="o">*</span><span class="mi">15</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">DECfields</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+				<span class="n">DEC</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">DECfields</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>		
+			<span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">DECfields</span><span class="p">)</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+				<span class="n">DEsign</span><span class="p">,</span><span class="n">DEd</span><span class="p">,</span><span class="n">DEm</span><span class="o">=</span><span class="n">DECfields</span>
+				<span class="n">DEC</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">DEsign</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">DEd</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">DEm</span><span class="p">]</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">DEsign</span><span class="p">,</span><span class="n">DEd</span><span class="p">,</span><span class="n">DEm</span><span class="p">,</span><span class="n">DEs</span><span class="o">=</span><span class="n">DECfields</span>
+				<span class="n">DEC</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">DEsign</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">DEd</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">DEm</span><span class="p">]</span><span class="o">/</span><span class="mf">60.</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">DEs</span><span class="p">]</span><span class="o">/</span><span class="mf">3600.</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">rad</span><span class="p">:</span>
+				<span class="n">RA</span><span class="o">=</span><span class="n">RA</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">pi</span>
+				<span class="n">DEC</span><span class="o">=</span><span class="n">DEC</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">pi</span>
+
+			<span class="n">RAmax</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">RA</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span>
+			<span class="n">RAmin</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">RA</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span>
+			<span class="n">DECmax</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">DEC</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span>
+			<span class="n">DECmin</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">DEC</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coverage</span><span class="o">=</span><span class="p">((</span><span class="n">RAmin</span><span class="p">,</span><span class="n">DECmin</span><span class="p">),(</span><span class="n">RAmax</span><span class="p">,</span><span class="n">DECmax</span><span class="p">))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">numrec</span><span class="o">=</span><span class="n">RA</span><span class="o">.</span><span class="n">size</span>
+			<span class="n">d</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">RA</span><span class="p">,</span><span class="n">DEC</span><span class="p">))</span>
+			<span class="n">dt</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;RA&#39;</span><span class="p">,</span><span class="s1">&#39;f8&#39;</span><span class="p">),(</span><span class="s1">&#39;DEC&#39;</span><span class="p">,</span><span class="s1">&#39;f8&#39;</span><span class="p">)]</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">fieldsname</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+			<span class="n">fieldsformat</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+			<span class="n">dt</span><span class="o">=</span><span class="p">[]</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;prop&#39;</span><span class="p">]</span>
+		<span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+			<span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">descr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+				<span class="n">dd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">p</span><span class="p">])</span>
+
+				<span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span><span class="n">datatype</span><span class="p">))</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="n">d</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">d</span><span class="p">,</span><span class="n">dd</span><span class="p">))</span>
+					<span class="n">fieldsname</span> <span class="o">+=</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="n">key</span>
+					<span class="n">fieldsformat</span> <span class="o">+=</span> <span class="s1">&#39;,&#39;</span><span class="o">+</span><span class="n">datatype</span>
+
+				<span class="k">except</span><span class="p">:</span>
+					<span class="n">fieldsname</span> <span class="o">=</span> <span class="n">key</span>
+					<span class="n">fieldsformat</span> <span class="o">=</span> <span class="n">datatype</span>
+					<span class="n">d</span><span class="o">=</span><span class="n">dd</span>
+		<span class="n">fnames</span><span class="o">=</span><span class="n">fieldsname</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+		<span class="n">fformat</span><span class="o">=</span><span class="n">fieldsformat</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">records</span><span class="o">.</span><span class="n">fromarrays</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">names</span><span class="o">=</span><span class="n">fnames</span><span class="p">,</span><span class="n">formats</span> <span class="o">=</span> <span class="n">fformat</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">IDs</span><span class="o">=</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">IDs</span><span class="o">=</span><span class="kc">False</span></div>
+
+<div class="viewcode-block" id="catLoadFits.sanitize"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.sanitize">[docs]</a>	<span class="k">def</span> <span class="nf">sanitize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">array</span><span class="p">):</span>
+		<span class="n">dt</span><span class="o">=</span><span class="n">array</span><span class="o">.</span><span class="n">dtype</span>
+		<span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">descr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;&lt;i4&#39;</span><span class="p">:</span>
+			<span class="n">d</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;1&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">array</span><span class="p">]</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SANITIZE&quot;</span><span class="p">,</span><span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">descr</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">array</span></div>
+		
+<div class="viewcode-block" id="catLoadFits.search"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.search">[docs]</a>	<span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">IDs</span><span class="p">:</span>
+			<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;No field </span><span class="se">\&#39;</span><span class="s2">name</span><span class="se">\&#39;</span><span class="s2"> in prop dictionary&quot;</span><span class="p">)</span>
+			<span class="k">return</span> <span class="kc">None</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">IDs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="n">s</span><span class="o">=</span><span class="kc">None</span>
+		<span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="catLoadFits.filter"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.filter">[docs]</a>	<span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,((</span><span class="n">ra0</span><span class="p">,</span><span class="n">dec0</span><span class="p">),(</span><span class="n">ra1</span><span class="p">,</span><span class="n">dec1</span><span class="p">))</span><span class="o">=</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">90</span><span class="p">),(</span><span class="mi">360</span><span class="p">,</span><span class="mi">90</span><span class="p">)),</span><span class="n">mag</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+		<span class="n">dt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">.</span><span class="n">dtype</span>
+		<span class="n">s</span><span class="o">=</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;RA&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">ra0</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;RA&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="n">ra1</span><span class="p">)</span> <span class="ow">and</span>  <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;DEC&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">dec0</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;DEC&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="n">dec1</span> \
+			 <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;mag&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="n">mag</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">)</span>
+		<span class="n">s</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">s</span></div>
+
+
+<div class="viewcode-block" id="catLoadFits.list"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.list">[docs]</a>	<span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">catalogsDefinitions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="k">if</span> <span class="n">c</span><span class="o">==</span><span class="bp">self</span><span class="o">.</span><span class="n">catname</span><span class="p">:</span>
+				<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">c</span><span class="p">)</span></div>
+<div class="viewcode-block" id="catLoadFits.info"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.info">[docs]</a>	<span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;CATALOG NAME:</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">catname</span><span class="p">)</span>
+		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;COVERAGE:</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">coverage</span><span class="p">)</span>
+		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;NUM RECORDS:</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">numrec</span><span class="p">)</span>
+		<span class="n">VARS</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+		<span class="n">havemag</span><span class="o">=</span><span class="kc">False</span>
+		<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">VARS</span> <span class="o">+=</span> <span class="n">v</span><span class="o">+</span><span class="s1">&#39; &#39;</span>
+			<span class="k">if</span> <span class="n">v</span><span class="o">==</span><span class="s1">&#39;mag&#39;</span><span class="p">:</span>
+				<span class="n">havemag</span><span class="o">=</span><span class="kc">True</span>
+		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;ORIGINAL VARIABLES:&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
+		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;SELECTED VARIABLES:&quot;</span><span class="p">,</span><span class="n">VARS</span><span class="p">)</span>
+		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;FORMATS:&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">descr</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">havemag</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MAG max:&quot;</span><span class="p">,</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;mag&#39;</span><span class="p">]),</span><span class="s2">&quot;min:&quot;</span><span class="p">,</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;mag&#39;</span><span class="p">]))</span></div></div>
+
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+	<span class="n">q</span><span class="o">=</span><span class="n">catLoadFits</span><span class="p">(</span><span class="s1">&#39;BSC5&#39;</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">q</span><span class="o">.</span><span class="n">catalogsDefinitions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+		<span class="c1">#print(&#39;==================&#39;,c,&#39;==================&#39;)</span>
+		<span class="n">qq</span><span class="o">=</span><span class="n">catLoadFits</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+		<span class="c1">#print(qq.info())</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">qq</span><span class="o">.</span><span class="n">numrec</span><span class="p">,</span><span class="n">qq</span><span class="o">.</span><span class="n">coverage</span><span class="p">)</span>
+
+
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

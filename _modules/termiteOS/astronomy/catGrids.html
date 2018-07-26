@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.astronomy.catGrids &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../../../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../../../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.astronomy.catGrids</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for termiteOS.astronomy.catGrids</h1><div class="highlight"><pre>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: iso-8859-15 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># termiteOS</span>
+<span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="grids"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catGrids.grids">[docs]</a><span class="k">class</span> <span class="nc">grids</span><span class="p">:</span>
+
+<div class="viewcode-block" id="grids.latLine"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catGrids.grids.latLine">[docs]</a>	<span class="k">def</span> <span class="nf">latLine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">lat</span><span class="p">,(</span><span class="n">lon0</span><span class="p">,</span><span class="n">lon1</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">360</span><span class="p">),</span><span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+		<span class="c1">#equal lat lines</span>
+		<span class="n">p</span><span class="o">=</span><span class="p">[]</span>
+		<span class="k">for</span> <span class="n">lon</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">lon0</span><span class="p">,</span><span class="n">lon1</span><span class="o">+</span><span class="n">step</span><span class="p">,</span><span class="n">step</span><span class="p">):</span>
+			<span class="n">pp</span><span class="o">=</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">)</span>
+			<span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pp</span><span class="p">)</span>
+		<span class="n">s</span><span class="o">=</span><span class="p">{}</span>
+		<span class="k">if</span> <span class="n">name</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+			<span class="n">name</span><span class="o">=</span><span class="n">lat</span>
+		<span class="n">s</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">=</span><span class="n">p</span>
+		<span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="grids.lonLine"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catGrids.grids.lonLine">[docs]</a>	<span class="k">def</span> <span class="nf">lonLine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">lon</span><span class="p">,(</span><span class="n">lat0</span><span class="p">,</span><span class="n">lat1</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span><span class="mi">90</span><span class="p">),</span><span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+		<span class="c1">#equal lon lines</span>
+		<span class="n">p</span><span class="o">=</span><span class="p">[]</span>
+		<span class="k">for</span> <span class="n">lat</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">lat0</span><span class="p">,</span><span class="n">lat1</span><span class="o">+</span><span class="n">step</span><span class="p">,</span><span class="n">step</span><span class="p">):</span>
+			<span class="n">pp</span><span class="o">=</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">)</span>
+			<span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pp</span><span class="p">)</span>
+		<span class="n">s</span><span class="o">=</span><span class="p">{}</span>
+		<span class="k">if</span> <span class="n">name</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+			<span class="n">name</span><span class="o">=</span><span class="n">lon</span>
+		<span class="n">s</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">=</span><span class="n">p</span>
+		<span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="grids.grid"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catGrids.grids.grid">[docs]</a>	<span class="k">def</span> <span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">area</span><span class="o">=</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">90</span><span class="p">),(</span><span class="mi">360</span><span class="p">,</span><span class="mi">90</span><span class="p">)),</span><span class="n">steps</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)):</span>
+		<span class="p">((</span><span class="n">lon0</span><span class="p">,</span><span class="n">lat0</span><span class="p">),(</span><span class="n">lon1</span><span class="p">,</span><span class="n">lat1</span><span class="p">))</span><span class="o">=</span><span class="n">area</span>		
+		<span class="p">(</span><span class="n">steplon</span><span class="p">,</span><span class="n">steplat</span><span class="p">)</span><span class="o">=</span><span class="n">steps</span>
+
+		<span class="n">s</span><span class="o">=</span><span class="p">{}</span>
+		<span class="n">p</span><span class="o">=</span><span class="p">{}</span>
+		<span class="k">for</span> <span class="n">lon</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">lon0</span><span class="p">,</span><span class="n">lon1</span><span class="o">+</span><span class="n">steplon</span><span class="p">,</span><span class="n">steplon</span><span class="p">):</span>
+			<span class="n">p</span><span class="p">[</span><span class="n">lon</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lonLine</span><span class="p">(</span><span class="n">lon</span><span class="p">,(</span><span class="n">lat0</span><span class="p">,</span><span class="n">lat1</span><span class="p">))[</span><span class="n">lon</span><span class="p">]</span>
+		<span class="n">s</span><span class="p">[</span><span class="s1">&#39;lonLines&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">p</span>
+		<span class="n">p</span><span class="o">=</span><span class="p">{}</span>
+		<span class="k">for</span> <span class="n">lat</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">lat0</span><span class="p">,</span><span class="n">lat1</span><span class="o">+</span><span class="n">steplat</span><span class="p">,</span><span class="n">steplat</span><span class="p">):</span>
+			<span class="n">p</span><span class="p">[</span><span class="n">lat</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">latLine</span><span class="p">(</span><span class="n">lat</span><span class="p">,(</span><span class="n">lon0</span><span class="p">,</span><span class="n">lon1</span><span class="p">))[</span><span class="n">lat</span><span class="p">]</span>
+		<span class="n">s</span><span class="p">[</span><span class="s1">&#39;latLines&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">p</span>
+		<span class="k">return</span> <span class="n">s</span></div></div>
+		
+
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+	<span class="n">g</span><span class="o">=</span><span class="n">grids</span><span class="p">()</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">lonLine</span><span class="p">(</span><span class="mi">10</span><span class="p">,(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)))</span>
+
+
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

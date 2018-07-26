@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.maths package &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.maths package</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="termiteos-maths-package">
+<h1>termiteOS.maths package<a class="headerlink" href="#termiteos-maths-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-termiteOS.maths.hPID">
+<span id="termiteos-maths-hpid-module"></span><h2>termiteOS.maths.hPID module<a class="headerlink" href="#module-termiteOS.maths.hPID" title="Permalink to this headline">¶</a></h2>
+<p>Adapted from: <a class="reference external" href="https://github.com/hirschmann/pid-autotune/blob/master/pid.py">https://github.com/hirschmann/pid-autotune/blob/master/pid.py</a></p>
+<a class="reference internal image-reference" href="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/PID_en.svg/971px-PID_en.svg.png"><img alt="DRV8825Hat" class="align-center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/PID_en.svg/971px-PID_en.svg.png" style="width: 400.0px;" /></a>
+<dl class="class">
+<dt id="termiteOS.maths.hPID.PID">
+<em class="property">class </em><code class="descclassname">termiteOS.maths.hPID.</code><code class="descname">PID</code><span class="sig-paren">(</span><em>sampletime</em>, <em>kp</em>, <em>ki</em>, <em>kd</em>, <em>out_min=-inf</em>, <em>out_max=inf</em>, <em>time=&lt;built-in function time&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/hPID.html#PID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.hPID.PID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A proportional-integral-derivative controller.
+Args:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">param sampletime (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">The min interval between update() calls.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">param kp (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Proportional coefficient.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">param ki (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Integral coefficient.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">param kd (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Derivative coefficient.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">param out_min (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Lower output limit.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">param out_max (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Upper output limit.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">param time (function):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">A function which returns the current time in seconds.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">returns:</th><td class="field-body">New output</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<dl class="method">
+<dt id="termiteOS.maths.hPID.PID.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/hPID.html#PID.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.hPID.PID.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset internal values. Forget the history</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.maths.hPID.PID.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>input_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/hPID.html#PID.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.hPID.PID.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjusts and holds the given setpoint.
+Args:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">param input_val (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">The input value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">param setpoint (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">The target value. No an argument. Set self.SetPoint instead</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">returns:</th><td class="field-body">A value between <cite>out_min</cite> and <cite>out_max</cite>.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-termiteOS.maths">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-termiteOS.maths" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

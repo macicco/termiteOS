@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.drivers.rpi package &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.drivers.rpi package</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="termiteos-drivers-rpi-package">
+<h1>termiteOS.drivers.rpi package<a class="headerlink" href="#termiteos-drivers-rpi-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-termiteOS.drivers.rpi.rpiDRV8825Hat">
+<span id="termiteos-drivers-rpi-rpidrv8825hat-module"></span><h2>termiteOS.drivers.rpi.rpiDRV8825Hat module<a class="headerlink" href="#module-termiteOS.drivers.rpi.rpiDRV8825Hat" title="Permalink to this headline">¶</a></h2>
+<p>DIY DRV8825 driver  Hat interface.</p>
+<a class="reference internal image-reference" href="source/../../../../DRV8825HAT.jpg"><img alt="DRV8825Hat" class="align-center" src="source/../../../../DRV8825HAT.jpg" style="width: 200.0px;" /></a>
+<p>This board has two DRV8825 able to driver 2 motors
+See hardware on termiteOS/driver/rpi/hardware</p>
+<dl class="docutils">
+<dt>INTERFACE TO OTHER MODULES:</dt>
+<dd><ul class="first last simple">
+<li>motorBeta</li>
+<li>pinout</li>
+<li>microsteps</li>
+<li>clutch()</li>
+<li>reset()</li>
+<li>sleep()</li>
+<li>set_microsteps(microsteps)</li>
+<li>sync(motorBeta)</li>
+</ul>
+</dd>
+</dl>
+<dl class="class">
+<dt id="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat">
+<em class="property">class </em><code class="descclassname">termiteOS.drivers.rpi.rpiDRV8825Hat.</code><code class="descname">rpiDRV8825Hat</code><span class="sig-paren">(</span><em>raspberry</em>, <em>driverID</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiDRV8825Hat.html#rpiDRV8825Hat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This class define the PIN mapping and basic methods for the rpiDVR8825 Hat</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Posible values of driverID can be 0 or 1.</p>
+</div>
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.clutch">
+<code class="descname">clutch</code><span class="sig-paren">(</span><em>ON_OFF</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiDRV8825Hat.html#rpiDRV8825Hat.clutch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.clutch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Engage or Disengage(free spinnig) the motors</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.fault">
+<code class="descname">fault</code><span class="sig-paren">(</span><em>gpio</em>, <em>level</em>, <em>tick</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiDRV8825Hat.html#rpiDRV8825Hat.fault"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.fault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to check internal driver faults</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><em>ON_OFF</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiDRV8825Hat.html#rpiDRV8825Hat.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the driver circuit</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.set_dir">
+<code class="descname">set_dir</code><span class="sig-paren">(</span><em>dir</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiDRV8825Hat.html#rpiDRV8825Hat.set_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.set_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the direction of motion</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.set_microsteps">
+<code class="descname">set_microsteps</code><span class="sig-paren">(</span><em>microsteps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiDRV8825Hat.html#rpiDRV8825Hat.set_microsteps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.set_microsteps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set microstepping mode of the driver</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.sleep">
+<code class="descname">sleep</code><span class="sig-paren">(</span><em>ON_OFF</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiDRV8825Hat.html#rpiDRV8825Hat.sleep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.sleep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sleep or wake up the driver circuit</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.stepcounter">
+<code class="descname">stepcounter</code><span class="sig-paren">(</span><em>gpio</em>, <em>level</em>, <em>tick</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiDRV8825Hat.html#rpiDRV8825Hat.stepcounter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.stepcounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to update internal position counter</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.sync">
+<code class="descname">sync</code><span class="sig-paren">(</span><em>position</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiDRV8825Hat.html#rpiDRV8825Hat.sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the actual internal position == position</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.test">
+<code class="descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiDRV8825Hat.html#rpiDRV8825Hat.test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the Hat sending steps</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-termiteOS.drivers.rpi.rpiSpeedPWM">
+<span id="termiteos-drivers-rpi-rpispeedpwm-module"></span><h2>termiteOS.drivers.rpi.rpiSpeedPWM module<a class="headerlink" href="#module-termiteOS.drivers.rpi.rpiSpeedPWM" title="Permalink to this headline">¶</a></h2>
+<p>Raspberry PWM motor driver.</p>
+<p>INTERFACE:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>inherits several methods from rpiDRV8825Hut base class</dt>
+<dd><ul class="first last simple">
+<li>betaMotor</li>
+<li>pinout</li>
+<li>microsteps</li>
+<li>clutch()</li>
+<li>reset()</li>
+<li>sleep()</li>
+<li>set_microsteps(microsteps)</li>
+<li>sync(position)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Own methods:</dt>
+<dd><ul class="first last simple">
+<li>setSpeed (radians/seconds)</li>
+<li>setRPM(RPM)</li>
+<li>SetPoint(setpoint)</li>
+<li>goto() -&gt; absolute SetPoint</li>
+<li>move() -&gt; relative SetPoint</li>
+<li>stop()</li>
+<li>isStopped</li>
+<li>gotoEnd</li>
+<li>pos</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="class">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM">
+<em class="property">class </em><code class="descclassname">termiteOS.drivers.rpi.rpiSpeedPWM.</code><code class="descname">rpiSpeedPWM</code><span class="sig-paren">(</span><em>driverID</em>, <em>microsteps</em>, <em>FullTurnSteps</em>, <em>gear=1</em>, <em>name='Axis'</em>, <em>raspberry='localhost'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat" title="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat"><code class="xref py py-class docutils literal"><span class="pre">termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat</span></code></a></p>
+<p>This class do the PWM control calling the underlying
+pigpiod daemon.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Up to dates only PID control is implemented.</p>
+</div>
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.SetPoint">
+<code class="descname">SetPoint</code><span class="sig-paren">(</span><em>setpoint</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.SetPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.SetPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Establish the _SetPoint value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.goto">
+<code class="descname">goto</code><span class="sig-paren">(</span><em>setpoint</em>, <em>blocking=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.goto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.goto" title="Permalink to this definition">¶</a></dt>
+<dd><p>Absolute movement</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.gotoEnd">
+<code class="descname">gotoEnd</code><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.gotoEnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the axis finally arrive to destination(_SetPoint), False otherwise</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.isStopped">
+<code class="descname">isStopped</code><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.isStopped" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if is stopped, False otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>relsetpoint</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative movement</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.pos">
+<code class="descname">pos</code><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Actual position (Corrected motorBeta)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.rampUp">
+<code class="descname">rampUp</code><span class="sig-paren">(</span><em>v</em>, <em>deltaT</em>, <em>out_min=-750</em>, <em>out_max=750</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.rampUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.rampUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Limit motor speed changes to avoid axis stalling</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.setRPM">
+<code class="descname">setRPM</code><span class="sig-paren">(</span><em>rpm</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.setRPM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.setRPM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set and start PWM to obtain rpm</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.setSpeed">
+<code class="descname">setSpeed</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.setSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.setSpeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set and start PWM to obtain radians/seconds</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.stopPWM">
+<code class="descname">stopPWM</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.stopPWM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.stopPWM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop PWM generation without any check</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.sync">
+<code class="descname">sync</code><span class="sig-paren">(</span><em>newposition</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Establish newposition as current possition (motorBeta)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.trackSpeed">
+<code class="descname">trackSpeed</code><span class="sig-paren">(</span><em>trackSpeed</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.trackSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.trackSpeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set axis track speed. Track speed*timestep is add to the _SetPoint value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.threaded">
+<code class="descclassname">termiteOS.drivers.rpi.rpiSpeedPWM.</code><code class="descname">threaded</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#threaded"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.threaded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multithread wrapper. Used as a function decorator</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-termiteOS.drivers.rpi">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-termiteOS.drivers.rpi" title="Permalink to this headline">¶</a></h2>
+<p>RASPBERRY PI DRIVERS</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

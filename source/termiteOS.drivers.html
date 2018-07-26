@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.drivers package &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.drivers package</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="termiteos-drivers-package">
+<h1>termiteOS.drivers package<a class="headerlink" href="#termiteos-drivers-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="termiteOS.drivers.rpi.html">termiteOS.drivers.rpi package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="termiteOS.drivers.rpi.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="termiteOS.drivers.rpi.html#module-termiteOS.drivers.rpi.rpiDRV8825Hat">termiteOS.drivers.rpi.rpiDRV8825Hat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="termiteOS.drivers.rpi.html#module-termiteOS.drivers.rpi.rpiSpeedPWM">termiteOS.drivers.rpi.rpiSpeedPWM module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="termiteOS.drivers.rpi.html#module-termiteOS.drivers.rpi">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-termiteOS.drivers.motorHub">
+<span id="termiteos-drivers-motorhub-module"></span><h2>termiteOS.drivers.motorHub module<a class="headerlink" href="#module-termiteOS.drivers.motorHub" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="termiteOS.drivers.motorHub.motorHub">
+<em class="property">class </em><code class="descclassname">termiteOS.drivers.motorHub.</code><code class="descname">motorHub</code><span class="sig-paren">(</span><em>FullTurnSteps=200</em>, <em>microstepping=32</em>, <em>raspberry='localhost'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/motorHub.html#motorHub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Orchestate several motors.</p>
+<a class="reference internal image-reference" href="source/../../../../RPI_DRV8825HAT.jpg"><img alt="RPI_DRV8825HAT" class="align-center" src="source/../../../../RPI_DRV8825HAT.jpg" style="width: 200.0px;" /></a>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Up to date only rpiSpeedPWM driver is implemented</p>
+</div>
+<dl class="method">
+<dt id="termiteOS.drivers.motorHub.motorHub.compose">
+<code class="descname">compose</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/motorHub.html#motorHub.compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub.compose" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.motorHub.motorHub.end">
+<code class="descname">end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/motorHub.html#motorHub.end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub.end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.motorHub.motorHub.goto">
+<code class="descname">goto</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>blocking=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/motorHub.html#motorHub.goto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub.goto" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="termiteOS.drivers.motorHub.motorHub.gotoEnd">
+<code class="descname">gotoEnd</code><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub.gotoEnd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="termiteOS.drivers.motorHub.motorHub.isStopped">
+<code class="descname">isStopped</code><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub.isStopped" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.motorHub.motorHub.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/motorHub.html#motorHub.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.motorHub.motorHub.setRPM">
+<code class="descname">setRPM</code><span class="sig-paren">(</span><em>vx</em>, <em>vy</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/motorHub.html#motorHub.setRPM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub.setRPM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.motorHub.motorHub.setSpeed">
+<code class="descname">setSpeed</code><span class="sig-paren">(</span><em>vx</em>, <em>vy</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/motorHub.html#motorHub.setSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub.setSpeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.motorHub.motorHub.setTrackSpeed">
+<code class="descname">setTrackSpeed</code><span class="sig-paren">(</span><em>vx</em>, <em>vy</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/motorHub.html#motorHub.setTrackSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub.setTrackSpeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.motorHub.motorHub.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/motorHub.html#motorHub.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub.stop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.motorHub.motorHub.sync">
+<code class="descname">sync</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/motorHub.html#motorHub.sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.motorHub.motorHub.sync" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-termiteOS.drivers">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-termiteOS.drivers" title="Permalink to this headline">¶</a></h2>
+<p>REAL HARDWARE DRIVERS</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>

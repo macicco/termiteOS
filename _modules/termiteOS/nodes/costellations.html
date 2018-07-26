@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>termiteOS.nodes.costellations &#8212; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="termiteOS alpha documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><img class="rightlogo" src="../../../_static/logo_small.png" alt="Logo"/><h1 class="heading"><a href="../../../index.html">
+          <span>termiteOS alpha documentation</span></a></h1>
+        <h2 class="heading"><span>termiteOS.nodes.costellations</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for termiteOS.nodes.costellations</h1><div class="highlight"><pre>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: iso-8859-15 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># termiteOS</span>
+<span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">costellation</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">zmq</span>
+<span class="kn">import</span> <span class="nn">time</span><span class="o">,</span><span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">ephem</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">termiteOS.config</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">termiteOS.nodeSkull</span> <span class="k">as</span> <span class="nn">nodeSkull</span>
+<span class="kn">import</span> <span class="nn">termiteOS.astronomy.tle</span> <span class="k">as</span> <span class="nn">tle</span>
+
+
+<div class="viewcode-block" id="costellation"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.costellation">[docs]</a><span class="k">class</span> <span class="nc">costellation</span><span class="p">(</span><span class="n">nodeSkull</span><span class="o">.</span><span class="n">node</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">):</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">costellation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;costellation&#39;</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">)</span>
+		<span class="n">CMDs</span><span class="o">=</span><span class="p">{</span> 
+		<span class="s2">&quot;follow&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_follow</span>  \
+		<span class="p">}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">addCMDs</span><span class="p">(</span><span class="n">CMDs</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="o">=</span><span class="mf">0.1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">gearInit</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">observerInit</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">TLEs</span><span class="o">=</span><span class="n">tle</span><span class="o">.</span><span class="n">TLEhandler</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">follow</span><span class="o">=</span><span class="s1">&#39;none&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">=</span><span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">go2rise</span><span class="o">=</span><span class="kc">False</span>
+
+
+<div class="viewcode-block" id="costellation.cmd_follow"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.costellation.cmd_follow">[docs]</a>	<span class="k">def</span> <span class="nf">cmd_follow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">arg</span><span class="p">):</span>
+                <span class="n">sat</span><span class="o">=</span><span class="n">arg</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">TLEs</span><span class="o">.</span><span class="n">TLE</span><span class="p">(</span><span class="n">sat</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">follow</span><span class="o">=</span><span class="s1">&#39;none&#39;</span>
+                        <span class="k">return</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">follow</span><span class="o">=</span><span class="n">sat</span>
+                        <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="costellation.observerInit"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.costellation.observerInit">[docs]</a>	<span class="k">def</span> <span class="nf">observerInit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;@getObserver&#39;</span><span class="p">)</span>
+		<span class="n">reply</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">recv</span><span class="p">())</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">Observer</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">lat</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">reply</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">lon</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">reply</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">horizon</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">reply</span><span class="p">[</span><span class="s1">&#39;horizon&#39;</span><span class="p">]))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">elev</span><span class="o">=</span><span class="n">reply</span><span class="p">[</span><span class="s1">&#39;elev&#39;</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">temp</span><span class="o">=</span><span class="n">reply</span><span class="p">[</span><span class="s1">&#39;temp&#39;</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">compute_pressure</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="costellation.gearInit"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.costellation.gearInit">[docs]</a>	<span class="k">def</span> <span class="nf">gearInit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;@getGear&#39;</span><span class="p">)</span>
+                <span class="n">reply</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+		<span class="n">reply</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pointError</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">reply</span><span class="p">[</span><span class="s1">&#39;pointError&#39;</span><span class="p">]))</span>
+		<span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointError</span><span class="p">)</span></div>
+
+		
+
+<div class="viewcode-block" id="costellation.trackSatellite"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.costellation.trackSatellite">[docs]</a>	<span class="k">def</span> <span class="nf">trackSatellite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sat</span><span class="p">):</span>
+		<span class="n">error</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pointError</span>
+		<span class="n">satRA</span><span class="p">,</span><span class="n">satDEC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">satPosition</span><span class="p">(</span><span class="n">sat</span><span class="p">)</span>
+		<span class="n">vsatRA</span><span class="p">,</span><span class="n">vsatDEC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">satSpeed</span><span class="p">(</span><span class="n">sat</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sendTrackSpeed</span><span class="p">(</span><span class="n">vsatRA</span><span class="p">,</span><span class="n">vsatDEC</span><span class="p">)</span>
+		<span class="n">errorRA</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">satRA</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">RA</span><span class="p">))</span>
+		<span class="n">errorDEC</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">satDEC</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">DEC</span><span class="p">))</span>
+		<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">errorRA</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">error</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">errorDEC</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">error</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Too much error. Slewing&quot;</span><span class="p">,</span><span class="n">errorRA</span><span class="p">,</span><span class="n">errorDEC</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">sendSlew</span><span class="p">(</span><span class="n">satRA</span><span class="p">,</span><span class="n">satDEC</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">pass</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;OK&quot;</span><span class="p">,(</span><span class="n">errorRA</span><span class="p">),(</span><span class="n">errorDEC</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="costellation.circle"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.costellation.circle">[docs]</a>	<span class="k">def</span> <span class="nf">circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">re</span><span class="p">,</span><span class="n">dec</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">v</span><span class="p">):</span>
+		<span class="c1">#not finished</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">=</span><span class="n">v</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span>
+		<span class="n">vRA</span><span class="o">=</span><span class="n">r</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">)</span>
+		<span class="n">vDEC</span><span class="o">=</span><span class="n">r</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sendTrackSpeed</span><span class="p">(</span><span class="n">vRA</span><span class="p">,</span><span class="n">vDEC</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="costellation.sendSlew"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.costellation.sendSlew">[docs]</a>	<span class="k">def</span> <span class="nf">sendSlew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">RA</span><span class="p">,</span><span class="n">DEC</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;:Sr &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RA</span><span class="p">))</span>
+		<span class="n">reply</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;:Sd &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">DEC</span><span class="p">))</span>
+		<span class="n">reply</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;:MS&#39;</span><span class="p">)</span>
+		<span class="n">reply</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="costellation.sendTrackSpeed"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.costellation.sendTrackSpeed">[docs]</a>	<span class="k">def</span> <span class="nf">sendTrackSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">vRA</span><span class="p">,</span><span class="n">vDEC</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;@setTrackSpeed &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">vRA</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">vDEC</span><span class="p">))</span>
+		<span class="n">reply</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span></div>
+
+
+
+
+<div class="viewcode-block" id="costellation.run"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.costellation.run">[docs]</a>	<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span><span class="p">:</span>
+			<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">)</span>
+			<span class="c1">#self.values=self.lastValue()</span>
+			<span class="c1">#Call to the RA/DEC primitives for accuracy</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;@getRA&#39;</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">RA</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">recv</span><span class="p">())</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;@getDEC&#39;</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">DEC</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">socketHUBCmd</span><span class="o">.</span><span class="n">recv</span><span class="p">())</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">follow</span> <span class="o">==</span> <span class="s1">&#39;none&#39;</span><span class="p">:</span>
+        			<span class="bp">self</span><span class="o">.</span><span class="n">trackSatellite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">follow</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="costellation.satPosition"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.costellation.satPosition">[docs]</a>	<span class="k">def</span> <span class="nf">satPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sat</span><span class="p">):</span>
+			<span class="n">observer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span>
+			<span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">TLEs</span><span class="o">.</span><span class="n">TLE</span><span class="p">(</span><span class="n">sat</span><span class="p">)</span>
+			<span class="n">observer</span><span class="o">.</span><span class="n">date</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">Date</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">())</span>
+			<span class="n">s</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
+			<span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="o">=</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ra</span><span class="p">,</span><span class="n">s</span><span class="o">.</span><span class="n">dec</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">engine</span><span class="p">[</span><span class="s1">&#39;overhorizon&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">alt</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">engine</span><span class="p">[</span><span class="s1">&#39;go2rising&#39;</span><span class="p">]:</span>
+					<span class="n">info</span><span class="o">=</span><span class="n">observer</span><span class="o">.</span><span class="n">next_pass</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+					<span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="o">=</span><span class="n">observer</span><span class="o">.</span><span class="n">radec_of</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">observer</span><span class="o">.</span><span class="n">horizon</span><span class="p">)</span>			
+					<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Next pass&quot;</span><span class="p">,</span><span class="n">info</span><span class="p">,</span><span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RA</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">DEC</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">ra</span><span class="p">,</span><span class="n">dec</span></div>
+
+
+<div class="viewcode-block" id="costellation.satSpeed"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.costellation.satSpeed">[docs]</a>	<span class="k">def</span> <span class="nf">satSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sat</span><span class="p">):</span>
+			<span class="n">seconds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timestep</span>
+			<span class="n">observer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observer</span>
+			<span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">TLEs</span><span class="o">.</span><span class="n">TLE</span><span class="p">(</span><span class="n">sat</span><span class="p">)</span>
+			<span class="n">observer</span><span class="o">.</span><span class="n">date</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">Date</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">())</span>
+			<span class="n">s</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
+			<span class="n">RA0</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">ra</span>
+			<span class="n">DEC0</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">dec</span>
+			<span class="n">observer</span><span class="o">.</span><span class="n">date</span><span class="o">=</span><span class="n">observer</span><span class="o">.</span><span class="n">date</span><span class="o">+</span><span class="n">ephem</span><span class="o">.</span><span class="n">second</span><span class="o">*</span><span class="n">seconds</span>
+			<span class="n">s</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
+			<span class="n">RA1</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">ra</span>
+			<span class="n">DEC1</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">dec</span>
+			<span class="n">vRA</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">((</span><span class="n">RA1</span><span class="o">-</span><span class="n">RA0</span><span class="p">)</span><span class="o">/</span><span class="n">seconds</span><span class="o">-</span><span class="n">ephem</span><span class="o">.</span><span class="n">hours</span><span class="p">(</span><span class="s1">&#39;00:00:01&#39;</span><span class="p">))</span>
+			<span class="n">vDEC</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">degrees</span><span class="p">((</span><span class="n">DEC1</span><span class="o">-</span><span class="n">DEC0</span><span class="p">)</span><span class="o">/</span><span class="n">seconds</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">engine</span><span class="p">[</span><span class="s1">&#39;overhorizon&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">alt</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+				<span class="n">vRA</span><span class="p">,</span><span class="n">vDEC</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+  			<span class="k">return</span> <span class="p">(</span><span class="n">vRA</span><span class="p">,</span><span class="n">vDEC</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="runcostellation"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.costellations.runcostellation">[docs]</a><span class="k">def</span> <span class="nf">runcostellation</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">parent_port</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">costellation</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">end</span><span class="p">()</span></div>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+        <span class="n">runcostellation</span><span class="p">(</span><span class="s1">&#39;costellation&#39;</span><span class="p">,</span><span class="mi">5001</span><span class="p">,</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
+	
+
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>
