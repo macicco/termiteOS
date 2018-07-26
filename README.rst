@@ -11,7 +11,23 @@ Introduction
 ------------
 Termite OS is a modular, adaptable, easily extendable telescope operating system developed primarily, but not exclusively, in python. 
 
-It wants to answer to several limitations that most of the commercial mount controllers have and it wants to be a platform where you can incorporate all kinds of functionalities that the professional or amateur astronomer may need in a simple way.
+It wants to answer to several limitations that most of the commercial mount controllers have. It wants to be a platform where you can incorporate all kinds of functionalities that the professional or amateur astronomer may need in a simple way.
+
+Posible use case:
+
+- To motorize a DIY mount or retrofit a old one.
+- Make your telescope be able to track the ISS or any other satellite.
+- Implement new protocol commands.
+- New native protocols, i.e. indilib
+- Control over the objects catalogs built into your telescope.
+- Integrate pointing model in your mount.
+- Connect a GPS to your mount and use his data for location and time.
+- Define the horizon of your observatory.
+- WiFi or Bluetooth access to your mount
+- Develope new motion estrategies.
+
+With termiteOS you will address all this things and more.
+
 
 Termite OS is a **work in progress** but much of the functionality is already available:
 

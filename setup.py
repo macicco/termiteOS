@@ -13,10 +13,10 @@ with codecs_open('README.rst', encoding='utf-8') as f:
 setup(
     name='termiteOS',
     version='0.0.1',
-    description=u"Ligthweigth Telescope Operating System",
+    description=u"Telescope Operating System",
     long_description=long_description,
     classifiers=[],
-    keywords='',
+    keywords=['robotic','telescope'],
     author=u"Nacho Mas",
     author_email='mas.ignacio@gmail.com',
     url='https://github.com/nachoplus/termiteOS',

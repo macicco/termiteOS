@@ -6,7 +6,7 @@
 '''
 DIY DRV8825 driver  Hat interface.
 
-.. image:: ../../../../DRV8825HAT.jpg
+.. image:: DRV8825HAT.jpg
    :width: 400px
    :scale: 50 %
    :alt: DRV8825Hat
