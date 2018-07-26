@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>TermiteOS documentation &#8212; termiteOS alpha documentation</title>
+    <title>termiteOS &#8212; termiteOS alpha documentation</title>
     
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -25,10 +25,11 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/bizstyle.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="top" title="termiteOS alpha documentation" href="#" />
+    <link rel="next" title="Nodes" href="source/nodes.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
@@ -44,6 +45,9 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="source/nodes.html" title="Nodes"
+             accesskey="N">next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">termiteOS alpha documentation</a> &#187;</li> 
       </ul>
     </div>
@@ -54,16 +58,20 @@
             </a></p>
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">TermiteOS documentation</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-<li><a class="reference internal" href="#termiteos">termiteOS</a><ul>
+<li><a class="reference internal" href="#">termiteOS</a><ul>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#architecture">Architecture</a></li>
 <li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#technical-information">Technical information</a><ul>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
+  <h4>Next topic</h4>
+  <p class="topless"><a href="source/nodes.html"
+                        title="next chapter">Nodes</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -89,20 +97,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="termiteos-documentation">
-<h1>TermiteOS documentation<a class="headerlink" href="#termiteos-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-</div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
-</ul>
-</div>
-<div class="section" id="termiteos">
+  <div class="section" id="termiteos">
 <h1>termiteOS<a class="headerlink" href="#termiteos" title="Permalink to this headline">¶</a></h1>
 <a class="reference external image-reference" href="https://travis-ci.org/nachoplus/termiteOS"><img alt="https://travis-ci.org/nachoplus/termiteOS.svg" src="https://travis-ci.org/nachoplus/termiteOS.svg" /></a>
 <p>A telescope Operating System base on zmq and Protocol Buffers. Documentation <a class="reference external" href="https://nachoplus.github.io/termiteOS/index.html">https://nachoplus.github.io/termiteOS/index.html</a></p>
@@ -142,9 +137,9 @@
 </div>
 <div class="section" id="architecture">
 <h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
-<p>Each termiteOS functionality is implemented as a separate program called a&#8217;node&#8217;. The nodes communicate with each other using the zmq protocol. The organization between the nodes is hierarchical so that a node can have several children but has only one parent or none in the case of the&#8217;root node&#8217;.</p>
-<p>It is base on <a class="reference external" href="http://zeromq.org/">http://zeromq.org/</a> for transport and on <a class="reference external" href="https://developers.google.com/protocol-buffers/">https://developers.google.com/protocol-buffers/</a> for message definitions and serialization.</p>
-<p>Each node has its own ZMQ port and a set of commands it responds to through that port. Each node in turn opens connections with its parent node and with all its children so that messages can be exchanged.</p>
+<p>Each termiteOS functionality is implemented as a separate program called a&#8217;node&#8217;. The nodes communicate  each other using the zmq protocol. The organization between the nodes is hierarchical thus a node can have several children but has only one parent or none in the case of the&#8217;root node&#8217;.</p>
+<p>ZMQ (<a class="reference external" href="http://zeromq.org/">http://zeromq.org/</a>) is used for transport and on <a class="reference external" href="https://developers.google.com/protocol-buffers/">https://developers.google.com/protocol-buffers/</a> for message definitions and serialization.</p>
+<p>Each node has its own ZMQ port and a set of commands and responds to through that port. Each node opens connections with its parent node and with all its children so that messages can be exchanged.</p>
 <p>These nodes can run on the same or different CPUs taking advantage of all the features of the ZMQ protocol.</p>
 </div>
 <div class="section" id="license">
@@ -152,6 +147,24 @@
 <p>GPL3
 Copyright (c) July 2018 Nacho Mas</p>
 <p>Logo made with <a class="reference external" href="https://www.designevo.com/en/">https://www.designevo.com/en/</a> DesignEvo</p>
+</div>
+<div class="section" id="technical-information">
+<h2>Technical information<a class="headerlink" href="#technical-information" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="source/nodes.html">Nodes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="source/node_TLEtracker.html">TLEtracker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/node_tcpproxy.html">tcpproxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/node_telescope.html">Telescope</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="source/api.html">Indices and tables</a></li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -170,6 +183,9 @@ Copyright (c) July 2018 Nacho Mas</p>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="source/nodes.html" title="Nodes"
+             >next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">termiteOS alpha documentation</a> &#187;</li> 
       </ul>
     </div>

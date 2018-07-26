@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>termiteOS.scripts package &#8212; termiteOS alpha documentation</title>
+    <title>Nodes &#8212; termiteOS alpha documentation</title>
     
     <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -29,6 +29,8 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="termiteOS alpha documentation" href="../index.html" />
+    <link rel="next" title="TLEtracker" href="node_TLEtracker.html" />
+    <link rel="prev" title="termiteOS" href="../index.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
@@ -44,6 +46,12 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="node_TLEtracker.html" title="TLEtracker"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="termiteOS"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &#187;</li> 
       </ul>
     </div>
@@ -52,20 +60,16 @@
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/logo_small.png" alt="Logo"/>
             </a></p>
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">termiteOS.scripts package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-termiteOS.scripts.cli">termiteOS.scripts.cli module</a></li>
-<li><a class="reference internal" href="#module-termiteOS.scripts">Module contents</a></li>
-</ul>
-</li>
-</ul>
-
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">termiteOS</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="node_TLEtracker.html"
+                        title="next chapter">TLEtracker</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/source/termiteOS.scripts.txt"
+      <li><a href="../_sources/source/nodes.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -87,16 +91,19 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="termiteos-scripts-package">
-<h1>termiteOS.scripts package<a class="headerlink" href="#termiteos-scripts-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-termiteOS.scripts.cli">
-<span id="termiteos-scripts-cli-module"></span><h2>termiteOS.scripts.cli module<a class="headerlink" href="#module-termiteOS.scripts.cli" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-termiteOS.scripts">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-termiteOS.scripts" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="nodes">
+<h1>Nodes<a class="headerlink" href="#nodes" title="Permalink to this headline">¶</a></h1>
+<p>Nodes are separate programs. The nodes communicate each other using the zmq protocol. The organization between the nodes is hierarchical thus a node can have several children but has only one parent or none in the case of the&#8217;root node&#8217;.</p>
+<p>Nodes are based on <a class="reference external" href="http://zeromq.org/">http://zeromq.org/</a> for transport and on <a class="reference external" href="https://developers.google.com/protocol-buffers/">https://developers.google.com/protocol-buffers/</a> for message definitions and serialization.</p>
+<p>Each node has its own ZMQ port and a set of commands and responds to through that port. Each node opens connections with its parent node and with all its children so that messages can be exchanged.</p>
+<p>These nodes can run on the same or different CPUs taking advantage of all the features of the ZMQ protocol.</p>
+<p>All nodes are derive from nodeSkull base class which implements all the comunication logic and basic commands.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="node_TLEtracker.html">TLEtracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="node_tcpproxy.html">tcpproxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="node_telescope.html">Telescope</a></li>
+</ul>
 </div>
 </div>
 
@@ -115,6 +122,12 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="node_TLEtracker.html" title="TLEtracker"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="termiteOS"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &#187;</li> 
       </ul>
     </div>

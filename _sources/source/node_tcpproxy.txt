@@ -1,0 +1,6 @@
+tcpproxy
+________
+
+* **tcproxy** node acts as a proxy connector between other node and an especific TCP port
+
+All commands recived throught the TCP port are relay to the myCmdPort port of the node conected to. 

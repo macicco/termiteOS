@@ -1,0 +1,6 @@
+Telescope
+________
+
+* **telescope** node implement a telescope mount basic commands (goto,slew,track..)
+
+Two axis equatorial mount telescope.
