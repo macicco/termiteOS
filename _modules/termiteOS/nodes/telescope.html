@@ -360,8 +360,8 @@
 
 
 <div class="viewcode-block" id="runtelescope"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.telescope.runtelescope">[docs]</a><span class="k">def</span> <span class="nf">runtelescope</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">parent_port</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; **ENTRYPOINT** calling this fuction start the node&#39;&#39;&#39;</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">telescope</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">)</span>
-    <span class="n">s</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">s</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>

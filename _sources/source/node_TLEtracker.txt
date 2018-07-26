@@ -4,3 +4,11 @@ __________
 * **TLEtracker** node calculate satellite TLE v and RA/DEC and send to the mount
 
 With this node the mount is able to follow any object with TLE. 
+
+API
+^^^
+
+.. automodule:: termiteOS.nodes.TLEtracker
+   :members: 
+   :undoc-members:
+   :inherited-members:

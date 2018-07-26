@@ -83,7 +83,7 @@
 <span class="kn">from</span> <span class="nn">validate</span> <span class="k">import</span> <span class="n">Validator</span>
 
 
-<div class="viewcode-block" id="saveConfig"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.config.saveConfig">[docs]</a><span class="k">def</span> <span class="nf">saveConfig</span><span class="p">():</span>
+<div class="viewcode-block" id="saveConfig"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.nodes.TLEtracker.saveConfig">[docs]</a><span class="k">def</span> <span class="nf">saveConfig</span><span class="p">():</span>
     <span class="c1">#TBD</span>
     <span class="n">Config</span> <span class="o">=</span> <span class="n">ConfigObj</span><span class="p">()</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
@@ -121,12 +121,12 @@
 <span class="c1">#Ancillary functions</span>
 
 
-<div class="viewcode-block" id="mogrify"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.config.mogrify">[docs]</a><span class="k">def</span> <span class="nf">mogrify</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+<div class="viewcode-block" id="mogrify"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.nodes.TLEtracker.mogrify">[docs]</a><span class="k">def</span> <span class="nf">mogrify</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; json encode the message and prepend the topic &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">topic</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="demogrify"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.config.demogrify">[docs]</a><span class="k">def</span> <span class="nf">demogrify</span><span class="p">(</span><span class="n">topicmsg</span><span class="p">):</span>
+<div class="viewcode-block" id="demogrify"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.nodes.TLEtracker.demogrify">[docs]</a><span class="k">def</span> <span class="nf">demogrify</span><span class="p">(</span><span class="n">topicmsg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Inverse of mogrify() &quot;&quot;&quot;</span>
     <span class="n">json0</span> <span class="o">=</span> <span class="n">topicmsg</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">)</span>
     <span class="n">topic</span> <span class="o">=</span> <span class="n">topicmsg</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">json0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -134,7 +134,7 @@
     <span class="k">return</span> <span class="n">topic</span><span class="p">,</span> <span class="n">msg</span></div>
 
 
-<div class="viewcode-block" id="threaded"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.config.threaded">[docs]</a><span class="k">def</span> <span class="nf">threaded</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+<div class="viewcode-block" id="threaded"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.nodes.TLEtracker.threaded">[docs]</a><span class="k">def</span> <span class="nf">threaded</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">t1</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -143,7 +143,7 @@
     <span class="k">return</span> <span class="n">wrapper</span></div>
 
 
-<div class="viewcode-block" id="group"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.config.group">[docs]</a><span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="viewcode-block" id="group"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.nodes.TLEtracker.group">[docs]</a><span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">),</span> <span class="n">n</span><span class="p">):</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>

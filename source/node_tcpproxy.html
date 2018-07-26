@@ -62,6 +62,14 @@
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/logo_small.png" alt="Logo"/>
             </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">tcpproxy</a><ul>
+<li><a class="reference internal" href="#module-termiteOS.nodes.tcpproxy">API</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="node_TLEtracker.html"
                         title="previous chapter">TLEtracker</a></p>
@@ -99,6 +107,183 @@
 <li><strong>tcproxy</strong> node acts as a proxy connector between other node and an especific TCP port</li>
 </ul>
 <p>All commands recived throught the TCP port are relay to the myCmdPort port of the node conected to.</p>
+<p>Ussing this node allow us to connect to a specific node (the parent node of tcpproxy node) with a regular <cite>telnet host port</cite></p>
+<div class="section" id="module-termiteOS.nodes.tcpproxy">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-termiteOS.nodes.tcpproxy" title="Permalink to this headline">¶</a></h2>
+<p>To mimic a tty serial port:
+<cite>socat TCP:localhost:6000,reuseaddr pty,link=/tmp/lx200</cite></p>
+<dl class="function">
+<dt id="termiteOS.nodes.tcpproxy.runtcpproxy">
+<code class="descclassname">termiteOS.nodes.tcpproxy.</code><code class="descname">runtcpproxy</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host</em>, <em>parent_port</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#runtcpproxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.runtcpproxy" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>ENTRYPOINT</strong> calling this fuction start the node</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy">
+<em class="property">class </em><code class="descclassname">termiteOS.nodes.tcpproxy.</code><code class="descname">tcpproxy</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host</em>, <em>parent_port</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#tcpproxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.HasChildren">
+<code class="descname">HasChildren</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.HasChildren" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return:</th><td class="field-body"><strong>True</strong> if the node has childrens. <strong>False</strong> otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.addCMDs">
+<code class="descname">addCMDs</code><span class="sig-paren">(</span><em>CMDs</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.addCMDs" title="Permalink to this definition">¶</a></dt>
+<dd><p>add commands explicitely</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.clientthread">
+<code class="descname">clientthread</code><span class="sig-paren">(</span><em>conn</em>, <em>parent_host</em>, <em>parent_port</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#tcpproxy.clientthread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.clientthread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function for handling connections. This will be used to create threads</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.cmd">
+<code class="descname">cmd</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.cmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the cmd command</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cmd</strong> &#8211; string contain the command with his parameters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A message containing the answer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.cmd_help">
+<code class="descname">cmd_help</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.cmd_help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print help text. Do nothing. Normaly overloaded by a child class</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.cmd_ls">
+<code class="descname">cmd_ls</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.cmd_ls" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the commands</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.cmd_nodes">
+<code class="descname">cmd_nodes</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.cmd_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the children nodes:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a python list with all the children names</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.cmd_ping">
+<code class="descname">cmd_ping</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.cmd_ping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.cmd_tree">
+<code class="descname">cmd_tree</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.cmd_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print all node and children availabled commands</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.cmddummy">
+<code class="descname">cmddummy</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.cmddummy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default cmd to execute when not knowed cmd match. Do nothing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.deregister">
+<code class="descname">deregister</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.deregister" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the zmq socket and deleted node from the children list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.end">
+<code class="descname">end</code><span class="sig-paren">(</span><em>arg=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#tcpproxy.end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close all and exit</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.exenodeCmd">
+<code class="descname">exenodeCmd</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.exenodeCmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the command in the children</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.heartbeat">
+<code class="descname">heartbeat</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.heartbeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>heartbeat Parent part</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.nodeheartbeat">
+<code class="descname">nodeheartbeat</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.nodeheartbeat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.recv_end">
+<code class="descname">recv_end</code><span class="sig-paren">(</span><em>conn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#tcpproxy.recv_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.recv_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse cmd lines</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>arg=''</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call to parent registrar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.registrar">
+<code class="descname">registrar</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.registrar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registrar parent part</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#tcpproxy.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main loop. Dispach incoming messages</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.scanCMDs">
+<code class="descname">scanCMDs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.scanCMDs" title="Permalink to this definition">¶</a></dt>
+<dd><p>scanCMD add all methods starting with &#8216;<a href="#id1"><span class="problematic" id="id2">cmd_</span></a>&#8216; as a commands</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.signal_handler">
+<code class="descname">signal_handler</code><span class="sig-paren">(</span><em>signal</em>, <em>frame</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.signal_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Capture Ctril+C key</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.startserver">
+<code class="descname">startserver</code><span class="sig-paren">(</span><em>port</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#tcpproxy.startserver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.startserver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to open the TCP incoming port</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.tcpproxy.tcpproxy.zmqQueue">
+<code class="descname">zmqQueue</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.zmqQueue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 

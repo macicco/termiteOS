@@ -79,8 +79,8 @@
 <span class="c1"># termiteOS</span>
 <span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">LX200 command set</span>
-<span class="sd">socat TCP:localhost:6666,reuseaddr pty,link=/tmp/lx200</span>
+<span class="sd">To mimic a tty serial port:</span>
+<span class="sd">`socat TCP:localhost:6000,reuseaddr pty,link=/tmp/lx200`</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -114,6 +114,7 @@
 
 
 <div class="viewcode-block" id="tcpproxy.startserver"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.tcpproxy.tcpproxy.startserver">[docs]</a>        <span class="k">def</span> <span class="nf">startserver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">port</span><span class="p">):</span>
+                <span class="sd">&#39;&#39;&#39; Function to open the TCP incoming port&#39;&#39;&#39;</span>
                 <span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
                 <span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Starting tcpproxy.&#39;</span><span class="p">)</span>
@@ -136,7 +137,7 @@
 
 
 <div class="viewcode-block" id="tcpproxy.run"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.tcpproxy.tcpproxy.run">[docs]</a>        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-                <span class="c1">#now keep talking with the client</span>
+                <span class="sd">&#39;&#39;&#39;Main loop. Dispach incoming messages&#39;&#39;&#39;</span>
                 <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
                                 <span class="c1">#wait to accept a connection - blocking call</span>
@@ -163,6 +164,7 @@
 
 
 <div class="viewcode-block" id="tcpproxy.recv_end"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.tcpproxy.tcpproxy.recv_end">[docs]</a>        <span class="k">def</span> <span class="nf">recv_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">conn</span><span class="p">):</span>
+                <span class="sd">&#39;&#39;&#39;Parse cmd lines&#39;&#39;&#39;</span>
                 <span class="c1">#End=&#39;something useable as an end marker&#39;</span>
                 <span class="n">End</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">End</span>
                 <span class="n">total_data</span> <span class="o">=</span> <span class="p">[]</span>
@@ -194,8 +196,8 @@
                 <span class="k">return</span> <span class="n">cmd</span></div>
 
 
-        <span class="c1">#Function for handling connections. This will be used to create threads</span>
 <div class="viewcode-block" id="tcpproxy.clientthread"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.tcpproxy.tcpproxy.clientthread">[docs]</a>        <span class="k">def</span> <span class="nf">clientthread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">conn</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39; Function for handling connections. This will be used to create threads &#39;&#39;&#39;</span>
 
             <span class="c1">#  Socket to talk to ZMQserver</span>
             <span class="n">zmqSocket</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REQ</span><span class="p">)</span>
@@ -240,6 +242,7 @@
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Disconnecting..&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="tcpproxy.end"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.tcpproxy.tcpproxy.end">[docs]</a>        <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+                <span class="sd">&#39;&#39;&#39;Close all and exit&#39;&#39;&#39;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span> <span class="o">=</span> <span class="kc">False</span>
 
                 <span class="c1">#Hack to exit run loop blocked by &#39;socket.accept&#39;</span>
@@ -257,6 +260,7 @@
 
 
 <div class="viewcode-block" id="runtcpproxy"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.tcpproxy.runtcpproxy">[docs]</a><span class="k">def</span> <span class="nf">runtcpproxy</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">,</span><span class="n">params</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; **ENTRYPOINT** calling this fuction start the node&#39;&#39;&#39;</span>
         <span class="n">p</span><span class="o">=</span><span class="n">tcpproxy</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">,</span><span class="n">params</span><span class="p">)</span>
         <span class="n">p</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
         <span class="k">return</span>

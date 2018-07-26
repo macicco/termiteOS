@@ -1,0 +1,15 @@
+Launcher
+________
+
+* **Launcher** program launch a set of node following the instruction in a *.yaml file
+
+
+
+API
+^^^
+
+.. automodule:: termiteOS.launch
+   :members:
+   :undoc-members:
+   :inherited-members:
+

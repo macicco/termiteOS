@@ -4,3 +4,12 @@ ________
 * **telescope** node implement a telescope mount basic commands (goto,slew,track..)
 
 Two axis equatorial mount telescope.
+
+API
+^^^
+
+.. automodule:: termiteOS.nodes.telescope
+   :members:
+   :undoc-members:
+   :inherited-members:
+

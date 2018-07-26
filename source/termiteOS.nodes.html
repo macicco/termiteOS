@@ -105,62 +105,74 @@
 <dt id="termiteOS.nodes.TLEtracker.TLEtracker">
 <em class="property">class </em><code class="descclassname">termiteOS.nodes.TLEtracker.</code><code class="descname">TLEtracker</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host</em>, <em>parent_port</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#TLEtracker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.TLEtracker" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="termiteOS.html#termiteOS.nodeSkull.node" title="termiteOS.nodeSkull.node"><code class="xref py py-class docutils literal"><span class="pre">termiteOS.nodeSkull.node</span></code></a></p>
+<p>Command to the parent node to track satellites base on his TLE</p>
 <dl class="method">
 <dt id="termiteOS.nodes.TLEtracker.TLEtracker.circle">
 <code class="descname">circle</code><span class="sig-paren">(</span><em>re</em>, <em>dec</em>, <em>r</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#TLEtracker.circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.TLEtracker.circle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Used as test</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.TLEtracker.TLEtracker.cmd_follow">
 <code class="descname">cmd_follow</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#TLEtracker.cmd_follow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.TLEtracker.cmd_follow" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Follow satellite</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.TLEtracker.TLEtracker.gearInit">
 <code class="descname">gearInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#TLEtracker.gearInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.TLEtracker.gearInit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get the gear info</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.TLEtracker.TLEtracker.observerInit">
 <code class="descname">observerInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#TLEtracker.observerInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.TLEtracker.observerInit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Recover Observer data (lat, lon,...) from parent node</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.TLEtracker.TLEtracker.run">
 <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#TLEtracker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.TLEtracker.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Main loop. Obtain RA/DEC actual values and do the trackSatellite() call</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.TLEtracker.TLEtracker.satPosition">
 <code class="descname">satPosition</code><span class="sig-paren">(</span><em>sat</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#TLEtracker.satPosition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.TLEtracker.satPosition" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate satellite RA/DEC from TLE</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.TLEtracker.TLEtracker.satSpeed">
 <code class="descname">satSpeed</code><span class="sig-paren">(</span><em>sat</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#TLEtracker.satSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.TLEtracker.satSpeed" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate satellite speed from TLE</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.TLEtracker.TLEtracker.sendSlew">
 <code class="descname">sendSlew</code><span class="sig-paren">(</span><em>RA</em>, <em>DEC</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#TLEtracker.sendSlew"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.TLEtracker.sendSlew" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>send slew to parent node primitive</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.TLEtracker.TLEtracker.sendTrackSpeed">
 <code class="descname">sendTrackSpeed</code><span class="sig-paren">(</span><em>vRA</em>, <em>vDEC</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#TLEtracker.sendTrackSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.TLEtracker.sendTrackSpeed" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>send speed to parent node primitive</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.TLEtracker.TLEtracker.trackSatellite">
 <code class="descname">trackSatellite</code><span class="sig-paren">(</span><em>sat</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#TLEtracker.trackSatellite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.TLEtracker.trackSatellite" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>send track speed to parent node. If to far from target send also a slew</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="termiteOS.nodes.TLEtracker.runTLEtracker">
 <code class="descclassname">termiteOS.nodes.TLEtracker.</code><code class="descname">runTLEtracker</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host=''</em>, <em>parent_port=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/TLEtracker.html#runTLEtracker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.TLEtracker.runTLEtracker" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><strong>ENTRYPOINT</strong> calling this fuction start the node</p>
+</dd></dl>
 
 </div>
 <div class="section" id="module-termiteOS.nodes.console">
@@ -306,12 +318,13 @@
 </div>
 <div class="section" id="module-termiteOS.nodes.tcpproxy">
 <span id="termiteos-nodes-tcpproxy-module"></span><h2>termiteOS.nodes.tcpproxy module<a class="headerlink" href="#module-termiteOS.nodes.tcpproxy" title="Permalink to this headline">¶</a></h2>
-<p>LX200 command set
-socat <a class="reference external" href="TCP:localhost:6666,reuseaddr">TCP:localhost:6666,reuseaddr</a> pty,link=/tmp/lx200</p>
+<p>To mimic a tty serial port:
+<cite>socat TCP:localhost:6000,reuseaddr pty,link=/tmp/lx200</cite></p>
 <dl class="function">
 <dt id="termiteOS.nodes.tcpproxy.runtcpproxy">
 <code class="descclassname">termiteOS.nodes.tcpproxy.</code><code class="descname">runtcpproxy</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host</em>, <em>parent_port</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#runtcpproxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.runtcpproxy" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><strong>ENTRYPOINT</strong> calling this fuction start the node</p>
+</dd></dl>
 
 <dl class="class">
 <dt id="termiteOS.nodes.tcpproxy.tcpproxy">
@@ -320,27 +333,32 @@ socat <a class="reference external" href="TCP:localhost:6666,reuseaddr">TCP:loca
 <dl class="method">
 <dt id="termiteOS.nodes.tcpproxy.tcpproxy.clientthread">
 <code class="descname">clientthread</code><span class="sig-paren">(</span><em>conn</em>, <em>parent_host</em>, <em>parent_port</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#tcpproxy.clientthread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.clientthread" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function for handling connections. This will be used to create threads</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.tcpproxy.tcpproxy.end">
 <code class="descname">end</code><span class="sig-paren">(</span><em>arg=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#tcpproxy.end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.end" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Close all and exit</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.tcpproxy.tcpproxy.recv_end">
 <code class="descname">recv_end</code><span class="sig-paren">(</span><em>conn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#tcpproxy.recv_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.recv_end" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Parse cmd lines</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.tcpproxy.tcpproxy.run">
 <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#tcpproxy.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Main loop. Dispach incoming messages</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="termiteOS.nodes.tcpproxy.tcpproxy.startserver">
 <code class="descname">startserver</code><span class="sig-paren">(</span><em>port</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/tcpproxy.html#tcpproxy.startserver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.tcpproxy.tcpproxy.startserver" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to open the TCP incoming port</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -351,7 +369,8 @@ socat <a class="reference external" href="TCP:localhost:6666,reuseaddr">TCP:loca
 <dl class="function">
 <dt id="termiteOS.nodes.telescope.runtelescope">
 <code class="descclassname">termiteOS.nodes.telescope.</code><code class="descname">runtelescope</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host=''</em>, <em>parent_port=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#runtelescope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.runtelescope" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><strong>ENTRYPOINT</strong> calling this fuction start the node</p>
+</dd></dl>
 
 <dl class="class">
 <dt id="termiteOS.nodes.telescope.telescope">

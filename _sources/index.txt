@@ -8,9 +8,13 @@
 
 Technical information
 ---------------------
+.. toctree::
+   :maxdepth: 1
+
+   source/launcher.rst
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
    source/nodes
 
