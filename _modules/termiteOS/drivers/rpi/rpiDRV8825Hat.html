@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>termiteOS.drivers.rpi.rpiDRV8825Hat &#8212; termiteOS alpha documentation</title>
+    <title>termiteOS.drivers.rpi.rpiDRV8825Hat &mdash; termiteOS alpha documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -26,8 +26,6 @@
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/bizstyle.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-    <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="top" title="termiteOS alpha documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -45,8 +43,8 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -57,8 +55,8 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -80,13 +78,6 @@
 <span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">DIY DRV8825 driver  Hat interface.</span>
-
-<span class="sd">.. image:: DRV8825HAT.jpg</span>
-<span class="sd">   :width: 400px</span>
-<span class="sd">   :scale: 50 %</span>
-<span class="sd">   :alt: DRV8825Hat</span>
-<span class="sd">   :align: center</span>
-
 
 <span class="sd">This board has two DRV8825 able to driver 2 motors</span>
 <span class="sd">See hardware on termiteOS/driver/rpi/hardware</span>
@@ -161,9 +152,9 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">set_microsteps</span><span class="p">(</span><span class="n">kwds</span><span class="p">[</span><span class="s1">&#39;microstepping&#39;</span><span class="p">])</span>
                 <span class="k">else</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">set_microsteps</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">clutch</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">clutch</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="rpiDRV8825Hat.clutch"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.clutch">[docs]</a>	<span class="k">def</span> <span class="nf">clutch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ON_OFF</span><span class="p">):</span>
@@ -176,14 +167,14 @@
 
 <div class="viewcode-block" id="rpiDRV8825Hat.set_microsteps"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.set_microsteps">[docs]</a>	<span class="k">def</span> <span class="nf">set_microsteps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">microsteps</span><span class="p">):</span>
 		<span class="sd">&#39;&#39;&#39; Set microstepping mode of the driver&#39;&#39;&#39;</span>
-		<span class="n">microstep_table</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span> \
-				 <span class="mi">2</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>  \
-				 <span class="mi">4</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>  \
-				 <span class="mi">8</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>   \
-				 <span class="mi">16</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>  \
-				 <span class="mi">32</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">}}</span>
+		<span class="n">microstep_table</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">},</span> \
+				 <span class="mi">2</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="bp">True</span><span class="p">},</span>  \
+				 <span class="mi">4</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="bp">True</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">},</span>  \
+				 <span class="mi">8</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="bp">True</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="bp">True</span><span class="p">},</span>   \
+				 <span class="mi">16</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="bp">True</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">},</span>  \
+				 <span class="mi">32</span><span class="p">:{</span><span class="s1">&#39;M2&#39;</span><span class="p">:</span><span class="bp">True</span><span class="p">,</span><span class="s1">&#39;M1&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span><span class="s1">&#39;M0&#39;</span><span class="p">:</span><span class="bp">True</span><span class="p">}}</span>
                 <span class="k">if</span> <span class="n">microsteps</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">microstep_table</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bad microsteps paramater&quot;</span><span class="p">,</span><span class="n">microsteps</span><span class="p">)</span>
+                        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Bad microsteps paramater&quot;</span><span class="p">,</span><span class="n">microsteps</span><span class="p">)</span>
                         <span class="k">return</span>
 		<span class="n">msteping</span><span class="o">=</span><span class="n">microstep_table</span><span class="p">[</span><span class="n">microsteps</span><span class="p">]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">microsteps</span><span class="o">=</span><span class="n">microsteps</span>	
@@ -225,26 +216,26 @@
 <div class="viewcode-block" id="rpiDRV8825Hat.fault"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.fault">[docs]</a>	<span class="k">def</span> <span class="nf">fault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">gpio</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">tick</span><span class="p">):</span>
                 <span class="sd">&#39;&#39;&#39;Callback function to check internal driver faults&#39;&#39;&#39;</span>
 		<span class="k">if</span> <span class="n">level</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">fault</span><span class="o">=</span><span class="kc">True</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fault</span><span class="o">=</span><span class="bp">True</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;MOTOR FAULT!&quot;</span><span class="p">)</span>
 		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">fault</span><span class="o">=</span><span class="kc">False</span></div>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fault</span><span class="o">=</span><span class="bp">False</span></div>
 
 <div class="viewcode-block" id="rpiDRV8825Hat.test"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat.test">[docs]</a>        <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="sd">&#39;&#39;&#39;Test the Hat sending steps&#39;&#39;&#39;</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1600</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;STEP&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>           
-                        <span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;STEP&#39;</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>          </div></div>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;STEP&#39;</span><span class="p">],</span> <span class="bp">True</span><span class="p">)</span>           
+                        <span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinout</span><span class="p">[</span><span class="s1">&#39;STEP&#39;</span><span class="p">],</span> <span class="bp">False</span><span class="p">)</span>          </div></div>
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">raspberry</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span>
     <span class="n">m0</span> <span class="o">=</span> <span class="n">rpiDRV8825Hat</span><span class="p">(</span><span class="n">raspberry</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">microstepping</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
     <span class="n">m0</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
-    <span class="n">m0</span><span class="o">.</span><span class="n">clutch</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">m0</span><span class="o">.</span><span class="n">clutch</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 
     <span class="n">m1</span> <span class="o">=</span> <span class="n">rpiDRV8825Hat</span><span class="p">(</span><span class="n">raspberry</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">m1</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
-    <span class="n">m1</span><span class="o">.</span><span class="n">clutch</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">m1</span><span class="o">.</span><span class="n">clutch</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 
 </pre></div>
 
@@ -262,13 +253,13 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, Nacho Mas.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+        &copy; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.
     </div>
   </body>
 </html>

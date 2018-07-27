@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>tcpproxy &#8212; termiteOS alpha documentation</title>
+    <title>tcpproxy &mdash; termiteOS alpha documentation</title>
     
     <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -26,8 +26,6 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/bizstyle.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="termiteOS alpha documentation" href="../index.html" />
     <link rel="up" title="Nodes" href="nodes.html" />
     <link rel="next" title="Telescope" href="node_telescope.html" />
@@ -53,8 +51,8 @@
         <li class="right" >
           <a href="node_TLEtracker.html" title="TLEtracker"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="nodes.html" accesskey="U">Nodes</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="nodes.html" accesskey="U">Nodes</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -65,6 +63,7 @@
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">tcpproxy</a><ul>
+<li><a class="reference internal" href="#tcpproxy">tcpproxy</a></li>
 <li><a class="reference internal" href="#module-termiteOS.nodes.tcpproxy">API</a></li>
 </ul>
 </li>
@@ -86,8 +85,8 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -108,6 +107,43 @@
 </ul>
 <p>All commands recived throught the TCP port are relay to the myCmdPort port of the node conected to.</p>
 <p>Ussing this node allow us to connect to a specific node (the parent node of tcpproxy node) with a regular <cite>telnet host port</cite></p>
+<div class="section" id="tcpproxy">
+<h2>tcpproxy<a class="headerlink" href="#tcpproxy" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell"><div class="highlight"><pre>tcpproxy <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="option">
+<dt id="cmdoption-tcpproxy--name">
+<code class="descname">--name</code><code class="descclassname"> &lt;name&gt;</code><a class="headerlink" href="#cmdoption-tcpproxy--name" title="Permalink to this definition">¶</a></dt>
+<dd><p>module name</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-tcpproxy--port">
+<code class="descname">--port</code><code class="descclassname"> &lt;port&gt;</code><a class="headerlink" href="#cmdoption-tcpproxy--port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port listen</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-tcpproxy--parent_host">
+<code class="descname">--parent_host</code><code class="descclassname"> &lt;parent_host&gt;</code><a class="headerlink" href="#cmdoption-tcpproxy--parent_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent host</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-tcpproxy--parent_port">
+<code class="descname">--parent_port</code><code class="descclassname"> &lt;parent_port&gt;</code><a class="headerlink" href="#cmdoption-tcpproxy--parent_port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent port</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-tcpproxy--params">
+<code class="descname">--params</code><code class="descclassname"> &lt;params&gt;</code><a class="headerlink" href="#cmdoption-tcpproxy--params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extra parameters</p>
+</dd></dl>
+
+</div>
 <div class="section" id="module-termiteOS.nodes.tcpproxy">
 <span id="api"></span><h2>API<a class="headerlink" href="#module-termiteOS.nodes.tcpproxy" title="Permalink to this headline">¶</a></h2>
 <p>To mimic a tty serial port:
@@ -307,13 +343,13 @@
         <li class="right" >
           <a href="node_TLEtracker.html" title="TLEtracker"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="nodes.html" >Nodes</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="nodes.html" >Nodes</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, Nacho Mas.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+        &copy; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.
     </div>
   </body>
 </html>

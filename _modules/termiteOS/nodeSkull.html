@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>termiteOS.nodeSkull &#8212; termiteOS alpha documentation</title>
+    <title>termiteOS.nodeSkull &mdash; termiteOS alpha documentation</title>
     
     <link rel="stylesheet" href="../../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -26,8 +26,6 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../_static/bizstyle.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
     <link rel="top" title="termiteOS alpha documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -45,8 +43,8 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -57,8 +55,8 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -80,13 +78,13 @@
 <span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
 
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">zmq</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">signal</span>
-<span class="kn">from</span> <span class="nn">termiteOS.config</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">termiteOS.config</span> <span class="kn">import</span> <span class="o">*</span>
 
 
 <div class="viewcode-block" id="node"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.nodes.TLEtracker.node">[docs]</a><span class="k">class</span> <span class="nc">node</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -99,7 +97,7 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">nodetype</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">):</span>
         <span class="c1">#logging.basicConfig(filename=name+&#39;.log&#39;,format=&#39;%(asctime)s %(levelname)s:&#39;+name+&#39; %(message)s&#39;,level=logging.DEBUG)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1">:&#39;</span><span class="o">+</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39; </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1">:&#39;</span><span class="o">+</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39; </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating node </span><span class="si">%s</span><span class="s2">. node type:</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">nodetype</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nodename</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nodetype</span> <span class="o">=</span> <span class="n">nodetype</span>
@@ -116,7 +114,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">myHost</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">myCmdPort</span> <span class="o">=</span> <span class="n">port</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scanCMDs</span><span class="p">()</span>
         <span class="c1">#self.socketStream = self.zmqcontext.socket(zmq.PUB)</span>
         <span class="c1">#self.socketStream.bind(&quot;tcp://*:%s&quot; % servers[&#39;zmqStreamPort&#39;])</span>
@@ -125,7 +123,7 @@
         <span class="k">if</span> <span class="n">parent_port</span><span class="p">:</span>
             <span class="c1">#It is a slave of a hub</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;HasParent parent at </span><span class="si">%s</span><span class="s2">:</span><span class="si">%i</span><span class="s2"> Connecting..&quot;</span><span class="p">,</span><span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">hasParent</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hasParent</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hubCmdHost</span> <span class="o">=</span> <span class="n">parent_host</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hubCmdPort</span> <span class="o">=</span> <span class="n">parent_port</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ParentCmdSocket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zmqcontext</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REQ</span><span class="p">)</span>
@@ -135,7 +133,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="c1">#it is the hub itself</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Node is a ROOT HUB&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">hasParent</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hasParent</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="c1">#self.heartbeatThread = self.nodeheartbeat()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">CMDThread</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zmqQueue</span><span class="p">()</span>
         <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal_handler</span><span class="p">)</span>
@@ -156,7 +154,7 @@
     <span class="k">def</span> <span class="nf">zmqQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;this thread listen and process all the CMD from other nodes. **Run in background** &#39;&#39;&#39;</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span><span class="p">:</span>
-            <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                         <span class="n">address</span><span class="p">,</span> <span class="n">empty</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">myCmdSocket</span><span class="o">.</span><span class="n">recv_multipart</span><span class="p">()</span>
                         <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;RECV CMD: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
@@ -271,7 +269,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;CMDsocket&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">socketCmd</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;CMDs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;CMDs&#39;</span><span class="p">]</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;REGISTER: node </span><span class="si">%s</span><span class="s2"> sucesfully registed&quot;</span><span class="p">,</span><span class="n">node</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s1">&#39;OK&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span></div>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s1">&#39;OK&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="node.register"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.nodes.TLEtracker.node.register">[docs]</a>    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">arg</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Call to parent registrar&#39;&#39;&#39;</span>
@@ -293,7 +291,7 @@
         <span class="n">node</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;CMDsocket&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;DEREGISTRING: Fail closing CMD socket for node:</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;UNREGISTED: </span><span class="si">%s</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
@@ -330,7 +328,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">ParentCmdSocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
         <span class="c1">#Now kill myshelf</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">myCmdSocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Term zmqcontext&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zmqcontext</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
@@ -354,22 +352,22 @@
         <span class="sd">&#39;&#39;&#39;Capture Ctril+C key&#39;&#39;&#39;</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;You pressed Ctrl+C!&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
-        <span class="n">exit</span><span class="p">()</span></div>
+        <span class="nb">exit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="node.heartbeat"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.nodes.TLEtracker.node.heartbeat">[docs]</a>    <span class="k">def</span> <span class="nf">heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;heartbeat Parent part&#39;&#39;&#39;</span>
         <span class="n">node</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Received a heartBeat from a child class. node:</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">True</span></div>
+        <span class="k">return</span> <span class="bp">True</span></div>
 
 <div class="viewcode-block" id="node.HasChildren"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.nodes.TLEtracker.node.HasChildren">[docs]</a>    <span class="k">def</span> <span class="nf">HasChildren</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        :Return: **True** if the node has childrens. **False** otherwise</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">return</span> <span class="bp">True</span>
         <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span></div>
+                <span class="k">return</span> <span class="bp">False</span></div>
 
 <div class="viewcode-block" id="node.cmd_ping"><a class="viewcode-back" href="../../source/termiteOS.html#termiteOS.nodes.TLEtracker.node.cmd_ping">[docs]</a>    <span class="k">def</span> <span class="nf">cmd_ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">arg</span><span class="p">):</span>
         <span class="n">response</span><span class="o">=</span><span class="p">{}</span>
@@ -414,11 +412,11 @@
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">port</span> <span class="o">=</span> <span class="mi">7770</span>
     <span class="n">parent_host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
-    <span class="n">parent_port</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">parent_port</span> <span class="o">=</span> <span class="bp">False</span>
     <span class="n">e</span> <span class="o">=</span> <span class="n">test_class</span><span class="p">(</span><span class="s1">&#39;test0&#39;</span><span class="p">,</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">)</span>
     <span class="n">e</span><span class="o">.</span><span class="n">scanCMDs</span><span class="p">()</span>
     <span class="n">e</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-    <span class="n">exit</span><span class="p">()</span>
+    <span class="nb">exit</span><span class="p">()</span>
 </pre></div>
 
           </div>
@@ -435,13 +433,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, Nacho Mas.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+        &copy; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.
     </div>
   </body>
 </html>

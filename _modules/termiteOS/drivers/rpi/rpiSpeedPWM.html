@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>termiteOS.drivers.rpi.rpiSpeedPWM &#8212; termiteOS alpha documentation</title>
+    <title>termiteOS.drivers.rpi.rpiSpeedPWM &mdash; termiteOS alpha documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -26,8 +26,6 @@
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/bizstyle.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-    <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="top" title="termiteOS alpha documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -45,8 +43,8 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -57,8 +55,8 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -106,14 +104,14 @@
 <span class="sd">                - pos</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">pigpio</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">termiteOS.maths.hPID</span> <span class="k">as</span> <span class="nn">PID</span>
-<span class="kn">import</span> <span class="nn">termiteOS.drivers.rpi.rpiDRV8825Hat</span> <span class="k">as</span> <span class="nn">rpihat</span>
+<span class="kn">import</span> <span class="nn">termiteOS.maths.hPID</span> <span class="kn">as</span> <span class="nn">PID</span>
+<span class="kn">import</span> <span class="nn">termiteOS.drivers.rpi.rpiDRV8825Hat</span> <span class="kn">as</span> <span class="nn">rpihat</span>
 
 <div class="viewcode-block" id="threaded"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiSpeedPWM.threaded">[docs]</a><span class="k">def</span> <span class="nf">threaded</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -151,7 +149,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Vold</span><span class="o">=</span><span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_trackSpeed</span><span class="o">=</span><span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stopPWM</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span><span class="o">=</span><span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span><span class="o">=</span><span class="bp">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timesleep</span><span class="o">=</span><span class="mf">0.1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;rpiSpeedPWM Controller created&quot;</span><span class="p">)</span>
 
@@ -175,7 +173,7 @@
         <span class="k">try</span><span class="p">:</span>
                 <span class="n">PWMstop</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">get_PWM_dutycycle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">STEP_PIN</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> 
         <span class="k">except</span><span class="p">:</span>
-                <span class="n">PWMstop</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">PWMstop</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">return</span> <span class="n">PWMstop</span>
 
     <span class="nd">@property</span>
@@ -184,7 +182,7 @@
         <span class="k">try</span><span class="p">:</span>
                 <span class="n">PWMstop</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">.</span><span class="n">get_PWM_dutycycle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">STEP_PIN</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> 
         <span class="k">except</span><span class="p">:</span>
-                <span class="n">PWMstop</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">PWMstop</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">stopped</span><span class="o">=</span><span class="n">PWMstop</span> <span class="ow">and</span>  <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motorBeta</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SetPoint</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">stopped</span>
 
@@ -240,7 +238,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;RELATIVE MOVE TO:</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">relsetpoint</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_SetPoint</span><span class="o">+</span><span class="n">relsetpoint</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gear</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">FullTurnSteps</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="rpiSpeedPWM.goto"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.goto">[docs]</a>    <span class="k">def</span> <span class="nf">goto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">setpoint</span><span class="p">,</span><span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="rpiSpeedPWM.goto"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.goto">[docs]</a>    <span class="k">def</span> <span class="nf">goto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">setpoint</span><span class="p">,</span><span class="n">blocking</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Absolute movement&#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_SetPoint</span><span class="o">=</span><span class="n">setpoint</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gear</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">FullTurnSteps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;ABSOLUTED MOVE TO:</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">setpoint</span><span class="p">)</span>
@@ -248,9 +246,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;GOTO wait until finished&quot;</span><span class="p">)</span>
                 <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">gotoEnd</span><span class="p">:</span>
                         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-                <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">return</span> <span class="bp">True</span>
         <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span></div>
+                <span class="k">return</span> <span class="bp">False</span></div>
 
 <div class="viewcode-block" id="rpiSpeedPWM.SetPoint"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.SetPoint">[docs]</a>    <span class="k">def</span> <span class="nf">SetPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">setpoint</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Establish the _SetPoint value&#39;&#39;&#39;</span>
@@ -284,7 +282,7 @@
             <span class="n">v</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rampUp</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">deltaT</span><span class="p">,</span><span class="n">out_min</span><span class="o">=-</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">,</span><span class="n">out_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setRPM</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timesleep</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trackSpeed</span><span class="p">,</span><span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span><span class="p">,</span><span class="n">feedback</span><span class="p">,</span><span class="n">feedback</span><span class="o">-</span><span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span><span class="p">,</span><span class="n">v</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trackSpeed</span><span class="p">,</span><span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span><span class="p">,</span><span class="n">feedback</span><span class="p">,</span><span class="n">feedback</span><span class="o">-</span><span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span><span class="p">,</span><span class="n">v</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;PID error:</span><span class="si">%f</span><span class="s2"> v:</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">feedback</span><span class="o">-</span><span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="o">=</span><span class="n">now</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;RUN END&quot;</span><span class="p">)</span></div></div>
@@ -293,14 +291,14 @@
 
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> PWMspeed:</span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> PWMspeed:</span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
         <span class="n">axis</span><span class="o">=</span><span class="n">rpiSpeedPWM</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;DummyAxis&#39;</span><span class="p">,</span><span class="n">raspberry</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span><span class="n">gear</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">runThread</span><span class="o">=</span><span class="n">axis</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-        <span class="n">axis</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">axis</span><span class="o">.</span><span class="n">RUN</span><span class="o">=</span><span class="kc">False</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="n">blocking</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">RUN</span><span class="o">=</span><span class="bp">False</span>
         <span class="n">runThread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">axis</span><span class="o">.</span><span class="n">isStopped</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">axis</span><span class="o">.</span><span class="n">motorBeta</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">axis</span><span class="o">.</span><span class="n">isStopped</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">axis</span><span class="o">.</span><span class="n">motorBeta</span><span class="p">)</span>
 
 </pre></div>
 
@@ -318,13 +316,13 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, Nacho Mas.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+        &copy; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.
     </div>
   </body>
 </html>

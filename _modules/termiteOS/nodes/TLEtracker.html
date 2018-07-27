@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>termiteOS.nodes.TLEtracker &#8212; termiteOS alpha documentation</title>
+    <title>termiteOS.nodes.TLEtracker &mdash; termiteOS alpha documentation</title>
     
     <link rel="stylesheet" href="../../../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -26,8 +26,6 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/bizstyle.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
     <link rel="top" title="termiteOS alpha documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -45,8 +43,8 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -57,8 +55,8 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -81,16 +79,16 @@
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">TLEtracker</span>
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">zmq</span>
 <span class="kn">import</span> <span class="nn">time</span><span class="o">,</span><span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">ephem</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">termiteOS.config</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">import</span> <span class="nn">termiteOS.nodeSkull</span> <span class="k">as</span> <span class="nn">nodeSkull</span>
-<span class="kn">import</span> <span class="nn">termiteOS.astronomy.tle</span> <span class="k">as</span> <span class="nn">tle</span>
+<span class="kn">from</span> <span class="nn">termiteOS.config</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">termiteOS.nodeSkull</span> <span class="kn">as</span> <span class="nn">nodeSkull</span>
+<span class="kn">import</span> <span class="nn">termiteOS.astronomy.tle</span> <span class="kn">as</span> <span class="nn">tle</span>
 
 
 <div class="viewcode-block" id="TLEtracker"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.TLEtracker.TLEtracker">[docs]</a><span class="k">class</span> <span class="nc">TLEtracker</span><span class="p">(</span><span class="n">nodeSkull</span><span class="o">.</span><span class="n">node</span><span class="p">):</span>
@@ -108,7 +106,7 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">TLEs</span><span class="o">=</span><span class="n">tle</span><span class="o">.</span><span class="n">TLEhandler</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">follow</span><span class="o">=</span><span class="s1">&#39;none&#39;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">=</span><span class="mi">0</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">go2rise</span><span class="o">=</span><span class="kc">False</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">go2rise</span><span class="o">=</span><span class="bp">False</span>
 
 
 <div class="viewcode-block" id="TLEtracker.cmd_follow"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.TLEtracker.TLEtracker.cmd_follow">[docs]</a>	<span class="k">def</span> <span class="nf">cmd_follow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">arg</span><span class="p">):</span>
@@ -237,7 +235,7 @@
 				<span class="n">vRA</span><span class="p">,</span><span class="n">vDEC</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
   			<span class="k">return</span> <span class="p">(</span><span class="n">vRA</span><span class="p">,</span><span class="n">vDEC</span><span class="p">)</span></div></div>
 
-<div class="viewcode-block" id="runTLEtracker"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.TLEtracker.runTLEtracker">[docs]</a><span class="k">def</span> <span class="nf">runTLEtracker</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">parent_port</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="runTLEtracker"><a class="viewcode-back" href="../../../source/termiteOS.nodes.html#termiteOS.nodes.TLEtracker.runTLEtracker">[docs]</a><span class="k">def</span> <span class="nf">runTLEtracker</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">parent_port</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; **ENTRYPOINT** calling this fuction start the node&#39;&#39;&#39;</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">TLEtracker</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">parent_host</span><span class="p">,</span> <span class="n">parent_port</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -265,13 +263,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, Nacho Mas.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+        &copy; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.
     </div>
   </body>
 </html>

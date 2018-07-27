@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>configobj &#8212; termiteOS alpha documentation</title>
+    <title>configobj &mdash; termiteOS alpha documentation</title>
     
     <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -26,8 +26,6 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/bizstyle.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="termiteOS alpha documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -45,8 +43,8 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -57,8 +55,8 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -92,19 +90,19 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">from</span> <span class="nn">codecs</span> <span class="k">import</span> <span class="n">BOM_UTF8</span><span class="p">,</span> <span class="n">BOM_UTF16</span><span class="p">,</span> <span class="n">BOM_UTF16_BE</span><span class="p">,</span> <span class="n">BOM_UTF16_LE</span>
+<span class="kn">from</span> <span class="nn">codecs</span> <span class="kn">import</span> <span class="n">BOM_UTF8</span><span class="p">,</span> <span class="n">BOM_UTF16</span><span class="p">,</span> <span class="n">BOM_UTF16_BE</span><span class="p">,</span> <span class="n">BOM_UTF16_LE</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
-<span class="kn">from</span> <span class="nn">_version</span> <span class="k">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">_version</span> <span class="kn">import</span> <span class="n">__version__</span>
 
 <span class="c1"># imported lazily to avoid startup performance hit if it isn&#39;t used</span>
-<span class="n">compiler</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">compiler</span> <span class="o">=</span> <span class="bp">None</span>
 
 <span class="c1"># A dictionary mapping BOM to</span>
 <span class="c1"># the encoding to decode with, and what to set the</span>
 <span class="c1"># encoding attribute to.</span>
 <span class="n">BOMS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">BOM_UTF8</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;utf_8&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="n">BOM_UTF8</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;utf_8&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>
     <span class="n">BOM_UTF16_BE</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;utf16_be&#39;</span><span class="p">,</span> <span class="s1">&#39;utf_16&#39;</span><span class="p">),</span>
     <span class="n">BOM_UTF16_LE</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;utf16_le&#39;</span><span class="p">,</span> <span class="s1">&#39;utf_16&#39;</span><span class="p">),</span>
     <span class="n">BOM_UTF16</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;utf_16&#39;</span><span class="p">,</span> <span class="s1">&#39;utf_16&#39;</span><span class="p">),</span>
@@ -136,7 +134,7 @@
     <span class="s1">&#39;utf_16&#39;</span><span class="p">:</span> <span class="n">BOM_UTF16</span><span class="p">,</span>
     <span class="s1">&#39;utf16_be&#39;</span><span class="p">:</span> <span class="n">BOM_UTF16_BE</span><span class="p">,</span>
     <span class="s1">&#39;utf16_le&#39;</span><span class="p">:</span> <span class="n">BOM_UTF16_LE</span><span class="p">,</span>
-    <span class="kc">None</span><span class="p">:</span> <span class="n">BOM_UTF8</span>
+    <span class="bp">None</span><span class="p">:</span> <span class="n">BOM_UTF8</span>
     <span class="p">}</span>
 
 
@@ -181,19 +179,19 @@
 <span class="n">MAX_INTERPOL_DEPTH</span> <span class="o">=</span> <span class="mi">10</span>
 
 <span class="n">OPTION_DEFAULTS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;interpolation&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;raise_errors&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s1">&#39;list_values&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;create_empty&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s1">&#39;file_error&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s1">&#39;configspec&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="s1">&#39;stringify&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;interpolation&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s1">&#39;raise_errors&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s1">&#39;list_values&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s1">&#39;create_empty&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s1">&#39;file_error&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s1">&#39;configspec&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="s1">&#39;stringify&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
     <span class="c1"># option may be set to one of (&#39;&#39;, &#39; &#39;, &#39;\t&#39;)</span>
-    <span class="s1">&#39;indent_type&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="s1">&#39;encoding&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="s1">&#39;default_encoding&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="s1">&#39;unrepr&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s1">&#39;write_empty_values&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;indent_type&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="s1">&#39;encoding&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="s1">&#39;default_encoding&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="s1">&#39;unrepr&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s1">&#39;write_empty_values&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="c1"># this could be replaced if six is used for compatibility, or there are no</span>
@@ -202,7 +200,7 @@
 
 <span class="k">def</span> <span class="nf">getObj</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="k">global</span> <span class="n">compiler</span>
-    <span class="k">if</span> <span class="n">compiler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">compiler</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">compiler</span>
     <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;a=&quot;</span> <span class="o">+</span> <span class="n">s</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">compiler</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -216,7 +214,7 @@
 <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     
     <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnknownType</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">m</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
     
@@ -238,11 +236,11 @@
     
     <span class="k">def</span> <span class="nf">build_Name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">None</span>
         <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="bp">True</span>
         <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;False&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
         
         <span class="c1"># An undefined Name</span>
         <span class="k">raise</span> <span class="n">UnknownType</span><span class="p">(</span><span class="s1">&#39;Undefined Name&#39;</span><span class="p">)</span>
@@ -285,7 +283,7 @@
 <span class="sd">    This is the base class for all errors that ConfigObj raises.</span>
 <span class="sd">    It is a subclass of SyntaxError.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="n">line</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line_number</span> <span class="o">=</span> <span class="n">line_number</span>
         <span class="ne">SyntaxError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
@@ -403,7 +401,7 @@
                 <span class="c1"># The actual parsing of the match is implementation-dependent,</span>
                 <span class="c1"># so delegate to our helper function</span>
                 <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_match</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="c1"># That&#39;s the signal that no further interpolation is needed</span>
                     <span class="n">replacement</span> <span class="o">=</span> <span class="n">v</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -435,18 +433,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># switch off interpolation before we try and fetch anything !</span>
         <span class="n">save_interp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">interpolation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="bp">False</span>
 
         <span class="c1"># Start at section that &quot;owns&quot; this InterpolationEngine</span>
         <span class="n">current_section</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
             <span class="c1"># try the current section first</span>
             <span class="n">val</span> <span class="o">=</span> <span class="n">current_section</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Section</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Section</span><span class="p">):</span>
                 <span class="k">break</span>
             <span class="c1"># try &quot;DEFAULT&quot; next</span>
             <span class="n">val</span> <span class="o">=</span> <span class="n">current_section</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DEFAULT&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Section</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Section</span><span class="p">):</span>
                 <span class="k">break</span>
             <span class="c1"># move up to parent and try again</span>
             <span class="c1"># top-level&#39;s parent is itself</span>
@@ -457,7 +455,7 @@
 
         <span class="c1"># restore interpolation to previous value before returning</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="n">save_interp</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">MissingInterpolationOption</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">val</span><span class="p">,</span> <span class="n">current_section</span>
 
@@ -509,15 +507,15 @@
     <span class="k">def</span> <span class="nf">_parse_match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
         <span class="c1"># Valid name (in or out of braces): fetch value from section</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;named&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;braced&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">value</span><span class="p">,</span> <span class="n">section</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">section</span>
         <span class="c1"># Escaped delimiter (e.g., $$): return single delimiter</span>
-        <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;escaped&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;escaped&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="c1"># Return None for key and section to indicate it&#39;s time to stop</span>
-            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delimiter</span><span class="p">,</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delimiter</span><span class="p">,</span> <span class="bp">None</span>
         <span class="c1"># Anything else: ignore completely, just return it unchanged</span>
-        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span> <span class="bp">None</span>
 
 
 <span class="n">interpolation_engines</span> <span class="o">=</span> <span class="p">{</span>
@@ -558,14 +556,14 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">__newobj__</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">,),</span> <span class="n">state</span><span class="p">)</span>
     
     
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">main</span><span class="p">,</span> <span class="n">indict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">main</span><span class="p">,</span> <span class="n">indict</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        * parent is the section above</span>
 <span class="sd">        * depth is the depth level of this section</span>
 <span class="sd">        * main is the main ConfigObj</span>
 <span class="sd">        * indict is a dictionary to initialise the section with</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">indict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">indict</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">indict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="nb">dict</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="c1"># used for nesting level *and* interpolation</span>
@@ -593,12 +591,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">comments</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inline_comments</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># the configspec</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="c1"># for defaults</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_values</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extra_values</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="bp">False</span>
 
 
     <span class="k">def</span> <span class="nf">_interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -608,14 +606,14 @@
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="c1"># not yet: first time running _interpolate(), so pick the engine</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">interpolation</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>  <span class="c1"># note that &quot;if name:&quot; would be incorrect here</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>  <span class="c1"># note that &quot;if name:&quot; would be incorrect here</span>
                 <span class="c1"># backwards-compatibility: interpolation=True means use default</span>
                 <span class="n">name</span> <span class="o">=</span> <span class="n">DEFAULT_INTERPOLATION</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>  <span class="c1"># so that &quot;Template&quot;, &quot;template&quot;, etc. all work</span>
-            <span class="n">class_</span> <span class="o">=</span> <span class="n">interpolation_engines</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">class_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">class_</span> <span class="o">=</span> <span class="n">interpolation_engines</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">class_</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="c1"># invalid value for self.main.interpolation</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="bp">False</span>
                 <span class="k">return</span> <span class="n">value</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># save reference to engine so we don&#39;t have to do this again</span>
@@ -641,7 +639,7 @@
         <span class="k">return</span> <span class="n">val</span>
 
 
-    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unrepr</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unrepr</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Correctly set a value.</span>
 <span class="sd">        </span>
@@ -711,7 +709,7 @@
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">inline_comments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
 
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A version of ``get`` that doesn&#39;t bypass string interpolation.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
@@ -767,12 +765,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sections</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">comments</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inline_comments</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extra_values</span> <span class="o">=</span> <span class="p">[]</span>
 
 
-    <span class="k">def</span> <span class="nf">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A version of setdefault that sets sequence if appropriate.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
@@ -914,8 +912,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">inline_comments</span><span class="p">[</span><span class="n">newkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">inline_comment</span>
 
 
-    <span class="k">def</span> <span class="nf">walk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">raise_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">call_on_sections</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">keywargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">walk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">raise_errors</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="n">call_on_sections</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">keywargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Walk every member and call a function on the keyword and value.</span>
 <span class="sd">        </span>
@@ -975,7 +973,7 @@
                     <span class="k">raise</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                    <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="c1"># then sections</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">)):</span>
             <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -987,7 +985,7 @@
                         <span class="k">raise</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                        <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
                 <span class="c1"># bound again in case name has changed</span>
                 <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="c1"># previous result is discarded</span>
@@ -1028,10 +1026,10 @@
 <span class="sd">        0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">elif</span> <span class="n">val</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="n">val</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
@@ -1239,18 +1237,18 @@
 
     <span class="c1"># Used by the ``istrue`` Section method</span>
     <span class="n">_bools</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;yes&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="s1">&#39;on&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;off&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="s1">&#39;true&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;yes&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s1">&#39;on&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s1">&#39;off&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s1">&#39;true&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
         <span class="p">}</span>
 
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">configspec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">interpolation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">raise_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">list_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">create_empty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">file_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stringify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">indent_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unrepr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">write_empty_values</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">_inspec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infile</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">configspec</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">interpolation</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">raise_errors</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">list_values</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                 <span class="n">create_empty</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">file_error</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stringify</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                 <span class="n">indent_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">default_encoding</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">unrepr</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">write_empty_values</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">_inspec</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse a config file or create a config file object.</span>
 <span class="sd">        </span>
@@ -1274,7 +1272,7 @@
                     <span class="s1">&#39;default_encoding&#39;</span><span class="p">:</span> <span class="n">default_encoding</span><span class="p">,</span> <span class="s1">&#39;unrepr&#39;</span><span class="p">:</span> <span class="n">unrepr</span><span class="p">,</span>
                     <span class="s1">&#39;write_empty_values&#39;</span><span class="p">:</span> <span class="n">write_empty_values</span><span class="p">}</span>
 
-        <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">options</span> <span class="o">=</span> <span class="n">_options</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">warnings</span>
@@ -1296,7 +1294,7 @@
         <span class="c1"># XXXX this ignores an explicit list_values = True in combination</span>
         <span class="c1"># with _inspec. The user should *never* do that anyway, but still...</span>
         <span class="k">if</span> <span class="n">_inspec</span><span class="p">:</span>
-            <span class="n">options</span><span class="p">[</span><span class="s1">&#39;list_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">options</span><span class="p">[</span><span class="s1">&#39;list_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">_initialise</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
         <span class="n">configspec</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;configspec&#39;</span><span class="p">]</span>
@@ -1343,10 +1341,10 @@
                     <span class="bp">self</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="n">infile</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span>
             
-            <span class="k">if</span> <span class="n">configspec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">configspec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_handle_configspec</span><span class="p">(</span><span class="n">configspec</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="k">return</span>
         
         <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">,</span> <span class="n">MISSING</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">MISSING</span><span class="p">:</span>
@@ -1394,18 +1392,18 @@
         <span class="c1"># delete private attributes</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span>
         
-        <span class="k">if</span> <span class="n">configspec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">configspec</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_handle_configspec</span><span class="p">(</span><span class="n">configspec</span><span class="p">)</span>
     
     
-    <span class="k">def</span> <span class="nf">_initialise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_initialise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">options</span> <span class="o">=</span> <span class="n">OPTION_DEFAULTS</span>
             
         <span class="c1"># initialise a few variables</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">raise_errors</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;raise_errors&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;interpolation&#39;</span><span class="p">]</span>
@@ -1416,17 +1414,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;indent_type&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;encoding&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_encoding</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;default_encoding&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">BOM</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">newlines</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BOM</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newlines</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">write_empty_values</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;write_empty_values&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unrepr</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;unrepr&#39;</span><span class="p">]</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">initial_comment</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">final_comment</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="bp">None</span>
         
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inspec</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">list_values</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_values</span> <span class="o">=</span> <span class="bp">False</span>
         
         <span class="c1"># Clear section attributes as well</span>
         <span class="n">Section</span><span class="o">.</span><span class="n">_initialise</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -1466,7 +1464,7 @@
 <span class="sd">        passed in as a single string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span>
+        <span class="k">if</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span>
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">BOM_LIST</span><span class="p">)):</span>
             <span class="c1"># No need to check for a BOM</span>
             <span class="c1"># the encoding specified doesn&#39;t have one</span>
@@ -1484,7 +1482,7 @@
             <span class="c1"># listifying appropriately</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decode</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="c1"># encoding explicitly supplied</span>
             <span class="c1"># And it could have an associated BOM</span>
             <span class="c1"># TODO: if encoding is just UTF16 - we ought to check for both</span>
@@ -1518,7 +1516,7 @@
                 <span class="n">infile</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">newline</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">infile</span> <span class="o">=</span> <span class="n">newline</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">BOM</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">BOM</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decode</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
         
         <span class="c1"># No encoding specified - so we need to check for UTF8/UTF16</span>
@@ -1530,7 +1528,7 @@
                 <span class="c1"># BOM discovered</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">final_encoding</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">final_encoding</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">BOM</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">BOM</span> <span class="o">=</span> <span class="bp">True</span>
                     <span class="c1"># UTF8</span>
                     <span class="c1"># remove BOM</span>
                     <span class="n">newline</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">BOM</span><span class="p">):]</span>
@@ -1540,9 +1538,9 @@
                         <span class="n">infile</span> <span class="o">=</span> <span class="n">newline</span>
                     <span class="c1"># UTF-8</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decode</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
                 <span class="c1"># UTF16 - have to decode</span>
@@ -1552,10 +1550,10 @@
         <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="c1"># don&#39;t actually do any decoding, since we&#39;re on python 2 and</span>
             <span class="c1"># returning a bytestring is fine</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decode</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decode</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
         <span class="c1"># No BOM discovered and no encoding specified, default to UTF-8</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decode</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 
@@ -1575,13 +1573,13 @@
 <span class="sd">        if is a string, it also needs converting to a list.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">):</span>
             <span class="c1"># NOTE: Could raise a ``UnicodeDecodeError``</span>
             <span class="k">if</span> <span class="n">encoding</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">infile</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">encoding</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">infile</span><span class="p">):</span>
@@ -1619,14 +1617,14 @@
         <span class="sd">&quot;&quot;&quot;Actually parse the config file.&quot;&quot;&quot;</span>
         <span class="n">temp_list_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_values</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unrepr</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">list_values</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_values</span> <span class="o">=</span> <span class="bp">False</span>
             
         <span class="n">comment_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">done_start</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">done_start</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="n">this_section</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="n">maxline</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">cur_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="n">reset_comment</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">reset_comment</span> <span class="o">=</span> <span class="bp">False</span>
         
         <span class="k">while</span> <span class="n">cur_index</span> <span class="o">&lt;</span> <span class="n">maxline</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">reset_comment</span><span class="p">:</span>
@@ -1636,7 +1634,7 @@
             <span class="n">sline</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="c1"># do we have anything on the line ?</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">sline</span> <span class="ow">or</span> <span class="n">sline</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">):</span>
-                <span class="n">reset_comment</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">reset_comment</span> <span class="o">=</span> <span class="bp">False</span>
                 <span class="n">comment_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
                 <span class="k">continue</span>
             
@@ -1644,15 +1642,15 @@
                 <span class="c1"># preserve initial comment</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">initial_comment</span> <span class="o">=</span> <span class="n">comment_list</span>
                 <span class="n">comment_list</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="n">done_start</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">done_start</span> <span class="o">=</span> <span class="bp">True</span>
                 
-            <span class="n">reset_comment</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">reset_comment</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="c1"># first we check if it&#39;s a section marker</span>
             <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sectionmarker</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="c1"># is a section line</span>
                 <span class="p">(</span><span class="n">indent</span><span class="p">,</span> <span class="n">sect_open</span><span class="p">,</span> <span class="n">sect_name</span><span class="p">,</span> <span class="n">sect_close</span><span class="p">,</span> <span class="n">comment</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">indent</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">indent</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="o">=</span> <span class="n">indent</span>
                 <span class="n">cur_depth</span> <span class="o">=</span> <span class="n">sect_open</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">cur_depth</span> <span class="o">!=</span> <span class="n">sect_close</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">):</span>
@@ -1700,7 +1698,7 @@
             <span class="c1"># it&#39;s not a section marker,</span>
             <span class="c1"># so it should be a valid ``key = value`` line</span>
             <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keyword</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_handle_error</span><span class="p">(</span>
                     <span class="s1">&#39;Invalid line ({0!r}) (matched as neither section nor keyword)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">line</span><span class="p">),</span>
                     <span class="n">ParseError</span><span class="p">,</span> <span class="n">infile</span><span class="p">,</span> <span class="n">cur_index</span><span class="p">)</span>
@@ -1708,7 +1706,7 @@
                 <span class="c1"># is a keyword value</span>
                 <span class="c1"># value will include any inline comment</span>
                 <span class="p">(</span><span class="n">indent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">indent</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">indent</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="o">=</span> <span class="n">indent</span>
                 <span class="c1"># check for a multiline value</span>
                 <span class="k">if</span> <span class="n">value</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&quot;&quot;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;&#39;&#39;&quot;</span><span class="p">]:</span>
@@ -1765,12 +1763,12 @@
                 <span class="c1"># add the key.</span>
                 <span class="c1"># we set unrepr because if we have got this far we will never</span>
                 <span class="c1"># be creating a new section</span>
-                <span class="n">this_section</span><span class="o">.</span><span class="n">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unrepr</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">this_section</span><span class="o">.</span><span class="n">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unrepr</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
                 <span class="n">this_section</span><span class="o">.</span><span class="n">inline_comments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
                 <span class="n">this_section</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment_list</span>
                 <span class="k">continue</span>
         <span class="c1">#</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="c1"># no indentation used, set the type accordingly</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
@@ -1830,7 +1828,7 @@
         <span class="k">return</span> <span class="n">value</span>
 
 
-    <span class="k">def</span> <span class="nf">_quote</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">multiline</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_quote</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">multiline</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a safely quoted version of a value.</span>
 <span class="sd">        </span>
@@ -1858,8 +1856,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
                 <span class="k">return</span> <span class="s1">&#39;,&#39;</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quote</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">multiline</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span>
-            <span class="k">return</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_quote</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">multiline</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quote</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">multiline</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span>
+            <span class="k">return</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_quote</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">multiline</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stringify</span><span class="p">:</span>
@@ -1932,31 +1930,31 @@
         <span class="c1"># do we look for lists in values ?</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_values</span><span class="p">:</span>
             <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nolistvalue</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
             <span class="c1"># NOTE: we don&#39;t unquote here</span>
             <span class="k">return</span> <span class="n">mat</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
         <span class="c1">#</span>
         <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valueexp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="c1"># the value is badly constructed, probably badly quoted,</span>
             <span class="c1"># or an invalid list</span>
             <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
         <span class="p">(</span><span class="n">list_values</span><span class="p">,</span> <span class="n">single</span><span class="p">,</span> <span class="n">empty_list</span><span class="p">,</span> <span class="n">comment</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">list_values</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">single</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">list_values</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">single</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
             <span class="c1"># change this if you want to accept empty values</span>
             <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
         <span class="c1"># NOTE: note there is no error handling from here if the regex</span>
         <span class="c1"># is wrong: then incorrect values will slip through</span>
-        <span class="k">if</span> <span class="n">empty_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">empty_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="c1"># the single comma - meaning an empty list</span>
             <span class="k">return</span> <span class="p">([],</span> <span class="n">comment</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">single</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">single</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="c1"># handle empty values</span>
             <span class="k">if</span> <span class="n">list_values</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">single</span><span class="p">:</span>
                 <span class="c1"># FIXME: the &#39;&#39; is a workaround because our regex now matches</span>
                 <span class="c1">#   &#39;&#39; at the end of a list if it has a trailing comma</span>
-                <span class="n">single</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">single</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">single</span> <span class="o">=</span> <span class="n">single</span> <span class="ow">or</span> <span class="s1">&#39;&quot;&quot;&#39;</span>
                 <span class="n">single</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unquote</span><span class="p">(</span><span class="n">single</span><span class="p">)</span>
@@ -1965,7 +1963,7 @@
             <span class="k">return</span> <span class="p">(</span><span class="n">single</span><span class="p">,</span> <span class="n">comment</span><span class="p">)</span>
         <span class="n">the_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_listvalueexp</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">list_values</span><span class="p">)</span>
         <span class="n">the_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_unquote</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">the_list</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">single</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">single</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">the_list</span> <span class="o">+=</span> <span class="p">[</span><span class="n">single</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">the_list</span><span class="p">,</span> <span class="n">comment</span><span class="p">)</span>
 
@@ -1977,7 +1975,7 @@
         <span class="n">single_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triple_quote</span><span class="p">[</span><span class="n">quot</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">multi_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triple_quote</span><span class="p">[</span><span class="n">quot</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">mat</span> <span class="o">=</span> <span class="n">single_line</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">retval</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">groups</span><span class="p">())</span>
             <span class="n">retval</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_index</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">retval</span>
@@ -1998,7 +1996,7 @@
             <span class="c1"># we&#39;ve got to the end of the config, oops...</span>
             <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
         <span class="n">mat</span> <span class="o">=</span> <span class="n">multi_line</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="c1"># a badly formed line</span>
             <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
         <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">comment</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
@@ -2012,9 +2010,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">configspec</span><span class="p">,</span> <span class="n">ConfigObj</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">configspec</span> <span class="o">=</span> <span class="n">ConfigObj</span><span class="p">(</span><span class="n">configspec</span><span class="p">,</span>
-                                       <span class="n">raise_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                       <span class="n">file_error</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                       <span class="n">_inspec</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                                       <span class="n">raise_errors</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                       <span class="n">file_error</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                       <span class="n">_inspec</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">ConfigObjError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="c1"># FIXME: Should these errors have a reference</span>
                 <span class="c1">#        to the already parsed ConfigObj ?</span>
@@ -2043,7 +2041,7 @@
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">entry</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">section</span><span class="p">:</span>
                 <span class="n">section</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="n">section</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">section</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="bp">True</span>
                 <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
                     <span class="c1"># copy comments</span>
                     <span class="n">section</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="n">configspec</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="p">[])</span>
@@ -2062,7 +2060,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">val</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">this_entry</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s%s%s%s%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indent_string</span><span class="p">,</span>
-                               <span class="bp">self</span><span class="o">.</span><span class="n">_decode_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_quote</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">multiline</span><span class="o">=</span><span class="kc">False</span><span class="p">)),</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">_decode_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_quote</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">multiline</span><span class="o">=</span><span class="bp">False</span><span class="p">)),</span>
                                <span class="bp">self</span><span class="o">.</span><span class="n">_a_to_u</span><span class="p">(</span><span class="s1">&#39; = &#39;</span><span class="p">),</span>
                                <span class="n">val</span><span class="p">,</span>
                                <span class="bp">self</span><span class="o">.</span><span class="n">_decode_element</span><span class="p">(</span><span class="n">comment</span><span class="p">))</span>
@@ -2072,7 +2070,7 @@
         <span class="sd">&quot;&quot;&quot;Write a section marker line&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s%s%s%s%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indent_string</span><span class="p">,</span>
                                <span class="bp">self</span><span class="o">.</span><span class="n">_a_to_u</span><span class="p">(</span><span class="s1">&#39;[&#39;</span> <span class="o">*</span> <span class="n">depth</span><span class="p">),</span>
-                               <span class="bp">self</span><span class="o">.</span><span class="n">_quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_decode_element</span><span class="p">(</span><span class="n">entry</span><span class="p">),</span> <span class="n">multiline</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">_quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_decode_element</span><span class="p">(</span><span class="n">entry</span><span class="p">),</span> <span class="n">multiline</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
                                <span class="bp">self</span><span class="o">.</span><span class="n">_a_to_u</span><span class="p">(</span><span class="s1">&#39;]&#39;</span> <span class="o">*</span> <span class="n">depth</span><span class="p">),</span>
                                <span class="bp">self</span><span class="o">.</span><span class="n">_decode_element</span><span class="p">(</span><span class="n">comment</span><span class="p">))</span>
 
@@ -2089,7 +2087,7 @@
 
     <span class="c1"># Public methods</span>
 
-    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write the current ConfigObj as a file</span>
 <span class="sd">        </span>
@@ -2104,16 +2102,16 @@
 <span class="sd">        &gt;&gt;&gt; import os</span>
 <span class="sd">        &gt;&gt;&gt; os.remove(&#39;test.ini&#39;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="c1"># this can be true if initialised from a dictionary</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">indent_type</span> <span class="o">=</span> <span class="n">DEFAULT_INDENT_TYPE</span>
             
         <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">cs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a_to_u</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span>
         <span class="n">csp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a_to_u</span><span class="p">(</span><span class="s1">&#39;# &#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">section</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">section</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">int_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="n">section</span> <span class="o">=</span> <span class="bp">self</span>
             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_comment</span><span class="p">:</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decode_element</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
@@ -2162,13 +2160,13 @@
         <span class="k">if</span> <span class="n">section</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">out</span>
         
-        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">outfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">outfile</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
             <span class="c1"># output a list of lines</span>
             <span class="c1"># might need to encode</span>
             <span class="c1"># NOTE: This will *screw* UTF16, each line will start with the BOM</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">:</span>
                 <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">out</span><span class="p">]</span>
-            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BOM</span> <span class="ow">and</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BOM</span> <span class="ow">and</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">or</span>
                 <span class="p">(</span><span class="n">BOM_LIST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="o">==</span> <span class="s1">&#39;utf_8&#39;</span><span class="p">))):</span>
                 <span class="c1"># Add the UTF8 BOM</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">out</span><span class="p">:</span>
@@ -2178,7 +2176,7 @@
         
         <span class="c1"># Turn the list to a string, joined with correct newlines</span>
         <span class="n">newline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newlines</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">outfile</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;w&#39;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">outfile</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;w&#39;</span>
             <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s1">&#39;win32&#39;</span> <span class="ow">and</span> <span class="n">newline</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">):</span>
             <span class="c1"># Windows specific hack to avoid writing &#39;\r\r\n&#39;</span>
             <span class="n">newline</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -2193,18 +2191,18 @@
                                          <span class="bp">self</span><span class="o">.</span><span class="n">default_encoding</span> <span class="ow">or</span>
                                          <span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">BOM</span> <span class="ow">and</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">match_utf8</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">BOM</span> <span class="ow">and</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">match_utf8</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)):</span>
             <span class="c1"># Add the UTF8 BOM</span>
             <span class="n">output_bytes</span> <span class="o">=</span> <span class="n">BOM_UTF8</span> <span class="o">+</span> <span class="n">output_bytes</span>
 
-        <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output_bytes</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">h</span><span class="p">:</span>
                 <span class="n">h</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output_bytes</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">preserve_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">section</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">preserve_errors</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">section</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test the ConfigObj against a configspec.</span>
 <span class="sd">        </span>
@@ -2239,13 +2237,13 @@
 <span class="sd">        results dictionary into a flattened list of failures - useful for</span>
 <span class="sd">        displaying meaningful error messages.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">section</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">section</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No configspec supplied.&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">preserve_errors</span><span class="p">:</span>
                 <span class="c1"># We do this once to remove a top level dependency on the validate module</span>
                 <span class="c1"># Which makes importing configobj faster</span>
-                <span class="kn">from</span> <span class="nn">validate</span> <span class="k">import</span> <span class="n">VdtMissingValue</span>
+                <span class="kn">from</span> <span class="nn">validate</span> <span class="kn">import</span> <span class="n">VdtMissingValue</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_vdtMissingValue</span> <span class="o">=</span> <span class="n">VdtMissingValue</span>
                 
             <span class="n">section</span> <span class="o">=</span> <span class="bp">self</span>
@@ -2265,7 +2263,7 @@
 
         
         <span class="k">def</span> <span class="nf">validate_entry</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">missing</span><span class="p">,</span> <span class="n">ret_true</span><span class="p">,</span> <span class="n">ret_false</span><span class="p">):</span>
-            <span class="n">section</span><span class="o">.</span><span class="n">default_values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">section</span><span class="o">.</span><span class="n">default_values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
                 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">section</span><span class="o">.</span><span class="n">default_values</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">(</span><span class="n">configspec</span><span class="p">[</span><span class="n">entry</span><span class="p">])</span>
@@ -2281,15 +2279,15 @@
                                         <span class="p">)</span>
             <span class="k">except</span> <span class="n">validator</span><span class="o">.</span><span class="n">baseErrorClass</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">preserve_errors</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vdtMissingValue</span><span class="p">):</span>
-                    <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># preserve the error</span>
                     <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
-                    <span class="n">ret_false</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="n">ret_true</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">ret_false</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">ret_true</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">ret_false</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">ret_false</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stringify</span> <span class="ow">or</span> <span class="n">missing</span><span class="p">:</span>
                     <span class="c1"># if we are doing type conversion</span>
                     <span class="c1"># or the value is a supplied default</span>
@@ -2297,7 +2295,7 @@
                         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">check</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
                             <span class="c1"># preserve lists</span>
                             <span class="n">check</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">check</span><span class="p">]</span>
-                        <span class="k">elif</span> <span class="n">missing</span> <span class="ow">and</span> <span class="n">check</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">elif</span> <span class="n">missing</span> <span class="ow">and</span> <span class="n">check</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                             <span class="c1"># convert the None from a default to a &#39;&#39;</span>
                             <span class="n">check</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
                         <span class="k">else</span><span class="p">:</span>
@@ -2310,8 +2308,8 @@
         
         <span class="c1">#</span>
         <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">ret_true</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">ret_false</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">ret_true</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">ret_false</span> <span class="o">=</span> <span class="bp">True</span>
         
         <span class="n">unvalidated</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">scalars</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">configspec</span><span class="p">]</span>
         <span class="n">incorrect_sections</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">configspec</span><span class="o">.</span><span class="n">sections</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">scalars</span><span class="p">]</span>        
@@ -2324,8 +2322,8 @@
             <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">scalars</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">entry</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">defaults</span><span class="p">):</span>
                 <span class="c1"># missing entries</span>
                 <span class="c1"># or entries from defaults</span>
-                <span class="n">missing</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="n">val</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">missing</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="bp">None</span>
                 <span class="k">if</span> <span class="n">copy</span> <span class="ow">and</span> <span class="n">entry</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">scalars</span><span class="p">:</span>
                     <span class="c1"># copy comments</span>
                     <span class="n">section</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
@@ -2334,39 +2332,39 @@
                         <span class="n">configspec</span><span class="o">.</span><span class="n">inline_comments</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
                 <span class="c1">#</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">missing</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">missing</span> <span class="o">=</span> <span class="bp">False</span>
                 <span class="n">val</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span>
             
             <span class="n">ret_true</span><span class="p">,</span> <span class="n">ret_false</span> <span class="o">=</span> <span class="n">validate_entry</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">configspec</span><span class="p">[</span><span class="n">entry</span><span class="p">],</span> <span class="n">val</span><span class="p">,</span> 
                                                  <span class="n">missing</span><span class="p">,</span> <span class="n">ret_true</span><span class="p">,</span> <span class="n">ret_false</span><span class="p">)</span>
         
-        <span class="n">many</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">many</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">if</span> <span class="s1">&#39;__many__&#39;</span> <span class="ow">in</span> <span class="n">configspec</span><span class="o">.</span><span class="n">scalars</span><span class="p">:</span>
             <span class="n">many</span> <span class="o">=</span> <span class="n">configspec</span><span class="p">[</span><span class="s1">&#39;__many__&#39;</span><span class="p">]</span>
         <span class="k">elif</span> <span class="s1">&#39;___many___&#39;</span> <span class="ow">in</span> <span class="n">configspec</span><span class="o">.</span><span class="n">scalars</span><span class="p">:</span>
             <span class="n">many</span> <span class="o">=</span> <span class="n">configspec</span><span class="p">[</span><span class="s1">&#39;___many___&#39;</span><span class="p">]</span>
         
-        <span class="k">if</span> <span class="n">many</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">many</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">unvalidated</span><span class="p">:</span>
                 <span class="n">val</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span>
-                <span class="n">ret_true</span><span class="p">,</span> <span class="n">ret_false</span> <span class="o">=</span> <span class="n">validate_entry</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">many</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="n">ret_true</span><span class="p">,</span> <span class="n">ret_false</span> <span class="o">=</span> <span class="n">validate_entry</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">many</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span>
                                                      <span class="n">ret_true</span><span class="p">,</span> <span class="n">ret_false</span><span class="p">)</span>
             <span class="n">unvalidated</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">incorrect_scalars</span><span class="p">:</span>
-            <span class="n">ret_true</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">ret_true</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">preserve_errors</span><span class="p">:</span>
-                <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">ret_false</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">ret_false</span> <span class="o">=</span> <span class="bp">False</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Value </span><span class="si">%r</span><span class="s1"> was provided as a section&#39;</span> <span class="o">%</span> <span class="n">entry</span>
                 <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">baseErrorClass</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">incorrect_sections</span><span class="p">:</span>
-            <span class="n">ret_true</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">ret_true</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">preserve_errors</span><span class="p">:</span>
-                <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">ret_false</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">ret_false</span> <span class="o">=</span> <span class="bp">False</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Section </span><span class="si">%r</span><span class="s1"> was provided as a single value&#39;</span> <span class="o">%</span> <span class="n">entry</span>
                 <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">baseErrorClass</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 
@@ -2376,7 +2374,7 @@
             <span class="c1"># FIXME: this means DEFAULT is not copied in copy mode</span>
             <span class="k">if</span> <span class="n">section</span> <span class="ow">is</span> <span class="bp">self</span> <span class="ow">and</span> <span class="n">entry</span> <span class="o">==</span> <span class="s1">&#39;DEFAULT&#39;</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">section</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span><span class="o">.</span><span class="n">configspec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">section</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span><span class="o">.</span><span class="n">configspec</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="n">unvalidated</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
@@ -2384,18 +2382,18 @@
                 <span class="n">section</span><span class="o">.</span><span class="n">inline_comments</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="n">configspec</span><span class="o">.</span><span class="n">inline_comments</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
             <span class="n">check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">preserve_errors</span><span class="o">=</span><span class="n">preserve_errors</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="n">section</span><span class="p">[</span><span class="n">entry</span><span class="p">])</span>
             <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="n">check</span>
-            <span class="k">if</span> <span class="n">check</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="n">ret_true</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">elif</span> <span class="n">check</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">ret_false</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">check</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="n">ret_true</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">elif</span> <span class="n">check</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="n">ret_false</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">ret_true</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">ret_true</span> <span class="o">=</span> <span class="bp">False</span>
         
         <span class="n">section</span><span class="o">.</span><span class="n">extra_values</span> <span class="o">=</span> <span class="n">unvalidated</span>
         <span class="k">if</span> <span class="n">preserve_errors</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">section</span><span class="o">.</span><span class="n">_created</span><span class="p">:</span>
             <span class="c1"># If the section wasn&#39;t created (i.e. it wasn&#39;t missing)</span>
             <span class="c1"># then we can&#39;t return False, we need to preserve errors</span>
-            <span class="n">ret_false</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">ret_false</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="c1">#</span>
         <span class="k">if</span> <span class="n">ret_false</span> <span class="ow">and</span> <span class="n">preserve_errors</span> <span class="ow">and</span> <span class="n">out</span><span class="p">:</span>
             <span class="c1"># If we are preserving errors, but all</span>
@@ -2404,9 +2402,9 @@
             <span class="c1"># real failure that we need to preserve.</span>
             <span class="n">ret_false</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">ret_true</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="bp">True</span>
         <span class="k">elif</span> <span class="n">ret_false</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
         <span class="k">return</span> <span class="n">out</span>
 
 
@@ -2416,9 +2414,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_initialise</span><span class="p">()</span>
         <span class="c1"># FIXME: Should be done by &#39;_initialise&#39;, but ConfigObj constructor (and reload)</span>
         <span class="c1">#        requires an empty dictionary</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configspec</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="c1"># Just to be sure ;-)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_original_configspec</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_original_configspec</span> <span class="o">=</span> <span class="bp">None</span>
         
         
     <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2462,14 +2460,14 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">baseErrorClass</span> <span class="o">=</span> <span class="n">ConfigObjError</span>
     
-    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">check</span><span class="p">,</span> <span class="n">member</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">check</span><span class="p">,</span> <span class="n">member</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A dummy check method, always returns the value unchanged.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
             <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseErrorClass</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">member</span>
 
 
-<span class="k">def</span> <span class="nf">flatten_errors</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">results</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">flatten_errors</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">results</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An example function that will turn a nested dictionary of results</span>
 <span class="sd">    (as returned by ``ConfigObj.validate``) into a flat list.</span>
@@ -2501,19 +2499,19 @@
 <span class="sd">    </span>
 <span class="sd">    For example *The value &quot;3&quot; is of the wrong type*.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">levels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">levels</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="c1"># first time called</span>
         <span class="n">levels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="n">res</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">res</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">res</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
-        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">levels</span><span class="p">[:],</span> <span class="kc">None</span><span class="p">,</span> <span class="n">res</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">res</span> <span class="o">==</span> <span class="bp">False</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">levels</span><span class="p">[:],</span> <span class="bp">None</span><span class="p">,</span> <span class="n">res</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">levels</span><span class="p">:</span>
             <span class="n">levels</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
     <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="c1"># Go down one level</span>
@@ -2572,13 +2570,13 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, Nacho Mas.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+        &copy; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.
     </div>
   </body>
 </html>

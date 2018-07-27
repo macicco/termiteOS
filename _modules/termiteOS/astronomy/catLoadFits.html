@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>termiteOS.astronomy.catLoadFits &#8212; termiteOS alpha documentation</title>
+    <title>termiteOS.astronomy.catLoadFits &mdash; termiteOS alpha documentation</title>
     
     <link rel="stylesheet" href="../../../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -26,8 +26,6 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/bizstyle.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
     <link rel="top" title="termiteOS alpha documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -45,8 +43,8 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -57,8 +55,8 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -78,18 +76,18 @@
 <span class="c1">#</span>
 <span class="c1"># termiteOS</span>
 <span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">pyfits</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
 <span class="kn">import</span> <span class="nn">StringIO</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="n">path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
 <span class="n">data_path</span><span class="o">=</span><span class="n">path</span><span class="o">+</span><span class="s1">&#39;/data/&#39;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="catLoadFits"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits">[docs]</a><span class="k">class</span> <span class="nc">catLoadFits</span><span class="p">:</span>
@@ -99,8 +97,8 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">catalogsDefinitions</span><span class="p">[</span><span class="n">conf</span><span class="p">]</span>
 			<span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;fits&#39;</span><span class="p">]</span>		
 		<span class="k">else</span><span class="p">:</span>
-			<span class="nb">print</span> <span class="p">(</span><span class="n">conf</span><span class="o">+</span><span class="s2">&quot; No Found&quot;</span><span class="p">)</span>
-			<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Available catalogues:&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">catalogsDefinitions</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+			<span class="k">print</span> <span class="p">(</span><span class="n">conf</span><span class="o">+</span><span class="s2">&quot; No Found&quot;</span><span class="p">)</span>
+			<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;Available catalogues:&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">catalogsDefinitions</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">catname</span><span class="o">=</span><span class="n">conf</span>
 		<span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;fits&#39;</span><span class="p">]</span>
@@ -119,7 +117,7 @@
 <div class="viewcode-block" id="catLoadFits.findtype"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.findtype">[docs]</a>	<span class="k">def</span> <span class="nf">findtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">varname</span><span class="p">):</span>
 		<span class="n">i</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span>
 		<span class="n">fmt</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-		<span class="nb">print</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+		<span class="k">print</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
 		<span class="n">a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 		<span class="n">aa</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 		<span class="n">dt</span><span class="o">=</span><span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fits_dt</span> <span class="k">if</span> <span class="n">varname</span> <span class="ow">in</span> <span class="n">item</span><span class="p">]</span> 
@@ -208,24 +206,24 @@
 		<span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">IDs</span><span class="o">=</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">)</span>
 		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">IDs</span><span class="o">=</span><span class="kc">False</span></div>
+			<span class="bp">self</span><span class="o">.</span><span class="n">IDs</span><span class="o">=</span><span class="bp">False</span></div>
 
 <div class="viewcode-block" id="catLoadFits.sanitize"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.sanitize">[docs]</a>	<span class="k">def</span> <span class="nf">sanitize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">array</span><span class="p">):</span>
 		<span class="n">dt</span><span class="o">=</span><span class="n">array</span><span class="o">.</span><span class="n">dtype</span>
 		<span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">descr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;&lt;i4&#39;</span><span class="p">:</span>
 			<span class="n">d</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;1&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">array</span><span class="p">]</span>
-			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SANITIZE&quot;</span><span class="p">,</span><span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">descr</span><span class="p">)</span>
+			<span class="k">print</span><span class="p">(</span><span class="s2">&quot;SANITIZE&quot;</span><span class="p">,</span><span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">descr</span><span class="p">)</span>
 			<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
 		<span class="k">return</span> <span class="n">array</span></div>
 		
 <div class="viewcode-block" id="catLoadFits.search"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.search">[docs]</a>	<span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">IDs</span><span class="p">:</span>
-			<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;No field </span><span class="se">\&#39;</span><span class="s2">name</span><span class="se">\&#39;</span><span class="s2"> in prop dictionary&quot;</span><span class="p">)</span>
-			<span class="k">return</span> <span class="kc">None</span>
+			<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;No field </span><span class="se">\&#39;</span><span class="s2">name</span><span class="se">\&#39;</span><span class="s2"> in prop dictionary&quot;</span><span class="p">)</span>
+			<span class="k">return</span> <span class="bp">None</span>
 		<span class="k">try</span><span class="p">:</span>
 			<span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">IDs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span>
 		<span class="k">except</span><span class="p">:</span>
-			<span class="n">s</span><span class="o">=</span><span class="kc">None</span>
+			<span class="n">s</span><span class="o">=</span><span class="bp">None</span>
 		<span class="k">return</span> <span class="n">s</span></div>
 
 <div class="viewcode-block" id="catLoadFits.filter"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.filter">[docs]</a>	<span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,((</span><span class="n">ra0</span><span class="p">,</span><span class="n">dec0</span><span class="p">),(</span><span class="n">ra1</span><span class="p">,</span><span class="n">dec1</span><span class="p">))</span><span class="o">=</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">90</span><span class="p">),(</span><span class="mi">360</span><span class="p">,</span><span class="mi">90</span><span class="p">)),</span><span class="n">mag</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
@@ -239,24 +237,24 @@
 <div class="viewcode-block" id="catLoadFits.list"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.list">[docs]</a>	<span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">catalogsDefinitions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
 			<span class="k">if</span> <span class="n">c</span><span class="o">==</span><span class="bp">self</span><span class="o">.</span><span class="n">catname</span><span class="p">:</span>
-				<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+				<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
 			<span class="k">else</span><span class="p">:</span>
-				<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">c</span><span class="p">)</span></div>
+				<span class="k">print</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span><span class="n">c</span><span class="p">)</span></div>
 <div class="viewcode-block" id="catLoadFits.info"><a class="viewcode-back" href="../../../source/termiteOS.astronomy.html#termiteOS.astronomy.catLoadFits.catLoadFits.info">[docs]</a>	<span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;CATALOG NAME:</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">catname</span><span class="p">)</span>
-		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;COVERAGE:</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">coverage</span><span class="p">)</span>
-		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;NUM RECORDS:</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">numrec</span><span class="p">)</span>
+		<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;CATALOG NAME:</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">catname</span><span class="p">)</span>
+		<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;COVERAGE:</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">coverage</span><span class="p">)</span>
+		<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;NUM RECORDS:</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">numrec</span><span class="p">)</span>
 		<span class="n">VARS</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
-		<span class="n">havemag</span><span class="o">=</span><span class="kc">False</span>
+		<span class="n">havemag</span><span class="o">=</span><span class="bp">False</span>
 		<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
 			<span class="n">VARS</span> <span class="o">+=</span> <span class="n">v</span><span class="o">+</span><span class="s1">&#39; &#39;</span>
 			<span class="k">if</span> <span class="n">v</span><span class="o">==</span><span class="s1">&#39;mag&#39;</span><span class="p">:</span>
-				<span class="n">havemag</span><span class="o">=</span><span class="kc">True</span>
-		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;ORIGINAL VARIABLES:&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
-		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;SELECTED VARIABLES:&quot;</span><span class="p">,</span><span class="n">VARS</span><span class="p">)</span>
-		<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;FORMATS:&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">descr</span><span class="p">)</span>
+				<span class="n">havemag</span><span class="o">=</span><span class="bp">True</span>
+		<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;ORIGINAL VARIABLES:&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
+		<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;SELECTED VARIABLES:&quot;</span><span class="p">,</span><span class="n">VARS</span><span class="p">)</span>
+		<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;FORMATS:&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">descr</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">havemag</span><span class="p">:</span>
-			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MAG max:&quot;</span><span class="p">,</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;mag&#39;</span><span class="p">]),</span><span class="s2">&quot;min:&quot;</span><span class="p">,</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;mag&#39;</span><span class="p">]))</span></div></div>
+			<span class="k">print</span><span class="p">(</span><span class="s2">&quot;MAG max:&quot;</span><span class="p">,</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;mag&#39;</span><span class="p">]),</span><span class="s2">&quot;min:&quot;</span><span class="p">,</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;mag&#39;</span><span class="p">]))</span></div></div>
 
 <span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 	<span class="n">q</span><span class="o">=</span><span class="n">catLoadFits</span><span class="p">(</span><span class="s1">&#39;BSC5&#39;</span><span class="p">)</span>
@@ -264,7 +262,7 @@
 		<span class="c1">#print(&#39;==================&#39;,c,&#39;==================&#39;)</span>
 		<span class="n">qq</span><span class="o">=</span><span class="n">catLoadFits</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 		<span class="c1">#print(qq.info())</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">qq</span><span class="o">.</span><span class="n">numrec</span><span class="p">,</span><span class="n">qq</span><span class="o">.</span><span class="n">coverage</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">qq</span><span class="o">.</span><span class="n">numrec</span><span class="p">,</span><span class="n">qq</span><span class="o">.</span><span class="n">coverage</span><span class="p">)</span>
 
 
 </pre></div>
@@ -283,13 +281,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">termiteOS alpha documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, Nacho Mas.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+        &copy; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.
     </div>
   </body>
 </html>

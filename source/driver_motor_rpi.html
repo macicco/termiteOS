@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>termiteOS.drivers.rpi package &mdash; termiteOS alpha documentation</title>
+    <title>Raspberry Drivers &mdash; termiteOS alpha documentation</title>
     
     <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,6 +27,9 @@
     <script type="text/javascript" src="../_static/bizstyle.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="top" title="termiteOS alpha documentation" href="../index.html" />
+    <link rel="up" title="Drivers" href="drivers.html" />
+    <link rel="next" title="Indices and tables" href="api.html" />
+    <link rel="prev" title="Drivers" href="drivers.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
@@ -42,7 +45,14 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="api.html" title="Indices and tables"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="drivers.html" title="Drivers"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="drivers.html" accesskey="U">Drivers</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -52,19 +62,29 @@
             </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">termiteOS.drivers.rpi package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-termiteOS.drivers.rpi.rpiDRV8825Hat">termiteOS.drivers.rpi.rpiDRV8825Hat module</a></li>
-<li><a class="reference internal" href="#module-termiteOS.drivers.rpi.rpiSpeedPWM">termiteOS.drivers.rpi.rpiSpeedPWM module</a></li>
-<li><a class="reference internal" href="#module-termiteOS.drivers.rpi">Module contents</a></li>
+<li><a class="reference internal" href="#">Raspberry Drivers</a><ul>
+<li><a class="reference internal" href="#rpidrv8825hat">rpiDRV8825Hat</a><ul>
+<li><a class="reference internal" href="#module-termiteOS.drivers.rpi.rpiDRV8825Hat">API</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rpispeedpwm">rpiSpeedPWM</a><ul>
+<li><a class="reference internal" href="#id1">API</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="drivers.html"
+                        title="previous chapter">Drivers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="api.html"
+                        title="next chapter">Indices and tables</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/source/termiteOS.drivers.rpi.txt"
+      <li><a href="../_sources/source/driver_motor_rpi.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -86,13 +106,14 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="termiteos-drivers-rpi-package">
-<h1>termiteOS.drivers.rpi package<a class="headerlink" href="#termiteos-drivers-rpi-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
+  <div class="section" id="raspberry-drivers">
+<h1>Raspberry Drivers<a class="headerlink" href="#raspberry-drivers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="rpidrv8825hat">
+<h2>rpiDRV8825Hat<a class="headerlink" href="#rpidrv8825hat" title="Permalink to this headline">¶</a></h2>
+<p>This is a DIY Raspberry Pi Hat base on the popular stepper control chip DRV8825</p>
+<a class="reference internal image-reference" href="../_images/DRV8825HAT.jpg"><img alt="DRV8825Hat" class="align-center" src="../_images/DRV8825HAT.jpg" style="width: 200.0px; height: 361.0px;" /></a>
 <div class="section" id="module-termiteOS.drivers.rpi.rpiDRV8825Hat">
-<span id="termiteos-drivers-rpi-rpidrv8825hat-module"></span><h2>termiteOS.drivers.rpi.rpiDRV8825Hat module<a class="headerlink" href="#module-termiteOS.drivers.rpi.rpiDRV8825Hat" title="Permalink to this headline">¶</a></h2>
+<span id="api"></span><h3>API<a class="headerlink" href="#module-termiteOS.drivers.rpi.rpiDRV8825Hat" title="Permalink to this headline">¶</a></h3>
 <p>DIY DRV8825 driver  Hat interface.</p>
 <p>This board has two DRV8825 able to driver 2 motors
 See hardware on termiteOS/driver/rpi/hardware</p>
@@ -113,8 +134,7 @@ See hardware on termiteOS/driver/rpi/hardware</p>
 <dl class="class">
 <dt id="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat">
 <em class="property">class </em><code class="descclassname">termiteOS.drivers.rpi.rpiDRV8825Hat.</code><code class="descname">rpiDRV8825Hat</code><span class="sig-paren">(</span><em>raspberry</em>, <em>driverID</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiDRV8825Hat.html#rpiDRV8825Hat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>This class define the PIN mapping and basic methods for the rpiDVR8825 Hat</p>
+<dd><p>This class define the PIN mapping and basic methods for the rpiDVR8825 Hat</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Posible values of driverID can be 0 or 1.</p>
@@ -176,9 +196,13 @@ See hardware on termiteOS/driver/rpi/hardware</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-termiteOS.drivers.rpi.rpiSpeedPWM">
-<span id="termiteos-drivers-rpi-rpispeedpwm-module"></span><h2>termiteOS.drivers.rpi.rpiSpeedPWM module<a class="headerlink" href="#module-termiteOS.drivers.rpi.rpiSpeedPWM" title="Permalink to this headline">¶</a></h2>
-<p>Raspberry PWM motor driver.</p>
+</div>
+<div class="section" id="rpispeedpwm">
+<h2>rpiSpeedPWM<a class="headerlink" href="#rpispeedpwm" title="Permalink to this headline">¶</a></h2>
+<p>A PWM driver</p>
+<div class="section" id="id1">
+<h3>API<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-termiteOS.drivers.rpi.rpiSpeedPWM"></span><p>Raspberry PWM motor driver.</p>
 <p>INTERFACE:</p>
 <blockquote>
 <div><ul>
@@ -218,8 +242,7 @@ See hardware on termiteOS/driver/rpi/hardware</p>
 <dl class="class">
 <dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM">
 <em class="property">class </em><code class="descclassname">termiteOS.drivers.rpi.rpiSpeedPWM.</code><code class="descname">rpiSpeedPWM</code><span class="sig-paren">(</span><em>driverID</em>, <em>microsteps</em>, <em>FullTurnSteps</em>, <em>gear=1</em>, <em>name='Axis'</em>, <em>raspberry='localhost'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat" title="termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat"><code class="xref py py-class docutils literal"><span class="pre">termiteOS.drivers.rpi.rpiDRV8825Hat.rpiDRV8825Hat</span></code></a></p>
-<p>This class do the PWM control calling the underlying
+<dd><p>This class do the PWM control calling the underlying
 pigpiod daemon.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -229,6 +252,18 @@ pigpiod daemon.</p>
 <dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.SetPoint">
 <code class="descname">SetPoint</code><span class="sig-paren">(</span><em>setpoint</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.SetPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.SetPoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Establish the _SetPoint value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.clutch">
+<code class="descname">clutch</code><span class="sig-paren">(</span><em>ON_OFF</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.clutch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Engage or Disengage(free spinnig) the motors</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.fault">
+<code class="descname">fault</code><span class="sig-paren">(</span><em>gpio</em>, <em>level</em>, <em>tick</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.fault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to check internal driver faults</p>
 </dd></dl>
 
 <dl class="method">
@@ -268,6 +303,12 @@ pigpiod daemon.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><em>ON_OFF</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the driver circuit</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.run">
 <code class="descname">run</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.run" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -282,6 +323,30 @@ pigpiod daemon.</p>
 <dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.setSpeed">
 <code class="descname">setSpeed</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.setSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.setSpeed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set and start PWM to obtain radians/seconds</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.set_dir">
+<code class="descname">set_dir</code><span class="sig-paren">(</span><em>dir</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.set_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the direction of motion</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.set_microsteps">
+<code class="descname">set_microsteps</code><span class="sig-paren">(</span><em>microsteps</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.set_microsteps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set microstepping mode of the driver</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.sleep">
+<code class="descname">sleep</code><span class="sig-paren">(</span><em>ON_OFF</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.sleep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sleep or wake up the driver circuit</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.stepcounter">
+<code class="descname">stepcounter</code><span class="sig-paren">(</span><em>gpio</em>, <em>level</em>, <em>tick</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.stepcounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback function to update internal position counter</p>
 </dd></dl>
 
 <dl class="method">
@@ -303,6 +368,12 @@ pigpiod daemon.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.test">
+<code class="descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the Hat sending steps</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.trackSpeed">
 <code class="descname">trackSpeed</code><span class="sig-paren">(</span><em>trackSpeed</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.trackSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.trackSpeed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set axis track speed. Track speed*timestep is add to the _SetPoint value</p>
@@ -317,9 +388,6 @@ pigpiod daemon.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-termiteOS.drivers.rpi">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-termiteOS.drivers.rpi" title="Permalink to this headline">¶</a></h2>
-<p>RASPBERRY PI DRIVERS</p>
 </div>
 </div>
 
@@ -338,7 +406,14 @@ pigpiod daemon.</p>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="api.html" title="Indices and tables"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="drivers.html" title="Drivers"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="drivers.html" >Drivers</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -7,6 +7,10 @@ All commands recived throught the TCP port are relay to the myCmdPort port of th
 
 Ussing this node allow us to connect to a specific node (the parent node of tcpproxy node) with a regular `telnet host port`
 
+.. click:: termiteOS.scripts.cli:tcpproxy
+   :prog: tcpproxy
+   :show-nested:
+
 API
 ^^^
 
