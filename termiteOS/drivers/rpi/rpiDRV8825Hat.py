@@ -6,13 +6,6 @@
 '''
 DIY DRV8825 driver  Hat interface.
 
-.. image:: DRV8825HAT.jpg
-   :width: 400px
-   :scale: 50 %
-   :alt: DRV8825Hat
-   :align: center
-
-
 This board has two DRV8825 able to driver 2 motors
 See hardware on termiteOS/driver/rpi/hardware
 

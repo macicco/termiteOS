@@ -285,8 +285,8 @@ class telescope(nodeSkull.node):
 
 
 def runtelescope(name, port, parent_host='', parent_port=False):
+    ''' **ENTRYPOINT** calling this fuction start the node'''
     s = telescope(name, port, parent_host, parent_port)
-    s.run()
     try:
         s.run()
     except:

@@ -3,21 +3,32 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-TermiteOS documentation
-=====================================
+
+.. include:: ../README.rst
+
+Technical information
+---------------------
+.. toctree::
+   :maxdepth: 1
+
+   source/launcher.rst
 
 .. toctree::
    :maxdepth: 2
 
+   source/nodes
 
-Indices and tables
-==================
+.. toctree::
+   :maxdepth: 2
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   source/drivers
 
-.. include:: ../README.rst
+.. toctree::
+   :maxdepth: 3
+
+   source/api
+
+
 
 
 

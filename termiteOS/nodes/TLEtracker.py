@@ -19,6 +19,7 @@ import termiteOS.astronomy.tle as tle
 
 
 class TLEtracker(nodeSkull.node):
+        '''Command to the parent node to track satellites base on his TLE'''
         def __init__(self, name, port, parent_host, parent_port):
                 super(TLEtracker, self).__init__(name, 'TLEtracker', port, parent_host, parent_port)
 		CMDs={ 
@@ -36,6 +37,7 @@ class TLEtracker(nodeSkull.node):
 
 
 	def cmd_follow(self,arg):
+                ''' Follow satellite '''
                 sat=arg
                 if not self.TLEs.TLE(sat):
                         self.follow='none'
@@ -46,6 +48,7 @@ class TLEtracker(nodeSkull.node):
 
 
 	def observerInit(self):
+                ''' Recover Observer data (lat, lon,...) from parent node '''
 		self.ParentCmdSocket.send('@getObserver')
 		reply=json.loads(self.ParentCmdSocket.recv())
 		self.observer=ephem.Observer()
@@ -58,6 +61,7 @@ class TLEtracker(nodeSkull.node):
 
 
 	def gearInit(self):
+                '''Get the gear info'''
 		self.ParentCmdSocket.send('@getGear')
                 reply=self.ParentCmdSocket.recv()
                 logging.info(reply)
@@ -68,6 +72,7 @@ class TLEtracker(nodeSkull.node):
 		
 
 	def trackSatellite(self,sat):
+                ''' send track speed to parent node. If to far from target send also a slew '''
 		error=self.pointError
 		satRA,satDEC = self.satPosition(sat)
 		vsatRA,vsatDEC = self.satSpeed(sat)
@@ -82,6 +87,7 @@ class TLEtracker(nodeSkull.node):
 			logging.debug("Errors RA:%s DEC:%s. OK",(errorRA),(errorDEC))
 
 	def circle(self,re,dec,r,v):
+                ''' Used as test '''
 		#not finished
 		self.a=v*self.timestep+self.a
 		vRA=r*math.sin(self.a)
@@ -90,6 +96,7 @@ class TLEtracker(nodeSkull.node):
 
 
 	def sendSlew(self,RA,DEC):
+                '''send slew to parent node primitive'''
 		self.ParentCmdSocket.send(':Sr '+str(RA))
 		reply=self.ParentCmdSocket.recv()
 		self.ParentCmdSocket.send(':Sd '+str(DEC))
@@ -98,6 +105,7 @@ class TLEtracker(nodeSkull.node):
 		reply=self.ParentCmdSocket.recv()
 
 	def sendTrackSpeed(self,vRA,vDEC):
+                '''send speed to parent node primitive'''
 		self.ParentCmdSocket.send('@setTrackSpeed '+str(vRA)+' '+str(vDEC))
 		reply=self.ParentCmdSocket.recv()
 
@@ -105,6 +113,7 @@ class TLEtracker(nodeSkull.node):
 
 
 	def run(self):
+                '''Main loop. Obtain RA/DEC actual values and do the trackSatellite() call'''
 		while self.RUN:
 			time.sleep(self.timestep)
 			#self.values=self.lastValue()19963
@@ -118,6 +127,7 @@ class TLEtracker(nodeSkull.node):
 
 
 	def satPosition(self,sat):
+                        ''' Calculate satellite RA/DEC from TLE '''
 			observer=self.observer
 			s=self.TLEs.TLE(sat)
 			observer.date=ephem.Date(datetime.datetime.utcnow())
@@ -134,6 +144,7 @@ class TLEtracker(nodeSkull.node):
 
 
 	def satSpeed(self,sat):
+                        ''' Calculate satellite speed from TLE'''
 			seconds=self.timestep
 			observer=self.observer
 			s=self.TLEs.TLE(sat)
@@ -152,6 +163,7 @@ class TLEtracker(nodeSkull.node):
   			return (vRA,vDEC)
 
 def runTLEtracker(name, port, parent_host='', parent_port=False):
+    ''' **ENTRYPOINT** calling this fuction start the node'''
     s = TLEtracker(name, port, parent_host, parent_port)
     try:
         s.run()

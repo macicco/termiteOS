@@ -34,6 +34,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
+    'sphinx_click.ext',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -154,7 +155,7 @@ html_logo = 'images/logo_small.png'
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
 #
-html_favicon = 'images/favicon.png'
+html_favicon = 'images/favicon.ico'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -272,7 +273,7 @@ latex_documents = [
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
 #
-latex_logo = 'logo.png'
+latex_logo = 'images/logo.png'
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.

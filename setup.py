@@ -35,8 +35,9 @@ setup(
       [console_scripts]
       miteLaunch=termiteOS.scripts.cli:launch
       miteConsole=termiteOS.scripts.cli:console
-      miteJoy=termiteOS.scripts.cli:joystick
-      mitetcpproxy=termiteOS.scripts.cli:tcpproxy
-      miteHUB=termiteOS.scripts.cli:hub
       miteTelescope=termiteOS.scripts.cli:telescope
+      mitetcpproxy=termiteOS.scripts.cli:tcpproxy
+      miteTLEtracker=termiteOS.scripts.cli:TLEtracker
+      miteJoy=termiteOS.scripts.cli:joystick
+      miteHUB=termiteOS.scripts.cli:hub
       """)

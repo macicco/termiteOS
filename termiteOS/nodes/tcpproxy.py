@@ -4,8 +4,8 @@
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
 '''
-LX200 command set
-socat TCP:localhost:6666,reuseaddr pty,link=/tmp/lx200
+To mimic a tty serial port:
+`socat TCP:localhost:6000,reuseaddr pty,link=/tmp/lx200`
 '''
 from __future__ import print_function
 import logging
@@ -27,7 +27,12 @@ class tcpproxy(nodeSkull.node):
                 self.parent_port=parent_port
                 self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                tcpport=int(params['tcpport'])
+                if 'tcpport' in params.keys():
+                        tcpport=int(params['tcpport'])
+                else:
+                        logging.error("No tcpport parameter. Mandatory params={'tcpport':port}")
+                        raise
+
                 self.tcpport=tcpport
                 if 'End' in params.keys():
                         self.End=params['End']
@@ -39,6 +44,7 @@ class tcpproxy(nodeSkull.node):
 
 
         def startserver(self,port):
+                ''' Function to open the TCP incoming port'''
                 port=int(port)
                 host = ''
                 logging.info('Starting tcpproxy.')
@@ -61,7 +67,7 @@ class tcpproxy(nodeSkull.node):
 
 
         def run(self):
-                #now keep talking with the client
+                '''Main loop. Dispach incoming messages'''
                 while self.RUN:
                         try:
                                 #wait to accept a connection - blocking call
@@ -88,6 +94,7 @@ class tcpproxy(nodeSkull.node):
 
 
         def recv_end(self,conn):
+                '''Parse cmd lines'''
                 #End='something useable as an end marker'
                 End = self.End
                 total_data = []
@@ -119,8 +126,8 @@ class tcpproxy(nodeSkull.node):
                 return cmd
 
 
-        #Function for handling connections. This will be used to create threads
         def clientthread(self,conn, parent_host, parent_port):
+            ''' Function for handling connections. This will be used to create threads '''
 
             #  Socket to talk to ZMQserver
             zmqSocket = context.socket(zmq.REQ)
@@ -165,6 +172,7 @@ class tcpproxy(nodeSkull.node):
             logging.info("Disconnecting..")
 
         def end(self, arg=''):
+                '''Close all and exit'''
                 self.RUN = False
 
                 #Hack to exit run loop blocked by 'socket.accept'
@@ -182,6 +190,7 @@ class tcpproxy(nodeSkull.node):
 
 
 def runtcpproxy(name,port, parent_host, parent_port,params):
+        ''' **ENTRYPOINT** calling this fuction start the node'''
         p=tcpproxy(name, port, parent_host, parent_port,params)
         p.run()
         return

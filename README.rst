@@ -1,5 +1,5 @@
 termiteOS
-======
+=========
 
 .. image:: https://travis-ci.org/nachoplus/termiteOS.svg
    :target: https://travis-ci.org/nachoplus/termiteOS
@@ -48,11 +48,11 @@ Ongoing funtionality:
 Architecture
 -------------
 
-Each termiteOS functionality is implemented as a separate program called a'node'. The nodes communicate with each other using the zmq protocol. The organization between the nodes is hierarchical so that a node can have several children but has only one parent or none in the case of the'root node'.
+Each termiteOS functionality is implemented as a separate program called a'node'. The nodes communicate  each other using the zmq protocol. The organization between the nodes is hierarchical thus a node can have several children but has only one parent or none in the case of the'root node'.
 
-It is base on http://zeromq.org/ for transport and on https://developers.google.com/protocol-buffers/ for message definitions and serialization.
+ZMQ (http://zeromq.org/) is used for transport and on https://developers.google.com/protocol-buffers/ for message definitions and serialization.
 
-Each node has its own ZMQ port and a set of commands it responds to through that port. Each node in turn opens connections with its parent node and with all its children so that messages can be exchanged.
+Each node has its own ZMQ port and a set of commands and responds to through that port. Each node opens connections with its parent node and with all its children so that messages can be exchanged.
 
 These nodes can run on the same or different CPUs taking advantage of all the features of the ZMQ protocol.
 
