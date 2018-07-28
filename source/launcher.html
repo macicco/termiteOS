@@ -106,6 +106,7 @@
 <ul class="simple">
 <li><strong>Launcher</strong> program launch a set of node following the instruction in yaml file</li>
 </ul>
+<p>This program allow to launch at once all nodes needed for a specific hardware/funtionality.</p>
 <p>Example of a yaml configuration file:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l l-Scalar l-Scalar-Plain">simple</span><span class="p p-Indicator">:</span>
  <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">telescope</span>
@@ -127,6 +128,13 @@
                  <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
                  <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5003</span>
                  <span class="l l-Scalar l-Scalar-Plain">params</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="s">&#39;tcpport&#39;</span><span class="p p-Indicator">:</span><span class="nv">6003</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>This example is equivalent to run on the command shell all following commands:</p>
+<div class="highlight-bash"><div class="highlight"><pre>miteTelescope   --port <span class="m">5000</span> --name simple
+mitetcpproxy    --port <span class="m">5001</span> --name LX200 --parent_host localhost --parent_port <span class="m">5000</span> --params <span class="o">{</span><span class="s1">&#39;tcpport&#39;</span>:6001,<span class="s1">&#39;End&#39;</span>:<span class="s1">&#39;#&#39;</span><span class="o">}</span>
+miteTLEtracker  --port <span class="m">5002</span> --name tracker --parent_host localhost --parent_port 5000
+mitetcpproxy    --port <span class="m">5003</span> --name trackertcp --parent_host localhost --parent_port <span class="m">5002</span> --params <span class="o">{</span><span class="s1">&#39;tcpport&#39;</span>:6003<span class="o">}</span>
 </pre></div>
 </div>
 <p>You can find other examples in &#8216;termoteOS/machines/&#8217;</p>
