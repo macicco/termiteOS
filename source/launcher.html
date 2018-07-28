@@ -61,6 +61,10 @@
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Launcher</a><ul>
+<li><a class="reference internal" href="#command-line">Command line:</a><ul>
+<li><a class="reference internal" href="#mitelaunch">miteLaunch</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-termiteOS.launch">API</a></li>
 </ul>
 </li>
@@ -100,8 +104,49 @@
   <div class="section" id="launcher">
 <h1>Launcher<a class="headerlink" href="#launcher" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><strong>Launcher</strong> program launch a set of node following the instruction in a <a href="#id1"><span class="problematic" id="id2">*</span></a>.yaml file</li>
+<li><strong>Launcher</strong> program launch a set of node following the instruction in yaml file</li>
 </ul>
+<p>Example of a yaml configuration file:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l l-Scalar l-Scalar-Plain">simple</span><span class="p p-Indicator">:</span>
+ <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">telescope</span>
+ <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+ <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5000</span>
+ <span class="l l-Scalar l-Scalar-Plain">nodes</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">LX200</span><span class="p p-Indicator">:</span>
+         <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">tcpproxy</span>
+         <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+         <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5001</span>
+         <span class="l l-Scalar l-Scalar-Plain">params</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="s">&#39;tcpport&#39;</span><span class="p p-Indicator">:</span><span class="nv">6001</span><span class="p p-Indicator">,</span><span class="s">&#39;End&#39;</span><span class="p p-Indicator">:</span><span class="s">&#39;#&#39;</span><span class="p p-Indicator">}</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">tracker</span><span class="p p-Indicator">:</span>
+         <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">TLEtracker</span>
+         <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+         <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5002</span>
+         <span class="l l-Scalar l-Scalar-Plain">nodes</span><span class="p p-Indicator">:</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">trackertcp</span><span class="p p-Indicator">:</span>
+                 <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">tcpproxy</span>
+                 <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+                 <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5003</span>
+                 <span class="l l-Scalar l-Scalar-Plain">params</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="s">&#39;tcpport&#39;</span><span class="p p-Indicator">:</span><span class="nv">6003</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>You can find other examples in &#8216;termoteOS/machines/&#8217;</p>
+<div class="section" id="command-line">
+<h2>Command line:<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mitelaunch">
+<h3>miteLaunch<a class="headerlink" href="#mitelaunch" title="Permalink to this headline">¶</a></h3>
+<p>Launch all nodes defined in YAMLFILE</p>
+<div class="highlight-shell"><div class="highlight"><pre>miteLaunch <span class="o">[</span>OPTIONS<span class="o">]</span> YAMLFILE
+</pre></div>
+</div>
+<p class="rubric">Arguments</p>
+<dl class="option">
+<dt id="cmdoption-miteLaunch-arg-YAMLFILE">
+<code class="descname">YAMLFILE</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-miteLaunch-arg-YAMLFILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</div>
+</div>
 <div class="section" id="module-termiteOS.launch">
 <span id="api"></span><h2>API<a class="headerlink" href="#module-termiteOS.launch" title="Permalink to this headline">¶</a></h2>
 <p>Launch tools to run a rig. Run several daemons at once</p>

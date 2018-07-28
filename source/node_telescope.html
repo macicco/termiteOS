@@ -63,6 +63,10 @@
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Telescope</a><ul>
+<li><a class="reference internal" href="#command-line">Command line:</a><ul>
+<li><a class="reference internal" href="#mitetelescope">miteTelescope</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-termiteOS.nodes.telescope">API</a></li>
 </ul>
 </li>
@@ -105,6 +109,41 @@
 <li><strong>telescope</strong> node implement a telescope mount basic commands (goto,slew,track..)</li>
 </ul>
 <p>Two axis equatorial mount telescope.</p>
+<div class="section" id="command-line">
+<h2>Command line:<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mitetelescope">
+<h3>miteTelescope<a class="headerlink" href="#mitetelescope" title="Permalink to this headline">¶</a></h3>
+<p>Launch a telescope node</p>
+<div class="highlight-shell"><div class="highlight"><pre>miteTelescope <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="option">
+<dt id="cmdoption-miteTelescope--name">
+<code class="descname">--name</code><code class="descclassname"> &lt;name&gt;</code><a class="headerlink" href="#cmdoption-miteTelescope--name" title="Permalink to this definition">¶</a></dt>
+<dd><p>module name</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-miteTelescope--port">
+<code class="descname">--port</code><code class="descclassname"> &lt;port&gt;</code><a class="headerlink" href="#cmdoption-miteTelescope--port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port listen</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-miteTelescope--parent_host">
+<code class="descname">--parent_host</code><code class="descclassname"> &lt;parent_host&gt;</code><a class="headerlink" href="#cmdoption-miteTelescope--parent_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent host to connect to. If False the node become a ROOTHUB</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-miteTelescope--parent_port">
+<code class="descname">--parent_port</code><code class="descclassname"> &lt;parent_port&gt;</code><a class="headerlink" href="#cmdoption-miteTelescope--parent_port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent port to connect to</p>
+</dd></dl>
+
+</div>
+</div>
 <div class="section" id="module-termiteOS.nodes.telescope">
 <span id="api"></span><h2>API<a class="headerlink" href="#module-termiteOS.nodes.telescope" title="Permalink to this headline">¶</a></h2>
 <p>ENGINE</p>

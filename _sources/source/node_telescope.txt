@@ -5,6 +5,13 @@ ________
 
 Two axis equatorial mount telescope.
 
+Command line:
+^^^^^^^^^^^^^
+
+.. click:: termiteOS.scripts.cli:telescope
+   :prog: miteTelescope
+   :show-nested:
+
 API
 ^^^
 

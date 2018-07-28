@@ -1,0 +1,334 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hub &mdash; termiteOS alpha documentation</title>
+    
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="termiteOS alpha documentation" href="../index.html" />
+    <link rel="up" title="Nodes" href="nodes.html" />
+    <link rel="next" title="joystick" href="node_joystick.html" />
+    <link rel="prev" title="TLEtracker" href="node_TLEtracker.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="node_joystick.html" title="joystick"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="node_TLEtracker.html" title="TLEtracker"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="nodes.html" accesskey="U">Nodes</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_small.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hub</a><ul>
+<li><a class="reference internal" href="#command-line">Command line:</a><ul>
+<li><a class="reference internal" href="#mitehub">miteHub</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-termiteOS.nodes.hub">API</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="node_TLEtracker.html"
+                        title="previous chapter">TLEtracker</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="node_joystick.html"
+                        title="next chapter">joystick</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/node_hub.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hub">
+<h1>hub<a class="headerlink" href="#hub" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><strong>hub</strong> node has not own commands. Only used to connect other nodes</li>
+</ul>
+<div class="section" id="command-line">
+<h2>Command line:<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mitehub">
+<h3>miteHub<a class="headerlink" href="#mitehub" title="Permalink to this headline">¶</a></h3>
+<p>Launch a hub node</p>
+<div class="highlight-shell"><div class="highlight"><pre>miteHub <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="option">
+<dt id="cmdoption-miteHub--name">
+<code class="descname">--name</code><code class="descclassname"> &lt;name&gt;</code><a class="headerlink" href="#cmdoption-miteHub--name" title="Permalink to this definition">¶</a></dt>
+<dd><p>module name</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-miteHub--port">
+<code class="descname">--port</code><code class="descclassname"> &lt;port&gt;</code><a class="headerlink" href="#cmdoption-miteHub--port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port listen</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-miteHub--parent_host">
+<code class="descname">--parent_host</code><code class="descclassname"> &lt;parent_host&gt;</code><a class="headerlink" href="#cmdoption-miteHub--parent_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent host to connect to. If False the node become a ROOTHUB</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-miteHub--parent_port">
+<code class="descname">--parent_port</code><code class="descclassname"> &lt;parent_port&gt;</code><a class="headerlink" href="#cmdoption-miteHub--parent_port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent port to connect to</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-termiteOS.nodes.hub">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-termiteOS.nodes.hub" title="Permalink to this headline">¶</a></h2>
+<p>Conection HUB</p>
+<dl class="class">
+<dt id="termiteOS.nodes.hub.hub">
+<em class="property">class </em><code class="descclassname">termiteOS.nodes.hub.</code><code class="descname">hub</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host</em>, <em>parent_port</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/hub.html#hub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.hub.hub" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="termiteOS.nodes.hub.hub.HasChildren">
+<code class="descname">HasChildren</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.HasChildren" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return:</th><td class="field-body"><strong>True</strong> if the node has childrens. <strong>False</strong> otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.addCMDs">
+<code class="descname">addCMDs</code><span class="sig-paren">(</span><em>CMDs</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.addCMDs" title="Permalink to this definition">¶</a></dt>
+<dd><p>add commands explicitely</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.cmd">
+<code class="descname">cmd</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.cmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the cmd command</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cmd</strong> &#8211; string contain the command with his parameters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A message containing the answer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.cmd_help">
+<code class="descname">cmd_help</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.cmd_help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print help text. Do nothing. Normaly overloaded by a child class</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.cmd_ls">
+<code class="descname">cmd_ls</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.cmd_ls" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the commands</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.cmd_nodes">
+<code class="descname">cmd_nodes</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.cmd_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the children nodes:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a python list with all the children names</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.cmd_ping">
+<code class="descname">cmd_ping</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.cmd_ping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.cmd_tree">
+<code class="descname">cmd_tree</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.cmd_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print all node and children availabled commands</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.cmddummy">
+<code class="descname">cmddummy</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.cmddummy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default cmd to execute when not knowed cmd match. Do nothing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.deregister">
+<code class="descname">deregister</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.deregister" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the zmq socket and deleted node from the children list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.end">
+<code class="descname">end</code><span class="sig-paren">(</span><em>arg=''</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.end" title="Permalink to this definition">¶</a></dt>
+<dd><p>End all</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.exenodeCmd">
+<code class="descname">exenodeCmd</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.exenodeCmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the command in the children</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.heartbeat">
+<code class="descname">heartbeat</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.heartbeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>heartbeat Parent part</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.nodeheartbeat">
+<code class="descname">nodeheartbeat</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.nodeheartbeat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>arg=''</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call to parent registrar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.registrar">
+<code class="descname">registrar</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.registrar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registrar parent part</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dummy. Normaly overloaded by a child class</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.scanCMDs">
+<code class="descname">scanCMDs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.scanCMDs" title="Permalink to this definition">¶</a></dt>
+<dd><p>scanCMD add all methods starting with &#8216;<a href="#id1"><span class="problematic" id="id2">cmd_</span></a>&#8216; as a commands</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.signal_handler">
+<code class="descname">signal_handler</code><span class="sig-paren">(</span><em>signal</em>, <em>frame</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.signal_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Capture Ctril+C key</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.hub.hub.zmqQueue">
+<code class="descname">zmqQueue</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.hub.hub.zmqQueue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="termiteOS.nodes.hub.runhub">
+<code class="descclassname">termiteOS.nodes.hub.</code><code class="descname">runhub</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host=''</em>, <em>parent_port=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/hub.html#runhub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.hub.runhub" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="node_joystick.html" title="joystick"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="node_TLEtracker.html" title="TLEtracker"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">termiteOS alpha documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="nodes.html" >Nodes</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Nacho Mas.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.
+    </div>
+  </body>
+</html>

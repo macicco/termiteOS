@@ -1,7 +1,41 @@
 Launcher
 ________
 
-* **Launcher** program launch a set of node following the instruction in a *.yaml file
+* **Launcher** program launch a set of node following the instruction in yaml file
+
+Example of a yaml configuration file:
+
+.. code-block:: yaml
+
+   simple:
+    type: telescope
+    host: localhost
+    port: 5000
+    nodes:
+       - LX200:
+            type: tcpproxy
+            host: localhost
+            port: 5001
+            params: {'tcpport':6001,'End':'#'}
+       - tracker:
+            type: TLEtracker
+            host: localhost
+            port: 5002
+            nodes:
+               - trackertcp:
+                    type: tcpproxy
+                    host: localhost
+                    port: 5003
+                    params: {'tcpport':6003}
+
+You can find other examples in 'termoteOS/machines/' 
+
+Command line:
+^^^^^^^^^^^^^
+
+.. click:: termiteOS.scripts.cli:launch
+   :prog: miteLaunch
+   :show-nested:
 
 
 
