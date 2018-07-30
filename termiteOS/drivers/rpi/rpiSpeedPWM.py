@@ -5,31 +5,6 @@
 # Copyright (c) July 2018 Nacho Mas
 '''
 Raspberry PWM motor driver.
-
-
-INTERFACE:
-
-        * inherits several methods from rpiDRV8825Hut base class
-                - betaMotor
-                - pinout
-                - microsteps
-                - clutch()
-                - reset()
-                - sleep()
-                - set_microsteps(microsteps)
-                - sync(position)
-
-        * Own methods:
-                - setSpeed (radians/seconds)
-                - setRPM(RPM)
-                - SetPoint(setpoint)
-                - goto() -> absolute SetPoint
-                - move() -> relative SetPoint
-                - stop()
-                - isStopped
-                - gotoEnd
-                - pos
-
 '''
 from __future__ import print_function
 import math
@@ -143,23 +118,6 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
         '''Set axis track speed. Track speed*timestep is add to the _SetPoint value '''
         self._trackSpeed=trackSpeed*self.gear*self.FullTurnSteps
 
-    def rampUp(self,v,deltaT,out_min=-750,out_max=750):
-        '''Limit motor speed changes to avoid axis stalling'''
-        deltaV=(v-self.Vold)
-        self.logger.debug("RAMPUPV DELTA_V:%f V:%f oldV:%f",deltaV,v,self.Vold)
-        if abs(deltaV)>=self.maxAccel*deltaT:
-            v=self.Vold+math.copysign(self.maxAccel*deltaT, deltaV)
-            self.logger.debug("MAX ACCEL %f deltaT:%f",self.maxAccel*deltaT,deltaT)
-        if v <= out_min:
-                v=out_min
-                self.logger.debug("MIN V")
-        if v >= out_max:
-                v=out_max
-                self.logger.debug("MAX V")
-        self.logger.debug("RAMPUP V:%f",v)
-        self.Vold=v
-        return v
-
     def move(self,relsetpoint):
         '''Relative movement'''
         self.logger.debug("RELATIVE MOVE TO:%f",relsetpoint)
@@ -193,24 +151,22 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
         '''
         self.T = time.time()
 
-        _kp=0.015*16/self.microsteps
+        _kp=0.005*16/self.microsteps
         _ki=0.001*16/self.microsteps
         _kd=0.00*16/self.microsteps
 
-        pid=PID.PID(sampletime=self.timesleep,kp=_kp,ki=_ki,kd=_kd,out_min=-self.vmax,out_max=self.vmax)
+        pid=PID.PID(timestep=self.timesleep,acceleration=300,kp=_kp,ki=_ki,kd=_kd,out_min=-self.vmax,out_max=self.vmax)
         while self.RUN:
             #calculate the actual timestep
             now = time.time()
             deltaT = now - self.T
             self._SetPoint=self._SetPoint + deltaT*self._trackSpeed
-            pid.SetPoint=self._SetPoint
             feedback=self.motorBeta
-            v = pid.update(feedback)
-            v=self.rampUp(v,deltaT,out_min=-self.vmax,out_max=self.vmax)
+            v = pid.update(self._SetPoint,feedback)
             self.setRPM(v)
             time.sleep(self.timesleep)
-            print("%f %f %f %f %f" % (self._trackSpeed,pid.SetPoint,feedback,feedback-pid.SetPoint,v))
-            self.logger.debug("PID error:%f v:%f",feedback-pid.SetPoint,v)
+            print("%f %f %f %f %f" % (self._trackSpeed,self._SetPoint,feedback,feedback-self._SetPoint,v))
+            self.logger.debug("PID error:%f v:%f",feedback-self._SetPoint,v)
             self.T=now
         self.logger.critical("RUN END")
 

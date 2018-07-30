@@ -6,111 +6,109 @@
 # Adapted from: https://github.com/hirschmann/pid-autotune/blob/master/pid.py
 '''
 Calculation of speed to target following a trapeze
-
 '''
+
 from __future__ import print_function
 from time import time
 from time import sleep
+import math
 import logging
 
-class PID(object):
+class trapeze(object):
     """A proportional-integral-derivative controller.
     Args:
-        :param sampletime (float): The min interval between update() calls.
-        :param kp (float): Proportional coefficient.
-        :param ki (float): Integral coefficient.
-        :param kd (float): Derivative coefficient.
-        :param out_min (float): Lower output limit.
-        :param out_max (float): Upper output limit.
-        :param time (function): A function which returns the current time in seconds.
+        :param timestep (float): The min interval between update() calls.
+        :param acceleration (float): Max acceleration in RPM/s (motor axis).
+        :param out_min (float): Lower output limit in RPM (motor axis).
+        :param out_max (float): Upper output limit in RPM (motor axis).
         :returns: New output
     """
-
-    def __init__(self, sampletime, kp, ki, kd, out_min=float('-inf'),
-                 out_max=float('inf'), time=time):
-        if kp is None:
-            raise ValueError('kp must be specified')
-        if ki is None:
-            raise ValueError('ki must be specified')
-        if kd is None:
-            raise ValueError('kd must be specified')
-        if sampletime <= 0:
-            raise ValueError('sampletime must be greater than 0')
-        if out_min >= out_max:
-            raise ValueError('out_min must be less than out_max')
+    def __init__(self, timestep=0.1, acceleration=1, out_min=float('-inf'),
+                 out_max=float('inf')):
 
         self._logger = logging.getLogger(type(self).__name__)
-        self._Kp = kp
-        self._Ki = ki * sampletime
-        self._Kd = kd / sampletime
-        self._sampletime = sampletime * 1000
+        self._acceleration=acceleration
+        self._timestep = timestep 
         self._out_min = out_min
         self._out_max = out_max
-        self._integral = 0
         self._last_input = 0
         self._last_output = 0
         self._last_calc_timestamp = 0
-        self._time = time
         self.SetPoint=0
 
     def reset(self):
         '''Reset internal values. Forget the history'''
-        self._integral = 0
         self._last_input = 0
         self._last_output = 0
         self._last_calc_timestamp = 0
 
-    def update(self, input_val):
+    def update(self, setpoint,feedback):
         """
         Adjusts and holds the given setpoint.
         Args:
-            :param input_val (float): The input value.
-            :param setpoint (float): The target value. No an argument. Set self.SetPoint instead
+            :param setpoint (float): The target value.
+            :param input_val (float): The feedback  value.
             :returns: A value between `out_min` and `out_max`.
         """
-        setpoint=self.SetPoint
-        now = self._time() * 1000
 
-
-        if (now - self._last_calc_timestamp) < self._sampletime:
+        now = time() 
+        deltaT=now - self._last_calc_timestamp
+        if (deltaT) < self._timestep:
             return self._last_output
 
-        # Compute all the working error variables
-        error = setpoint - input_val
-        input_diff = input_val - self._last_input
+        # Compute all error variables
+        error = (setpoint - feedback)
+        v= self._last_output
+        sign = math.copysign(1, error)
+        v_sign = math.copysign(1, v)
+        beta_slope = (v * v) / (2 * self._acceleration*deltaT)
 
-        # In order to prevent windup, only integrate if the process is not saturated
-        if self._last_output < self._out_max and self._last_output > self._out_min:
-            self._integral += self._Ki * error
-            self._integral = min(self._integral, self._out_max)
-            self._integral = max(self._integral, self._out_min)
+        #Change in direction
+        if sign != v_sign:
+            a = self._acceleration * sign
 
-        p = self._Kp * error
-        i = self._integral
-        d = -(self._Kd * input_diff)
+        #check if it is time to deccelerate
+        if abs(error) - beta_slope <= 0:
+            a = -self._acceleration * sign
+        else:
+            a = self._acceleration * sign
 
-        # Compute PID Output
-        self._last_output = p + i + d
+        #Already at max speed
+        if v>=self._out_max or v<=self._out_min:
+            a=0
+
+        #no error
+        if error==0:
+                a=0
+
+
+        # Compute Output
+        self._last_output = self._last_output + a * self._timestep
+
+        print(setpoint,feedback,error,v,sign,v_sign,a,self._last_output)
+
+        #limit the output       
         self._last_output = min(self._last_output, self._out_max)
         self._last_output = max(self._last_output, self._out_min)
 
         # Log some debug info
-        self._logger.debug('P:{0} I:{1} D:{2} output:{3}'.format(p,i,d,self._last_output))
+        self._logger.debug('output:{}'.format(self._last_output))
 
         # Remember some variables for next time
-        self._last_input = input_val
+        self._last_input = feedback
         self._last_calc_timestamp = now
         return self._last_output
 
 if __name__ == '__main__':
-        END=50
+        END=500
         feedback=0
-        pid = PID(sampletime=0.1,kp=1.,ki=1,kd=0.005)
+        SetPoint = 0
+        timestep=0.1
+        pid = trapeze(timestep=timestep,acceleration=1)
         for i in range(1, END):
-            output = pid.update(feedback)
-            if pid.SetPoint > 0:
-                feedback += (output - (1/i))
-            if i>9:
-                pid.SetPoint = 1
-            sleep(0.2)
-            print(i,pid.SetPoint,feedback)
+            output = pid.update(SetPoint,feedback)
+            feedback += output*timestep
+            if i>25:
+                SetPoint = 10
+            sleep(timestep)
+            #print(i,SetPoint,feedback)

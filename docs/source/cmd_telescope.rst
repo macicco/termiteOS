@@ -1,9 +1,61 @@
 telescope commands
 ^^^^^^^^^^^^^^^^^^
     
+**ack**
+    
+	None
+    
+**align2target**
+    
+	None
+    
+**firware_date**
+    
+	None
+    
+**firware_ver**
+    
+	None
+    
+**getLocalDate**
+    
+	None
+    
+**getLocalTime**
+    
+	None
+    
+**getSideralTime**
+    
+	None
+    
+**getTargetDEC**
+    
+	None
+    
 **getTargetRA**
     
 	None
+    
+**getTelescopeDEC**
+    
+	None
+    
+**getTelescopeRA**
+    
+	None
+    
+**help**
+    
+	Print help text. Do nothing. Normaly overloaded by a child class
+    
+**info**
+    
+	None
+    
+**ls**
+    
+	list the node commands
     
 **nodes**
     
@@ -15,35 +67,31 @@ telescope commands
         :returns: a python list  all children node names
         
     
-**getLocalDate**
-    
-	None
-    
-**getTelescopeDEC**
-    
-	None
-    
-**stopSlew**
-    
-	None
-    
-**ack**
-    
-	None
-    
-**slewRate**
-    
-	None
-    
 **ping**
     
 	None
     
-**info**
+**pulseE**
     
 	None
     
-**getSideralTime**
+**pulseN**
+    
+	None
+    
+**pulseS**
+    
+	None
+    
+**pulseW**
+    
+	None
+    
+**setMaxSlewRate**
+    
+	None
+    
+**setTargetDEC**
     
 	None
     
@@ -51,15 +99,15 @@ telescope commands
     
 	None
     
-**getLocalTime**
+**slew**
     
 	None
     
-**firware_date**
+**slewRate**
     
 	None
     
-**setTargetDEC**
+**stopSlew**
     
 	None
     
@@ -71,51 +119,3 @@ telescope commands
 
         :returns: a string contain all commands
         
-    
-**setMaxSlewRate**
-    
-	None
-    
-**help**
-    
-	Print help text. Do nothing. Normaly overloaded by a child class
-    
-**firware_ver**
-    
-	None
-    
-**getTargetDEC**
-    
-	None
-    
-**pulseE**
-    
-	None
-    
-**slew**
-    
-	None
-    
-**pulseN**
-    
-	None
-    
-**pulseW**
-    
-	None
-    
-**getTelescopeRA**
-    
-	None
-    
-**pulseS**
-    
-	None
-    
-**ls**
-    
-	list the node commands
-    
-**align2target**
-    
-	None

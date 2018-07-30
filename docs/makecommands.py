@@ -106,6 +106,7 @@ def describe_klass(obj):
            z.update(obj.__base__.__dict__)
        except:
            pass
+   z=sorted(z)
    for name in z:
        item = getattr(obj, name)
        if inspect.ismethod(item) and name.startswith('cmd_'):
