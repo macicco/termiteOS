@@ -14,10 +14,4 @@ Command line:
    :prog: mitetcpproxy
    :show-nested:
 
-API
-^^^
-
-.. automodule:: termiteOS.nodes.tcpproxy
-   :members:
-   :undoc-members:
-   :inherited-members:
+.. include:: cmd_tcpproxy.rst

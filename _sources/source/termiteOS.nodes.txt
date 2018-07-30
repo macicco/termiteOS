@@ -12,13 +12,6 @@ termiteOS.nodes.TLEtracker module
     :undoc-members:
     :show-inheritance:
 
-termiteOS.nodes.console module
-------------------------------
-
-.. automodule:: termiteOS.nodes.console
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 termiteOS.nodes.costellations module
 ------------------------------------

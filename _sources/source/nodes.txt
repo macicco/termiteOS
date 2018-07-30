@@ -17,6 +17,14 @@ All nodes are derive from nodeSkull base class which implements all the comunica
 
    node_*
 
+Node commands
+-------------
+
+.. toctree::
+   :maxdepth: 2
+   :glob:
+
+   cmd_*
 
 
 

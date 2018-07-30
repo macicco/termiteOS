@@ -55,13 +55,12 @@
 <li><a class="reference internal" href="#">termiteOS.nodes package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-termiteOS.nodes.TLEtracker">termiteOS.nodes.TLEtracker module</a></li>
-<li><a class="reference internal" href="#module-termiteOS.nodes.console">termiteOS.nodes.console module</a></li>
 <li><a class="reference internal" href="#module-termiteOS.nodes.costellations">termiteOS.nodes.costellations module</a></li>
 <li><a class="reference internal" href="#module-termiteOS.nodes.hub">termiteOS.nodes.hub module</a></li>
 <li><a class="reference internal" href="#module-termiteOS.nodes.joystick">termiteOS.nodes.joystick module</a></li>
 <li><a class="reference internal" href="#module-termiteOS.nodes.tcpproxy">termiteOS.nodes.tcpproxy module</a></li>
 <li><a class="reference internal" href="#module-termiteOS.nodes.telescope">termiteOS.nodes.telescope module</a></li>
-<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li><a class="reference internal" href="#module-termiteOS.nodes">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -173,43 +172,6 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-termiteOS.nodes.console">
-<span id="termiteos-nodes-console-module"></span><h2>termiteOS.nodes.console module<a class="headerlink" href="#module-termiteOS.nodes.console" title="Permalink to this headline">¶</a></h2>
-<p>General propose console to termiteOS</p>
-<dl class="function">
-<dt id="termiteOS.nodes.console.console">
-<code class="descclassname">termiteOS.nodes.console.</code><code class="descname">console</code><span class="sig-paren">(</span><em>port</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/console.html#console"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.console.console" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="termiteOS.nodes.console.termiteShell">
-<em class="property">class </em><code class="descclassname">termiteOS.nodes.console.</code><code class="descname">termiteShell</code><span class="sig-paren">(</span><em>completekey='tab'</em>, <em>stdin=None</em>, <em>stdout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/console.html#termiteShell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.console.termiteShell" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">cmd.Cmd</span></code></p>
-<dl class="method">
-<dt id="termiteOS.nodes.console.termiteShell.do_exit">
-<code class="descname">do_exit</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/console.html#termiteShell.do_exit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.console.termiteShell.do_exit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Say bye</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.console.termiteShell.do_hello">
-<code class="descname">do_hello</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/console.html#termiteShell.do_hello"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.console.termiteShell.do_hello" title="Permalink to this definition">¶</a></dt>
-<dd><p>Say Hello</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="termiteOS.nodes.console.termiteShell.intro">
-<code class="descname">intro</code><em class="property"> = 'Welcome to the termiteOS shell.   Type help or ? to list commands.'</em><a class="headerlink" href="#termiteOS.nodes.console.termiteShell.intro" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="termiteOS.nodes.console.termiteShell.prompt">
-<code class="descname">prompt</code><em class="property"> = '(termite) '</em><a class="headerlink" href="#termiteOS.nodes.console.termiteShell.prompt" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
 <div class="section" id="module-termiteOS.nodes.costellations">
 <span id="termiteos-nodes-costellations-module"></span><h2>termiteOS.nodes.costellations module<a class="headerlink" href="#module-termiteOS.nodes.costellations" title="Permalink to this headline">¶</a></h2>
 <p>costellation</p>
@@ -292,26 +254,26 @@
 </div>
 <div class="section" id="module-termiteOS.nodes.joystick">
 <span id="termiteos-nodes-joystick-module"></span><h2>termiteOS.nodes.joystick module<a class="headerlink" href="#module-termiteOS.nodes.joystick" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="termiteOS.nodes.joystick.joystick">
+<em class="property">class </em><code class="descclassname">termiteOS.nodes.joystick.</code><code class="descname">joystick</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host</em>, <em>parent_port</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/joystick.html#joystick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.joystick.joystick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="termiteOS.html#termiteOS.nodeSkull.node" title="termiteOS.nodeSkull.node"><code class="xref py py-class docutils literal"><span class="pre">termiteOS.nodeSkull.node</span></code></a></p>
+<dl class="method">
+<dt id="termiteOS.nodes.joystick.joystick.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/joystick.html#joystick.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.joystick.joystick.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.nodes.joystick.joystick.sendTrackSpeed">
+<code class="descname">sendTrackSpeed</code><span class="sig-paren">(</span><em>vRA</em>, <em>vDEC</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/joystick.html#joystick.sendTrackSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.joystick.joystick.sendTrackSpeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="termiteOS.nodes.joystick.runjoystick">
 <code class="descclassname">termiteOS.nodes.joystick.</code><code class="descname">runjoystick</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host</em>, <em>parent_port</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/joystick.html#runjoystick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.joystick.runjoystick" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="class">
-<dt id="termiteOS.nodes.joystick.stick">
-<em class="property">class </em><code class="descclassname">termiteOS.nodes.joystick.</code><code class="descname">stick</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host</em>, <em>parent_port</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/joystick.html#stick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.joystick.stick" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="termiteOS.html#termiteOS.nodeSkull.node" title="termiteOS.nodeSkull.node"><code class="xref py py-class docutils literal"><span class="pre">termiteOS.nodeSkull.node</span></code></a></p>
-<dl class="method">
-<dt id="termiteOS.nodes.joystick.stick.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/joystick.html#stick.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.joystick.stick.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.joystick.stick.sendTrackSpeed">
-<code class="descname">sendTrackSpeed</code><span class="sig-paren">(</span><em>vRA</em>, <em>vDEC</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/joystick.html#stick.sendTrackSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.joystick.stick.sendTrackSpeed" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
 
 </div>
 <div class="section" id="module-termiteOS.nodes.tcpproxy">
@@ -547,9 +509,9 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-termiteOS.nodes"></span></div>
+<div class="section" id="module-termiteOS.nodes">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-termiteOS.nodes" title="Permalink to this headline">¶</a></h2>
+</div>
 </div>
 
 

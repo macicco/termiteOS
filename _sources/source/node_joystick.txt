@@ -11,10 +11,5 @@ Command line:
    :prog: miteJoy
    :show-nested:
 
-API
-^^^
+.. include:: cmd_joystick.rst
 
-.. automodule:: termiteOS.nodes.joystick
-   :members:
-   :undoc-members:
-   :inherited-members:

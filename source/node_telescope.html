@@ -28,7 +28,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="top" title="termiteOS alpha documentation" href="../index.html" />
     <link rel="up" title="Nodes" href="nodes.html" />
-    <link rel="next" title="Drivers" href="drivers.html" />
+    <link rel="next" title="TLEtracker commands" href="cmd_TLEtracker.html" />
     <link rel="prev" title="tcpproxy" href="node_tcpproxy.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
@@ -46,7 +46,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="drivers.html" title="Drivers"
+          <a href="cmd_TLEtracker.html" title="TLEtracker commands"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="node_tcpproxy.html" title="tcpproxy"
@@ -67,7 +67,7 @@
 <li><a class="reference internal" href="#mitetelescope">miteTelescope</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-termiteOS.nodes.telescope">API</a></li>
+<li><a class="reference internal" href="#telescope-commands">telescope commands</a></li>
 </ul>
 </li>
 </ul>
@@ -76,8 +76,8 @@
   <p class="topless"><a href="node_tcpproxy.html"
                         title="previous chapter">tcpproxy</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="drivers.html"
-                        title="next chapter">Drivers</a></p>
+  <p class="topless"><a href="cmd_TLEtracker.html"
+                        title="next chapter">TLEtracker commands</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -144,320 +144,111 @@
 
 </div>
 </div>
-<div class="section" id="module-termiteOS.nodes.telescope">
-<span id="api"></span><h2>API<a class="headerlink" href="#module-termiteOS.nodes.telescope" title="Permalink to this headline">¶</a></h2>
-<p>ENGINE</p>
-<dl class="function">
-<dt id="termiteOS.nodes.telescope.runtelescope">
-<code class="descclassname">termiteOS.nodes.telescope.</code><code class="descname">runtelescope</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host=''</em>, <em>parent_port=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#runtelescope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.runtelescope" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>ENTRYPOINT</strong> calling this fuction start the node</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="termiteOS.nodes.telescope.telescope">
-<em class="property">class </em><code class="descclassname">termiteOS.nodes.telescope.</code><code class="descname">telescope</code><span class="sig-paren">(</span><em>name</em>, <em>port</em>, <em>parent_host</em>, <em>parent_port</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.HasChildren">
-<code class="descname">HasChildren</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.HasChildren" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return:</th><td class="field-body"><strong>True</strong> if the node has childrens. <strong>False</strong> otherwise</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.addCMDs">
-<code class="descname">addCMDs</code><span class="sig-paren">(</span><em>CMDs</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.addCMDs" title="Permalink to this definition">¶</a></dt>
-<dd><p>add commands explicitely</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.altAz_of">
-<code class="descname">altAz_of</code><span class="sig-paren">(</span><em>ra</em>, <em>dec</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.altAz_of"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.altAz_of" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd">
-<code class="descname">cmd</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute the cmd command</p>
+<div class="section" id="telescope-commands">
+<h2>telescope commands<a class="headerlink" href="#telescope-commands" title="Permalink to this headline">¶</a></h2>
+<p><strong>getTargetRA</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>nodes</strong></p>
+<blockquote>
+<div><p>list the children nodes:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cmd</strong> &#8211; string contain the command with his parameters</td>
+<tr class="field-odd field"><th class="field-name">param arg:</th><td class="field-body">(None)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A message containing the answer</td>
+<tr class="field-even field"><th class="field-name">returns:</th><td class="field-body">a python list  all children node names</td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_ack">
-<code class="descname">cmd_ack</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_ack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_ack" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_align2target">
-<code class="descname">cmd_align2target</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_align2target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_align2target" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_firware_date">
-<code class="descname">cmd_firware_date</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_firware_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_firware_date" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_firware_ver">
-<code class="descname">cmd_firware_ver</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_firware_ver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_firware_ver" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_getLocalDate">
-<code class="descname">cmd_getLocalDate</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_getLocalDate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_getLocalDate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_getLocalTime">
-<code class="descname">cmd_getLocalTime</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_getLocalTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_getLocalTime" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_getSideralTime">
-<code class="descname">cmd_getSideralTime</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_getSideralTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_getSideralTime" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_getTargetDEC">
-<code class="descname">cmd_getTargetDEC</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_getTargetDEC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_getTargetDEC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_getTargetRA">
-<code class="descname">cmd_getTargetRA</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_getTargetRA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_getTargetRA" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_getTelescopeDEC">
-<code class="descname">cmd_getTelescopeDEC</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_getTelescopeDEC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_getTelescopeDEC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_getTelescopeRA">
-<code class="descname">cmd_getTelescopeRA</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_getTelescopeRA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_getTelescopeRA" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_help">
-<code class="descname">cmd_help</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_help" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print help text. Do nothing. Normaly overloaded by a child class</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_info">
-<code class="descname">cmd_info</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_info" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_ls">
-<code class="descname">cmd_ls</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_ls" title="Permalink to this definition">¶</a></dt>
-<dd><p>list the commands</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_nodes">
-<code class="descname">cmd_nodes</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_nodes" title="Permalink to this definition">¶</a></dt>
-<dd><p>list the children nodes:</p>
+</div></blockquote>
+<p><strong>getLocalDate</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>getTelescopeDEC</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>stopSlew</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>ack</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>slewRate</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>ping</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>info</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>getSideralTime</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>setTargetRA</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>getLocalTime</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>firware_date</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>setTargetDEC</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>tree</strong></p>
+<blockquote>
+<div><p>Print all self and children nodes availabled commands</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a python list with all the children names</td>
+<tr class="field-odd field"><th class="field-name">param arg:</th><td class="field-body">(None)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">returns:</th><td class="field-body">a string contain all commands</td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_ping">
-<code class="descname">cmd_ping</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_ping" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_pulseE">
-<code class="descname">cmd_pulseE</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_pulseE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_pulseE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_pulseN">
-<code class="descname">cmd_pulseN</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_pulseN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_pulseN" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_pulseS">
-<code class="descname">cmd_pulseS</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_pulseS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_pulseS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_pulseW">
-<code class="descname">cmd_pulseW</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_pulseW"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_pulseW" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_setMaxSlewRate">
-<code class="descname">cmd_setMaxSlewRate</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_setMaxSlewRate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_setMaxSlewRate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_setTargetDEC">
-<code class="descname">cmd_setTargetDEC</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_setTargetDEC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_setTargetDEC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_setTargetRA">
-<code class="descname">cmd_setTargetRA</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_setTargetRA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_setTargetRA" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_slew">
-<code class="descname">cmd_slew</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_slew"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_slew" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_slewRate">
-<code class="descname">cmd_slewRate</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_slewRate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_slewRate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_stopSlew">
-<code class="descname">cmd_stopSlew</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.cmd_stopSlew"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_stopSlew" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmd_tree">
-<code class="descname">cmd_tree</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmd_tree" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print all node and children availabled commands</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.cmddummy">
-<code class="descname">cmddummy</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.cmddummy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default cmd to execute when not knowed cmd match. Do nothing</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.deregister">
-<code class="descname">deregister</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.deregister" title="Permalink to this definition">¶</a></dt>
-<dd><p>Close the zmq socket and deleted node from the children list</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.end">
-<code class="descname">end</code><span class="sig-paren">(</span><em>arg=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.end" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.exenodeCmd">
-<code class="descname">exenodeCmd</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.exenodeCmd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute the command in the children</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.getDEC">
-<code class="descname">getDEC</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.getDEC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.getDEC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.getGear">
-<code class="descname">getGear</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.getGear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.getGear" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.getObserver">
-<code class="descname">getObserver</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.getObserver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.getObserver" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.getRA">
-<code class="descname">getRA</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.getRA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.getRA" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.heartbeat">
-<code class="descname">heartbeat</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.heartbeat" title="Permalink to this definition">¶</a></dt>
-<dd><p>heartbeat Parent part</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.hourAngle">
-<code class="descname">hourAngle</code><span class="sig-paren">(</span><em>ra</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.hourAngle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.hourAngle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.nodeheartbeat">
-<code class="descname">nodeheartbeat</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.nodeheartbeat" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.observerInit">
-<code class="descname">observerInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.observerInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.observerInit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.register">
-<code class="descname">register</code><span class="sig-paren">(</span><em>arg=''</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.register" title="Permalink to this definition">¶</a></dt>
-<dd><p>Call to parent registrar</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.registrar">
-<code class="descname">registrar</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.registrar" title="Permalink to this definition">¶</a></dt>
-<dd><p>Registrar parent part</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.scanCMDs">
-<code class="descname">scanCMDs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.scanCMDs" title="Permalink to this definition">¶</a></dt>
-<dd><p>scanCMD add all methods starting with &#8216;<a href="#id1"><span class="problematic" id="id2">cmd_</span></a>&#8216; as a commands</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.setTrackSpeed">
-<code class="descname">setTrackSpeed</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.setTrackSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.setTrackSpeed" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.signal_handler">
-<code class="descname">signal_handler</code><span class="sig-paren">(</span><em>signal</em>, <em>frame</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.signal_handler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Capture Ctril+C key</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.track">
-<code class="descname">track</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.track"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.track" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.values">
-<code class="descname">values</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/nodes/telescope.html#telescope.values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.values" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.nodes.telescope.telescope.zmqQueue">
-<code class="descname">zmqQueue</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#termiteOS.nodes.telescope.telescope.zmqQueue" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+</div></blockquote>
+<p><strong>setMaxSlewRate</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>help</strong></p>
+<blockquote>
+<div>Print help text. Do nothing. Normaly overloaded by a child class</div></blockquote>
+<p><strong>firware_ver</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>getTargetDEC</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>pulseE</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>slew</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>pulseN</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>pulseW</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>getTelescopeRA</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>pulseS</strong></p>
+<blockquote>
+<div>None</div></blockquote>
+<p><strong>ls</strong></p>
+<blockquote>
+<div>list the node commands</div></blockquote>
+<p><strong>align2target</strong></p>
+<blockquote>
+<div>None</div></blockquote>
 </div>
 </div>
 
@@ -477,7 +268,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="drivers.html" title="Drivers"
+          <a href="cmd_TLEtracker.html" title="TLEtracker commands"
              >next</a> |</li>
         <li class="right" >
           <a href="node_tcpproxy.html" title="tcpproxy"
