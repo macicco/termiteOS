@@ -85,7 +85,8 @@
 <span class="kn">import</span> <span class="nn">pigpio</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">termiteOS.maths.hPID</span> <span class="kn">as</span> <span class="nn">PID</span>
+<span class="c1">#import termiteOS.maths.hPID as control</span>
+<span class="kn">import</span> <span class="nn">termiteOS.maths.trapeze</span> <span class="kn">as</span> <span class="nn">control</span>
 <span class="kn">import</span> <span class="nn">termiteOS.drivers.rpi.rpiDRV8825Hat</span> <span class="kn">as</span> <span class="nn">rpihat</span>
 
 <div class="viewcode-block" id="threaded"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiSpeedPWM.threaded">[docs]</a><span class="k">def</span> <span class="nf">threaded</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
@@ -224,11 +225,12 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-        <span class="n">_kp</span><span class="o">=</span><span class="mf">0.005</span><span class="o">*</span><span class="mi">16</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">microsteps</span>
+        <span class="n">_kp</span><span class="o">=</span><span class="mf">0.015</span><span class="o">*</span><span class="mi">16</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">microsteps</span>
         <span class="n">_ki</span><span class="o">=</span><span class="mf">0.001</span><span class="o">*</span><span class="mi">16</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">microsteps</span>
         <span class="n">_kd</span><span class="o">=</span><span class="mf">0.00</span><span class="o">*</span><span class="mi">16</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">microsteps</span>
 
-        <span class="n">pid</span><span class="o">=</span><span class="n">PID</span><span class="o">.</span><span class="n">PID</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timesleep</span><span class="p">,</span><span class="n">acceleration</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">kp</span><span class="o">=</span><span class="n">_kp</span><span class="p">,</span><span class="n">ki</span><span class="o">=</span><span class="n">_ki</span><span class="p">,</span><span class="n">kd</span><span class="o">=</span><span class="n">_kd</span><span class="p">,</span><span class="n">out_min</span><span class="o">=-</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">,</span><span class="n">out_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
+        <span class="n">pid</span><span class="o">=</span><span class="n">control</span><span class="o">.</span><span class="n">PID</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timesleep</span><span class="p">,</span><span class="n">acceleration</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">kp</span><span class="o">=</span><span class="n">_kp</span><span class="p">,</span><span class="n">ki</span><span class="o">=</span><span class="n">_ki</span><span class="p">,</span><span class="n">kd</span><span class="o">=</span><span class="n">_kd</span><span class="p">,</span><span class="n">out_min</span><span class="o">=-</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">,</span><span class="n">out_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
+        <span class="c1">#pid=control.trapeze(timestep=self.timesleep,acceleration=300,out_min=-self.vmax,out_max=self.vmax)</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span><span class="p">:</span>
             <span class="c1">#calculate the actual timestep</span>
             <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
