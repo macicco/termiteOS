@@ -1,6 +1,18 @@
 TLEtracker commands
 ^^^^^^^^^^^^^^^^^^^
     
+**follow**
+    
+	 Follow satellite 
+    
+**help**
+    
+	Print help text. Do nothing. Normaly overloaded by a child class
+    
+**ls**
+    
+	list the node commands
+    
 **nodes**
     
 	
@@ -10,10 +22,6 @@ TLEtracker commands
 
         :returns: a python list  all children node names
         
-    
-**follow**
-    
-	 Follow satellite 
     
 **ping**
     
@@ -27,11 +35,3 @@ TLEtracker commands
 
         :returns: a string contain all commands
         
-    
-**help**
-    
-	Print help text. Do nothing. Normaly overloaded by a child class
-    
-**ls**
-    
-	list the node commands

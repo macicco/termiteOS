@@ -1,6 +1,14 @@
 joystick commands
 ^^^^^^^^^^^^^^^^^
     
+**help**
+    
+	Print help text. Do nothing. Normaly overloaded by a child class
+    
+**ls**
+    
+	list the node commands
+    
 **nodes**
     
 	
@@ -23,11 +31,3 @@ joystick commands
 
         :returns: a string contain all commands
         
-    
-**help**
-    
-	Print help text. Do nothing. Normaly overloaded by a child class
-    
-**ls**
-    
-	list the node commands

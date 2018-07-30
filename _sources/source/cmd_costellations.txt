@@ -1,9 +1,17 @@
 costellation commands
 ^^^^^^^^^^^^^^^^^^^^^
     
+**follow**
+    
+	None
+    
 **help**
     
 	Print help text. Do nothing. Normaly overloaded by a child class
+    
+**ls**
+    
+	list the node commands
     
 **nodes**
     
@@ -14,10 +22,6 @@ costellation commands
 
         :returns: a python list  all children node names
         
-    
-**follow**
-    
-	None
     
 **ping**
     
@@ -31,7 +35,3 @@ costellation commands
 
         :returns: a string contain all commands
         
-    
-**ls**
-    
-	list the node commands
