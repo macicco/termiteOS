@@ -55,6 +55,7 @@
 <li><a class="reference internal" href="#">termiteOS.maths package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-termiteOS.maths.hPID">termiteOS.maths.hPID module</a></li>
+<li><a class="reference internal" href="#module-termiteOS.maths.trapeze">termiteOS.maths.trapeze module</a></li>
 <li><a class="reference internal" href="#module-termiteOS.maths">Module contents</a></li>
 </ul>
 </li>
@@ -96,35 +97,35 @@
 <a class="reference internal image-reference" href="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/PID_en.svg/971px-PID_en.svg.png"><img alt="DRV8825Hat" class="align-center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/PID_en.svg/971px-PID_en.svg.png" style="width: 400.0px;" /></a>
 <dl class="class">
 <dt id="termiteOS.maths.hPID.PID">
-<em class="property">class </em><code class="descclassname">termiteOS.maths.hPID.</code><code class="descname">PID</code><span class="sig-paren">(</span><em>sampletime</em>, <em>kp</em>, <em>ki</em>, <em>kd</em>, <em>out_min=-inf</em>, <em>out_max=inf</em>, <em>time=&lt;built-in function time&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/hPID.html#PID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.hPID.PID" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">termiteOS.maths.hPID.</code><code class="descname">PID</code><span class="sig-paren">(</span><em>timestep=0.1</em>, <em>acceleration=300</em>, <em>kp=0</em>, <em>ki=0</em>, <em>kd=0</em>, <em>out_min=-inf</em>, <em>out_max=inf</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/hPID.html#PID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.hPID.PID" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>A proportional-integral-derivative controller.
-Args:</p>
+Named Args:</p>
 <blockquote>
 <div><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">param sampletime (float):</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">param timestep (float):</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">The min interval between update() calls.</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">param kp (float):</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Proportional coefficient.</td>
+<tr class="field-even field"><th class="field-name" colspan="2">param acceleration (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">max accelerarion in RPM/s (motor axis).</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">param ki (float):</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Integral coefficient.</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">param kp (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Proportional coefficient.</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">param kd (float):</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Derivative coefficient.</td>
+<tr class="field-even field"><th class="field-name" colspan="2">param ki (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Integral coefficient.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">param out_min (float):</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Lower output limit.</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">param kd (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Derivative coefficient.</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">param out_max (float):</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Upper output limit.</td>
+<tr class="field-even field"><th class="field-name" colspan="2">param out_min (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Lower output limit in RPM  (motor axis).</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">param time (function):</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">A function which returns the current time in seconds.</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">param out_max (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Upper output limit in RPM  (motor axis).</td>
 </tr>
 <tr class="field-even field"><th class="field-name">returns:</th><td class="field-body">New output</td>
 </tr>
@@ -139,7 +140,7 @@ Args:</p>
 
 <dl class="method">
 <dt id="termiteOS.maths.hPID.PID.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>input_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/hPID.html#PID.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.hPID.PID.update" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update</code><span class="sig-paren">(</span><em>setpoint</em>, <em>feedback</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/hPID.html#PID.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.hPID.PID.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adjusts and holds the given setpoint.
 Args:</p>
 <blockquote>
@@ -147,11 +148,74 @@ Args:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">param input_val (float):</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">The input value.</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">param setpoint (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">The target value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">param setpoint (float):</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">The target value. No an argument. Set self.SetPoint instead</td>
+<tr class="field-even field"><th class="field-name" colspan="2">param feedback (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">The feedback value.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">returns:</th><td class="field-body">A value between <cite>out_min</cite> and <cite>out_max</cite>.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-termiteOS.maths.trapeze">
+<span id="termiteos-maths-trapeze-module"></span><h2>termiteOS.maths.trapeze module<a class="headerlink" href="#module-termiteOS.maths.trapeze" title="Permalink to this headline">¶</a></h2>
+<p>Calculation of speed to target following a trapeze</p>
+<dl class="class">
+<dt id="termiteOS.maths.trapeze.trapeze">
+<em class="property">class </em><code class="descclassname">termiteOS.maths.trapeze.</code><code class="descname">trapeze</code><span class="sig-paren">(</span><em>timestep=0.1</em>, <em>acceleration=1</em>, <em>out_min=-inf</em>, <em>out_max=inf</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/trapeze.html#trapeze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.trapeze.trapeze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A proportional-integral-derivative controller.
+Args:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">param timestep (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">The min interval between update() calls.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">param acceleration (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Max acceleration in RPM/s (motor axis).</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">param out_min (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Lower output limit in RPM (motor axis).</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">param out_max (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Upper output limit in RPM (motor axis).</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">returns:</th><td class="field-body">New output</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<dl class="method">
+<dt id="termiteOS.maths.trapeze.trapeze.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/trapeze.html#trapeze.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.trapeze.trapeze.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset internal values. Forget the history</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="termiteOS.maths.trapeze.trapeze.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>setpoint</em>, <em>feedback</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/trapeze.html#trapeze.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.trapeze.trapeze.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjusts and holds the given setpoint.
+Args:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">param setpoint (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">The target value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">param input_val (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">The feedback  value.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">returns:</th><td class="field-body">A value between <cite>out_min</cite> and <cite>out_max</cite>.</td>
 </tr>

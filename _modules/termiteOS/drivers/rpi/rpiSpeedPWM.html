@@ -78,31 +78,6 @@
 <span class="c1"># Copyright (c) July 2018 Nacho Mas</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">Raspberry PWM motor driver.</span>
-
-
-<span class="sd">INTERFACE:</span>
-
-<span class="sd">        * inherits several methods from rpiDRV8825Hut base class</span>
-<span class="sd">                - betaMotor</span>
-<span class="sd">                - pinout</span>
-<span class="sd">                - microsteps</span>
-<span class="sd">                - clutch()</span>
-<span class="sd">                - reset()</span>
-<span class="sd">                - sleep()</span>
-<span class="sd">                - set_microsteps(microsteps)</span>
-<span class="sd">                - sync(position)</span>
-
-<span class="sd">        * Own methods:</span>
-<span class="sd">                - setSpeed (radians/seconds)</span>
-<span class="sd">                - setRPM(RPM)</span>
-<span class="sd">                - SetPoint(setpoint)</span>
-<span class="sd">                - goto() -&gt; absolute SetPoint</span>
-<span class="sd">                - move() -&gt; relative SetPoint</span>
-<span class="sd">                - stop()</span>
-<span class="sd">                - isStopped</span>
-<span class="sd">                - gotoEnd</span>
-<span class="sd">                - pos</span>
-
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">math</span>
@@ -216,23 +191,6 @@
         <span class="sd">&#39;&#39;&#39;Set axis track speed. Track speed*timestep is add to the _SetPoint value &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_trackSpeed</span><span class="o">=</span><span class="n">trackSpeed</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gear</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">FullTurnSteps</span></div>
 
-<div class="viewcode-block" id="rpiSpeedPWM.rampUp"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.rampUp">[docs]</a>    <span class="k">def</span> <span class="nf">rampUp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">deltaT</span><span class="p">,</span><span class="n">out_min</span><span class="o">=-</span><span class="mi">750</span><span class="p">,</span><span class="n">out_max</span><span class="o">=</span><span class="mi">750</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Limit motor speed changes to avoid axis stalling&#39;&#39;&#39;</span>
-        <span class="n">deltaV</span><span class="o">=</span><span class="p">(</span><span class="n">v</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Vold</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;RAMPUPV DELTA_V:</span><span class="si">%f</span><span class="s2"> V:</span><span class="si">%f</span><span class="s2"> oldV:</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">deltaV</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Vold</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">deltaV</span><span class="p">)</span><span class="o">&gt;=</span><span class="bp">self</span><span class="o">.</span><span class="n">maxAccel</span><span class="o">*</span><span class="n">deltaT</span><span class="p">:</span>
-            <span class="n">v</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Vold</span><span class="o">+</span><span class="n">math</span><span class="o">.</span><span class="n">copysign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxAccel</span><span class="o">*</span><span class="n">deltaT</span><span class="p">,</span> <span class="n">deltaV</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;MAX ACCEL </span><span class="si">%f</span><span class="s2"> deltaT:</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">maxAccel</span><span class="o">*</span><span class="n">deltaT</span><span class="p">,</span><span class="n">deltaT</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="n">out_min</span><span class="p">:</span>
-                <span class="n">v</span><span class="o">=</span><span class="n">out_min</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;MIN V&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;=</span> <span class="n">out_max</span><span class="p">:</span>
-                <span class="n">v</span><span class="o">=</span><span class="n">out_max</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;MAX V&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;RAMPUP V:</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Vold</span><span class="o">=</span><span class="n">v</span>
-        <span class="k">return</span> <span class="n">v</span></div>
-
 <div class="viewcode-block" id="rpiSpeedPWM.move"><a class="viewcode-back" href="../../../../source/termiteOS.drivers.rpi.html#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">relsetpoint</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Relative movement&#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;RELATIVE MOVE TO:</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">relsetpoint</span><span class="p">)</span>
@@ -266,24 +224,22 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-        <span class="n">_kp</span><span class="o">=</span><span class="mf">0.015</span><span class="o">*</span><span class="mi">16</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">microsteps</span>
+        <span class="n">_kp</span><span class="o">=</span><span class="mf">0.005</span><span class="o">*</span><span class="mi">16</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">microsteps</span>
         <span class="n">_ki</span><span class="o">=</span><span class="mf">0.001</span><span class="o">*</span><span class="mi">16</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">microsteps</span>
         <span class="n">_kd</span><span class="o">=</span><span class="mf">0.00</span><span class="o">*</span><span class="mi">16</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">microsteps</span>
 
-        <span class="n">pid</span><span class="o">=</span><span class="n">PID</span><span class="o">.</span><span class="n">PID</span><span class="p">(</span><span class="n">sampletime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timesleep</span><span class="p">,</span><span class="n">kp</span><span class="o">=</span><span class="n">_kp</span><span class="p">,</span><span class="n">ki</span><span class="o">=</span><span class="n">_ki</span><span class="p">,</span><span class="n">kd</span><span class="o">=</span><span class="n">_kd</span><span class="p">,</span><span class="n">out_min</span><span class="o">=-</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">,</span><span class="n">out_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
+        <span class="n">pid</span><span class="o">=</span><span class="n">PID</span><span class="o">.</span><span class="n">PID</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timesleep</span><span class="p">,</span><span class="n">acceleration</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">kp</span><span class="o">=</span><span class="n">_kp</span><span class="p">,</span><span class="n">ki</span><span class="o">=</span><span class="n">_ki</span><span class="p">,</span><span class="n">kd</span><span class="o">=</span><span class="n">_kd</span><span class="p">,</span><span class="n">out_min</span><span class="o">=-</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">,</span><span class="n">out_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">RUN</span><span class="p">:</span>
             <span class="c1">#calculate the actual timestep</span>
             <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="n">deltaT</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_SetPoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_SetPoint</span> <span class="o">+</span> <span class="n">deltaT</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_trackSpeed</span>
-            <span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_SetPoint</span>
             <span class="n">feedback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">motorBeta</span>
-            <span class="n">v</span> <span class="o">=</span> <span class="n">pid</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">feedback</span><span class="p">)</span>
-            <span class="n">v</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rampUp</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">deltaT</span><span class="p">,</span><span class="n">out_min</span><span class="o">=-</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">,</span><span class="n">out_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">pid</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_SetPoint</span><span class="p">,</span><span class="n">feedback</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setRPM</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timesleep</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trackSpeed</span><span class="p">,</span><span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span><span class="p">,</span><span class="n">feedback</span><span class="p">,</span><span class="n">feedback</span><span class="o">-</span><span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span><span class="p">,</span><span class="n">v</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;PID error:</span><span class="si">%f</span><span class="s2"> v:</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">feedback</span><span class="o">-</span><span class="n">pid</span><span class="o">.</span><span class="n">SetPoint</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trackSpeed</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_SetPoint</span><span class="p">,</span><span class="n">feedback</span><span class="p">,</span><span class="n">feedback</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_SetPoint</span><span class="p">,</span><span class="n">v</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;PID error:</span><span class="si">%f</span><span class="s2"> v:</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">feedback</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_SetPoint</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="o">=</span><span class="n">now</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;RUN END&quot;</span><span class="p">)</span></div></div>
 

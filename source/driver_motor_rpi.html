@@ -203,42 +203,6 @@ See hardware on termiteOS/driver/rpi/hardware</p>
 <div class="section" id="id1">
 <h3>API<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <span class="target" id="module-termiteOS.drivers.rpi.rpiSpeedPWM"></span><p>Raspberry PWM motor driver.</p>
-<p>INTERFACE:</p>
-<blockquote>
-<div><ul>
-<li><dl class="first docutils">
-<dt>inherits several methods from rpiDRV8825Hut base class</dt>
-<dd><ul class="first last simple">
-<li>betaMotor</li>
-<li>pinout</li>
-<li>microsteps</li>
-<li>clutch()</li>
-<li>reset()</li>
-<li>sleep()</li>
-<li>set_microsteps(microsteps)</li>
-<li>sync(position)</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>Own methods:</dt>
-<dd><ul class="first last simple">
-<li>setSpeed (radians/seconds)</li>
-<li>setRPM(RPM)</li>
-<li>SetPoint(setpoint)</li>
-<li>goto() -&gt; absolute SetPoint</li>
-<li>move() -&gt; relative SetPoint</li>
-<li>stop()</li>
-<li>isStopped</li>
-<li>gotoEnd</li>
-<li>pos</li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-</div></blockquote>
 <dl class="class">
 <dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM">
 <em class="property">class </em><code class="descclassname">termiteOS.drivers.rpi.rpiSpeedPWM.</code><code class="descname">rpiSpeedPWM</code><span class="sig-paren">(</span><em>driverID</em>, <em>microsteps</em>, <em>FullTurnSteps</em>, <em>gear=1</em>, <em>name='Axis'</em>, <em>raspberry='localhost'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM" title="Permalink to this definition">¶</a></dt>
@@ -294,12 +258,6 @@ pigpiod daemon.</p>
 <dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.pos">
 <code class="descname">pos</code><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.pos" title="Permalink to this definition">¶</a></dt>
 <dd><p>Actual position (Corrected motorBeta)</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.rampUp">
-<code class="descname">rampUp</code><span class="sig-paren">(</span><em>v</em>, <em>deltaT</em>, <em>out_min=-750</em>, <em>out_max=750</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/drivers/rpi/rpiSpeedPWM.html#rpiSpeedPWM.rampUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.drivers.rpi.rpiSpeedPWM.rpiSpeedPWM.rampUp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Limit motor speed changes to avoid axis stalling</p>
 </dd></dl>
 
 <dl class="method">
