@@ -76,14 +76,15 @@ def group(lst, n):
 
 
 path = os.path.dirname(os.path.abspath(__file__))
-print(path)
+#print(path)
 configFile = path + "/config.ini"
 configFileSpec = path + "/config.ini.spec"
 Config = ConfigObj(configFile, configspec=configFileSpec)
 val = Validator()
 test = Config.validate(val)
 if test == True:
-    print('Config OK')
+    pass
+    #print('Config OK')
 else:
     print('Config wrong!!!')
     print ('Check that ' + configFile + " match the rules in " + configFileSpec)

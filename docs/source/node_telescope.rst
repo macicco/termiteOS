@@ -1,5 +1,5 @@
 Telescope
-________
+_________
 
 * **telescope** node implement a telescope mount basic commands (goto,slew,track..)
 
@@ -12,11 +12,5 @@ Command line:
    :prog: miteTelescope
    :show-nested:
 
-API
-^^^
-
-.. automodule:: termiteOS.nodes.telescope
-   :members:
-   :undoc-members:
-   :inherited-members:
+.. include:: cmd_telescope.rst
 

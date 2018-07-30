@@ -143,7 +143,7 @@ class node(object):
         return string
 
     def cmd_ls(self,arg):
-        '''list the commands'''
+        '''list the node commands'''
         visibleCMDs = [ c for c in self.CMDs.keys() if not c.startswith('.')]
         string = "node:"+self.nodename+". TYPE:"+self.nodetype+"\n"
         string = string +"\tAvailable commands:\n"
@@ -155,13 +155,20 @@ class node(object):
         '''
         list the children nodes:
 
-        :returns: a python list with all the children names
+        :param arg: (None)
+
+        :returns: a python list  all children node names
         '''
         mod=[m for m in self.nodes.keys()]
         return mod
 
     def cmd_tree(self, arg):
-        '''Print all node and children availabled commands'''
+        '''Print all self and children nodes availabled commands
+
+        :param arg: (None)
+
+        :returns: a string contain all commands
+        '''
         r=[]
         for m in self.nodes.keys():
                 a=(m+' ls').encode("utf8")

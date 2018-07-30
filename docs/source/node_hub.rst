@@ -11,10 +11,4 @@ Command line:
    :prog: miteHub
    :show-nested:
 
-API
-^^^
-
-.. automodule:: termiteOS.nodes.hub
-   :members:
-   :undoc-members:
-   :inherited-members:
+.. include:: cmd_hub.rst

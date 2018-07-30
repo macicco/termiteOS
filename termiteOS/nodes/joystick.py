@@ -14,7 +14,7 @@ pygame.init()
 pygame.joystick.init()
 
 
-class stick(nodeSkull.node):
+class joystick(nodeSkull.node):
     def __init__(self, name, port, parent_host, parent_port):
         super(stick, self).__init__(name, 'joystick', port, parent_host,
                                     parent_port)
@@ -75,7 +75,7 @@ class stick(nodeSkull.node):
 
 
 def runjoystick(name, port, parent_host, parent_port):
-    s = stick(name, port, parent_host, parent_port)
+    s = joystick(name, port, parent_host, parent_port)
     try:
         s.run()
     except:

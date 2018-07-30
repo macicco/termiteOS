@@ -12,10 +12,4 @@ Command line:
    :prog: miteTLEtracker
    :show-nested:
 
-API
-^^^
-
-.. automodule:: termiteOS.nodes.TLEtracker
-   :members: 
-   :undoc-members:
-   :inherited-members:
+.. include:: cmd_TLEtracker.rst
