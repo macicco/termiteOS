@@ -14,20 +14,24 @@ from time import sleep
 import math
 import logging
 
+
+
 class trapeze(object):
-    """A proportional-integral-derivative controller.
+    """A ramp controller. Ramp speed until vmax.
     Args:
         :param timestep (float): The min interval between update() calls.
         :param acceleration (float): Max acceleration in RPM/s (motor axis).
+        :param min_error (float): Min error threshold.
         :param out_min (float): Lower output limit in RPM (motor axis).
         :param out_max (float): Upper output limit in RPM (motor axis).
         :returns: New output
     """
-    def __init__(self, timestep=0.1, acceleration=1, out_min=float('-inf'),
+    def __init__(self, timestep=0.1, acceleration=1,min_error=1, out_min=float('-inf'),
                  out_max=float('inf')):
 
         self._logger = logging.getLogger(type(self).__name__)
         self._acceleration=acceleration
+        self._min_error=min_error
         self._timestep = timestep 
         self._out_min = out_min
         self._out_max = out_max
@@ -58,34 +62,29 @@ class trapeze(object):
 
         # Compute all error variables
         error = (setpoint - feedback)
+        e_sign = math.copysign(1, error)
         v= self._last_output
-        sign = math.copysign(1, error)
         v_sign = math.copysign(1, v)
-        beta_slope = (v * v) / (2 * self._acceleration*deltaT)
-
-        #Change in direction
-        if sign != v_sign:
-            a = self._acceleration * sign
+        beta_slope = (v * v ) / (2 * self._acceleration)
+        #print(beta_slope,error)
 
         #check if it is time to deccelerate
-        if abs(error) - beta_slope <= 0:
-            a = -self._acceleration * sign
+        if abs(error) <= beta_slope :
+            a = -self._acceleration * e_sign
         else:
-            a = self._acceleration * sign
+            a = self._acceleration * e_sign
 
-        #Already at max speed
-        if v>=self._out_max or v<=self._out_min:
-            a=0
-
-        #no error
-        if error==0:
-                a=0
+        #Change in direction
+        if (e_sign * v_sign) == -1:
+            a = self._acceleration * e_sign
 
 
         # Compute Output
         self._last_output = self._last_output + a * self._timestep
 
-        print(setpoint,feedback,error,v,sign,v_sign,a,self._last_output)
+        #no error
+        if abs(error)<=self._min_error:
+                self._last_output = 0
 
         #limit the output       
         self._last_output = min(self._last_output, self._out_max)
@@ -100,15 +99,18 @@ class trapeze(object):
         return self._last_output
 
 if __name__ == '__main__':
-        END=500
+        END=120
         feedback=0
         SetPoint = 0
         timestep=0.1
-        pid = trapeze(timestep=timestep,acceleration=1)
+        factor= 100 * 16 * 200  
+        pid = trapeze(timestep=timestep,acceleration=300*factor/60,out_max=750*factor/60,out_min=-750*factor/60)
         for i in range(1, END):
             output = pid.update(SetPoint,feedback)
-            feedback += output*timestep
-            if i>25:
-                SetPoint = 10
+            feedback +=  output*timestep
+            if i>=5:
+                SetPoint = 50 * factor
+            if i>80:
+                SetPoint =55 * factor
             sleep(timestep)
-            #print(i,SetPoint,feedback)
+            print(i,SetPoint,feedback,output)

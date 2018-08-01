@@ -15,10 +15,10 @@ class motorHub:
 
        .. note:: Up to date only rpiSpeedPWM driver is implemented
     '''
-    def __init__(self,FullTurnSteps=200,microstepping=32,raspberry='localhost'):
+    def __init__(self,FullTurnSteps=200,microstepping=32,raspberry='localhost',gear=1):
         self.logger = logging.getLogger(type(self).__name__)
-        self.axis1 = AxisDriver.rpiSpeedPWM(0,microstepping,FullTurnSteps,name='RA',raspberry=raspberry,gear=100)
-        self.axis2 = AxisDriver.rpiSpeedPWM(1,microstepping,FullTurnSteps,name='DEC',raspberry=raspberry,gear=100)
+        self.axis1 = AxisDriver.rpiSpeedPWM(0,microstepping,FullTurnSteps,name='RA',raspberry=raspberry,gear=gear)
+        self.axis2 = AxisDriver.rpiSpeedPWM(1,microstepping,FullTurnSteps,name='DEC',raspberry=raspberry,gear=gear)
         self.run()
 
     def run(self):

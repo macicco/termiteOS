@@ -30,6 +30,7 @@ class node(object):
         self.nodetype = nodetype
         logging.info("%s listen CMDs on:%i",name, port)
         self.zmqcontext = zmq.Context()
+        self.REQs={}
         self.CMDs={
         ".register": self.register, \
         ".deregister": self.deregister, \

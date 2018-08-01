@@ -110,15 +110,20 @@ class PID(object):
         return self._last_output
 
 if __name__ == '__main__':
-        END=50
+        END=120
         feedback=0
         SetPoint=0
-        pid = PID(timestep=0.1,kp=1.,ki=1,kd=0.005)
+        timestep=0.1
+        factor = 100 * 16 * 200
+        pid = PID(timestep=timestep,acceleration=factor*300/60,kp=3,ki=0.0,kd=0.00,out_max=factor*750/60,out_min=-factor*750/60)
         for i in range(1, END):
             output = pid.update(SetPoint,feedback)
-            if SetPoint > 0:
-                feedback += (output - (1/i))
-            if i>9:
-                SetPoint = 1
-            sleep(0.2)
-            print(i,SetPoint,feedback)
+            feedback += (output *timestep)
+
+            if i>=5:
+                SetPoint = 50*factor
+            if i>=80:
+                SetPoint = 55*factor
+
+            sleep(timestep)
+            print(i,SetPoint,feedback,output)

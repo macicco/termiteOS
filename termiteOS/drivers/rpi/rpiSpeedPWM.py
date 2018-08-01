@@ -13,7 +13,10 @@ import pigpio
 import logging
 import threading
 import termiteOS.maths.hPID as PID
+import termiteOS.maths.trapeze as trapeze
 import termiteOS.drivers.rpi.rpiDRV8825Hat as rpihat
+
+
 
 def threaded(fn):
     '''
@@ -37,13 +40,13 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
     def __init__(self, driverID,microsteps,FullTurnSteps,gear=1,name='Axis', raspberry='localhost'):
         super(rpiSpeedPWM, self).__init__(raspberry,driverID,microstepping=microsteps)
         self.logger = logging.getLogger(type(self).__name__)
-        self.vmax=750
+        self.vmax=750*FullTurnSteps*microsteps*gear/60
+        self.acceleration=300*FullTurnSteps*microsteps*gear/60
         self.name=name
         self.gear=gear
         self.STEP_PIN = self.pinout['STEP']
         self.DIR_PIN = self.pinout['DIR']
         self.pulseDuty = 0.5
-        self.maxAccel=300
         self.FullTurnSteps=FullTurnSteps*self.microsteps
         self.minMotorStep = math.pi * 2 / float(self.FullTurnSteps)
         self._SetPoint=0
@@ -88,14 +91,20 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
         stopped=PWMstop and  (self.motorBeta == self._SetPoint)
         return stopped
 
+    def setRPS(self,rps):
+        '''Set and start PWM to turn at v=rps'''
+        v=rps*2*math.pi
+        self.setSpeed(v)
+        self.logger.debug("RPS %f",v)
+
     def setRPM(self,rpm):
-        '''Set and start PWM to obtain rpm'''
-        v=rpm*2.*math.pi/60.
+        '''Set and start PWM to turn at v=rpm'''
+        v=rpm*2*math.pi*60
         self.setSpeed(v)
         self.logger.debug("RPM %f",v)
 
     def setSpeed(self, v):
-        '''Set and start PWM to obtain radians/seconds'''
+        '''Set and start PWM to to turn at v=radians/seconds'''
         #print("setSpeed V:", v)
         # v in radians/s    
         freq = 0
@@ -125,7 +134,7 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
 
     def goto(self,setpoint,blocking=False):
         '''Absolute movement'''
-        self._SetPoint=setpoint*self.gear*self.FullTurnSteps
+        self.SetPoint(setpoint)
         self.logger.debug("ABSOLUTED MOVE TO:%f",setpoint)
         if blocking:
                 self.logger.debug("GOTO wait until finished")
@@ -149,13 +158,17 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
         '''
         The main loop. Do not exit until self.RUN is False
         '''
+        #IMPORTANT! calculation are done in realsteps (Setpoint, _trackSpeed, v..)
         self.T = time.time()
 
-        _kp=0.005*16/self.microsteps
-        _ki=0.001*16/self.microsteps
-        _kd=0.00*16/self.microsteps
+        _kp=50
+        _ki=0.00
+        _kd=0.00
 
-        pid=PID.PID(timestep=self.timesleep,acceleration=300,kp=_kp,ki=_ki,kd=_kd,out_min=-self.vmax,out_max=self.vmax)
+        pid=PID.PID(timestep=self.timesleep,acceleration=self.acceleration, \
+                        kp=_kp,ki=_ki,kd=_kd,out_min=-self.vmax,out_max=self.vmax)
+        #pid=trapeze.trapeze(timestep=self.timesleep,acceleration=self.acceleration, \
+        #                        out_min=-self.vmax,out_max=self.vmax)
         while self.RUN:
             #calculate the actual timestep
             now = time.time()
@@ -163,7 +176,7 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
             self._SetPoint=self._SetPoint + deltaT*self._trackSpeed
             feedback=self.motorBeta
             v = pid.update(self._SetPoint,feedback)
-            self.setRPM(v)
+            self.setRPS(v/(self.FullTurnSteps*self.gear))
             time.sleep(self.timesleep)
             print("%f %f %f %f %f" % (self._trackSpeed,self._SetPoint,feedback,feedback-self._SetPoint,v))
             self.logger.debug("PID error:%f v:%f",feedback-self._SetPoint,v)
@@ -175,9 +188,9 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
 
 if __name__ == '__main__':
         logging.basicConfig(format='%(asctime)s PWMspeed:%(levelname)s %(message)s',level=logging.DEBUG)
-        axis=rpiSpeedPWM(0,16,200,name='DummyAxis',raspberry='192.168.1.11',gear=1)
+        axis=rpiSpeedPWM(0,16,200,name='DummyAxis',raspberry='192.168.1.11',gear=100)
         runThread=axis.run()
-        axis.goto(10,blocking=True)
+        axis.goto(1,blocking=True)
         axis.RUN=False
         runThread.join()
         print(axis.isStopped)

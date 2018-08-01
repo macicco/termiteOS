@@ -7,7 +7,13 @@ set output "hPID.png"
 set key autotitle columnhead
 set y2tics
 set autoscale y2
-set title "RA Axis"
-plot "hPID.dat" u 1:2 w lines, "hPID.dat" u 1:3 w lines lw 2
+set  ytics 
+set  xtics
+set grid
+set zeroaxis
+set title "PID speed controller"
+plot "hPID.dat" u 1:2  title "SetPoint" lw 2 with steps, \
+     "hPID.dat" u 1:3  title "Actual" lw 2 with steps, \
+     "hPID.dat" u 1:4  title "Speed" lw 2 with steps
 EOF
 eog hPID.png
