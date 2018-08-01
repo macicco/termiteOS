@@ -103,6 +103,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nodetype</span> <span class="o">=</span> <span class="n">nodetype</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> listen CMDs on:</span><span class="si">%i</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zmqcontext</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">REQs</span><span class="o">=</span><span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">CMDs</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;.register&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">,</span> \
         <span class="s2">&quot;.deregister&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">deregister</span><span class="p">,</span> \

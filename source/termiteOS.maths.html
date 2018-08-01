@@ -169,9 +169,9 @@ Args:</p>
 <p>Calculation of speed to target following a trapeze</p>
 <dl class="class">
 <dt id="termiteOS.maths.trapeze.trapeze">
-<em class="property">class </em><code class="descclassname">termiteOS.maths.trapeze.</code><code class="descname">trapeze</code><span class="sig-paren">(</span><em>timestep=0.1</em>, <em>acceleration=1</em>, <em>out_min=-inf</em>, <em>out_max=inf</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/trapeze.html#trapeze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.trapeze.trapeze" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">termiteOS.maths.trapeze.</code><code class="descname">trapeze</code><span class="sig-paren">(</span><em>timestep=0.1</em>, <em>acceleration=1</em>, <em>min_error=1</em>, <em>out_min=-inf</em>, <em>out_max=inf</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/termiteOS/maths/trapeze.html#trapeze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#termiteOS.maths.trapeze.trapeze" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>A proportional-integral-derivative controller.
+<p>A ramp controller. Ramp speed until vmax.
 Args:</p>
 <blockquote>
 <div><table class="docutils field-list" frame="void" rules="none">
@@ -184,13 +184,16 @@ Args:</p>
 <tr class="field-even field"><th class="field-name" colspan="2">param acceleration (float):</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">Max acceleration in RPM/s (motor axis).</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">param out_min (float):</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Lower output limit in RPM (motor axis).</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">param min_error (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Min error threshold.</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">param out_max (float):</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Upper output limit in RPM (motor axis).</td>
+<tr class="field-even field"><th class="field-name" colspan="2">param out_min (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Lower output limit in RPM (motor axis).</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">returns:</th><td class="field-body">New output</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">param out_max (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Upper output limit in RPM (motor axis).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">returns:</th><td class="field-body">New output</td>
 </tr>
 </tbody>
 </table>
