@@ -161,21 +161,27 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
         #IMPORTANT! calculation are done in realsteps (Setpoint, _trackSpeed, v..)
         self.T = time.time()
 
-        _kp=50
+        _kp=100
         _ki=0.00
         _kd=0.00
-
-        pid=PID.PID(timestep=self.timesleep,acceleration=self.acceleration, \
+        pid_control=PID.PID(timestep=self.timesleep,acceleration=self.acceleration, \
                         kp=_kp,ki=_ki,kd=_kd,out_min=-self.vmax,out_max=self.vmax)
-        #pid=trapeze.trapeze(timestep=self.timesleep,acceleration=self.acceleration, \
-        #                        out_min=-self.vmax,out_max=self.vmax)
+
+        trapeze_control=trapeze.trapeze(timestep=self.timesleep,acceleration=self.acceleration, \
+                                out_min=-self.vmax,out_max=self.vmax)
+
+        if False:
+                control=trapeze_control
+        else:
+                control=pid_control
+
         while self.RUN:
             #calculate the actual timestep
             now = time.time()
             deltaT = now - self.T
             self._SetPoint=self._SetPoint + deltaT*self._trackSpeed
             feedback=self.motorBeta
-            v = pid.update(self._SetPoint,feedback)
+            v = control.update(self._SetPoint,feedback)
             self.setRPS(v/(self.FullTurnSteps*self.gear))
             time.sleep(self.timesleep)
             print("%f %f %f %f %f" % (self._trackSpeed,self._SetPoint,feedback,feedback-self._SetPoint,v))
@@ -190,7 +196,7 @@ if __name__ == '__main__':
         logging.basicConfig(format='%(asctime)s PWMspeed:%(levelname)s %(message)s',level=logging.DEBUG)
         axis=rpiSpeedPWM(0,16,200,name='DummyAxis',raspberry='192.168.1.11',gear=100)
         runThread=axis.run()
-        axis.goto(1,blocking=True)
+        axis.goto(.5,blocking=True)
         axis.RUN=False
         runThread.join()
         print(axis.isStopped)

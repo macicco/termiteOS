@@ -62,6 +62,10 @@ class trapeze(object):
 
         # Compute all error variables
         error = (setpoint - feedback)
+
+        #Slow down for small displacements
+        #TBD
+
         e_sign = math.copysign(1, error)
         v= self._last_output
         v_sign = math.copysign(1, v)
@@ -80,7 +84,7 @@ class trapeze(object):
 
 
         # Compute Output
-        self._last_output = self._last_output + a * self._timestep
+        self._last_output = self._last_output + a * deltaT
 
         #no error
         if abs(error)<=self._min_error:
@@ -91,7 +95,7 @@ class trapeze(object):
         self._last_output = max(self._last_output, self._out_min)
 
         # Log some debug info
-        self._logger.debug('output:{}'.format(self._last_output))
+        self._logger.debug('output:{0} beta_slope:{1}'.format(self._last_output,beta_slope))
 
         # Remember some variables for next time
         self._last_input = feedback
@@ -99,7 +103,7 @@ class trapeze(object):
         return self._last_output
 
 if __name__ == '__main__':
-        END=120
+        END=300
         feedback=0
         SetPoint = 0
         timestep=0.1
@@ -109,8 +113,8 @@ if __name__ == '__main__':
             output = pid.update(SetPoint,feedback)
             feedback +=  output*timestep
             if i>=5:
-                SetPoint = 50 * factor
-            if i>80:
-                SetPoint =55 * factor
+                SetPoint = 5 * factor
+            if i>=150:
+                SetPoint = 0 * factor
             sleep(timestep)
             print(i,SetPoint,feedback,output)
