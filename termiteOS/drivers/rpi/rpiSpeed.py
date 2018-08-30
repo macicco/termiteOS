@@ -14,8 +14,6 @@ import logging
 import threading
 import termiteOS.maths.hPID as PID
 import termiteOS.maths.trapeze as trapeze
-import termiteOS.drivers.rpi.rpiDRV8825Hat as rpihat
-
 
 
 def threaded(fn):
@@ -29,34 +27,23 @@ def threaded(fn):
 
     return wrapper
 
-#Stepper raspberry implementation
-class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
+#general speed actuator virtual class
+class rpiSpeed:
     '''
-    This class do the PWM control calling the underlying
+    This class do the speed control calling the underlying
     pigpiod daemon. 
 
-    .. note:: Up to dates only PID control is implemented.
+    .. note:: Up to dates only PID and trapeze control is implemented.
     '''
-    def __init__(self, driverID,microsteps,FullTurnSteps,gear=1,name='Axis', raspberry='localhost'):
-        super(rpiSpeedPWM, self).__init__(raspberry,driverID,microstepping=microsteps)
+    def __init__(self,gear=1,name='Axis'):
         self.logger = logging.getLogger(type(self).__name__)
-        self.vmax=750*FullTurnSteps*microsteps*gear/60
-        self.acceleration=300*FullTurnSteps*microsteps*gear/60
         self.name=name
         self.gear=gear
-        self.STEP_PIN = self.pinout['STEP']
-        self.DIR_PIN = self.pinout['DIR']
-        self.pulseDuty = 0.5
-        self.FullTurnSteps=FullTurnSteps*self.microsteps
-        self.minMotorStep = math.pi * 2 / float(self.FullTurnSteps)
         self._SetPoint=0
         self.freq = 0
-        self.Vold=0
         self._trackSpeed=0
-        self.stopPWM()
         self.RUN=True
-        self.timesleep=0.1
-        self.logger.debug("rpiSpeedPWM Controller created")
+        self.logger.debug("rpiSpeed Controller created")
 
     def sync(self,newposition):
         '''Establish newposition as current possition (motorBeta)'''
@@ -67,61 +54,27 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
         #TBD
         pass
 
-    def stopPWM(self):
-        '''Stop PWM generation without any check'''
-        self.pi.hardware_PWM(self.STEP_PIN, 0, 0)
-        self.logger.debug("STOPPED")
-
-    @property
-    def isStopped(self):
-        '''True if is stopped, False otherwise'''
-        try:
-                PWMstop =  (self.pi.get_PWM_dutycycle(self.STEP_PIN) == 0) 
-        except:
-                PWMstop = True
-        return PWMstop
-
     @property
     def gotoEnd(self):
         '''True if the axis finally arrive to destination(_SetPoint), False otherwise'''
-        try:
-                PWMstop =  (self.pi.get_PWM_dutycycle(self.STEP_PIN) == 0) 
-        except:
-                PWMstop = True
-        stopped=PWMstop and  (self.motorBeta == self._SetPoint)
+        stopped= (self.motorBeta == self._SetPoint)
         return stopped
 
     def setRPS(self,rps):
-        '''Set and start PWM to turn at v=rps'''
+        '''Turn at v=rps'''
         v=rps*2*math.pi
         self.setSpeed(v)
         self.logger.debug("RPS %f",v)
 
     def setRPM(self,rpm):
-        '''Set and start PWM to turn at v=rpm'''
+        '''Turn at v=rpm'''
         v=rpm*2*math.pi*60
         self.setSpeed(v)
         self.logger.debug("RPM %f",v)
 
     def setSpeed(self, v):
-        '''Set and start PWM to to turn at v=radians/seconds'''
-        #print("setSpeed V:", v)
-        # v in radians/s    
-        freq = 0
-        #calculate direction of motion
-        if self.dir * v < 0:
-            self.dir = math.copysign(1, v)
-            self.set_dir(self.dir)
-        freq = round(abs(v) / self.minMotorStep)
-        if freq >= self.maxPPS:
-            freq = self.maxPPS
-        self.freq=freq
-        if self.freq!=0:
-                self.pi.hardware_PWM(self.STEP_PIN, self.freq,self.pulseDuty * 1000000)
-        else:
-                self.pi.hardware_PWM(self.STEP_PIN, 0,0)
-        self.logger.debug("PWM FREQUENCY:%f",self.freq)
-        return self.freq
+        '''Turn at v=radians/seconds virtual class. Do nothing'''
+        return 
 
     def trackSpeed(self,trackSpeed):
         '''Set axis track speed. Track speed*timestep is add to the _SetPoint value '''
@@ -161,7 +114,7 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
         #IMPORTANT! calculation are done in realsteps (Setpoint, _trackSpeed, v..)
         self.T = time.time()
 
-        _kp=50
+        _kp=100
         _ki=0.00
         _kd=0.00
         pid_control=PID.PID(timestep=self.timesleep,acceleration=self.acceleration, \
@@ -170,7 +123,7 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
         trapeze_control=trapeze.trapeze(timestep=self.timesleep,acceleration=self.acceleration, \
                                 out_min=-self.vmax,out_max=self.vmax)
 
-        if False:
+        if True:
                 control=trapeze_control
         else:
                 control=pid_control
@@ -194,7 +147,7 @@ class rpiSpeedPWM(rpihat.rpiDRV8825Hat):
 
 if __name__ == '__main__':
         logging.basicConfig(format='%(asctime)s PWMspeed:%(levelname)s %(message)s',level=logging.DEBUG)
-        axis=rpiSpeedPWM(0,16,200,name='DummyAxis',raspberry='192.168.1.11',gear=100)
+        axis=rpiSpeed(name='DummyAxis',gear=100)
         runThread=axis.run()
         axis.goto(.5,blocking=True)
         axis.RUN=False

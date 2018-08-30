@@ -3,7 +3,6 @@
 #
 # termiteOS
 # Copyright (c) July 2018 Nacho Mas
-# Adapted from: https://github.com/hirschmann/pid-autotune/blob/master/pid.py
 '''
 Calculation of speed to target following a trapeze
 '''
@@ -63,24 +62,25 @@ class trapeze(object):
         # Compute all error variables
         error = (setpoint - feedback)
 
+        actual_acceleration=self._acceleration
         #Slow down for small displacements
         #TBD
 
         e_sign = math.copysign(1, error)
         v= self._last_output
         v_sign = math.copysign(1, v)
-        beta_slope = (v * v ) / (2 * self._acceleration)
+        beta_slope = (v * v ) / (2 * actual_acceleration)
         #print(beta_slope,error)
 
         #check if it is time to deccelerate
         if abs(error) <= beta_slope :
-            a = -self._acceleration * e_sign
+            a = -actual_acceleration * e_sign
         else:
-            a = self._acceleration * e_sign
+            a = actual_acceleration * e_sign
 
         #Change in direction
         if (e_sign * v_sign) == -1:
-            a = self._acceleration * e_sign
+            a = actual_acceleration * e_sign
 
 
         # Compute Output

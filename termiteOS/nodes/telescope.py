@@ -52,7 +52,7 @@ class telescope(nodeSkull.node):
           "@setTrackSpeed": self.setTrackSpeed, \
           "@values": self.values
         }
-        self.m = motorHub(microstepping=16,raspberry='192.168.1.11',gear=100)
+        self.m = motorHub(microstepping=16,raspberry='termiteOS',gear=100)
         self.valuesmsg = {}
         self.addCMDs(CMDs)
         self.observerInit()
